@@ -4,7 +4,7 @@ import time
 import torch
 from PIL import Image
 
-SAMPLE_IMAGE_DIR = "./sample_images"
+SAMPLE_IMAGE_DIR = ".data/d1/sample_images"
 SAMPLE_TEXT_QUERIES = [
     "a white collared shirt",
     "áo sơ mi trắng công sở",
