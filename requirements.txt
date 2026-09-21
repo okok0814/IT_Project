@@ -1,4 +1,9 @@
-torch
-transformers
+fastapi
+uvicorn[standard]
+python-multipart
+numpy
+faiss-cpu
 pillow
-pandas
+torch
+git+https://github.com/openai/CLIP.git
+transformers
