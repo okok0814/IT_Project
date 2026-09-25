@@ -6,9 +6,9 @@ export default function HomePage() {
   return (
     <div className="home-page">
       <section className="hero-panel">
-        <div className="floating-disc">◉</div>
+        <div className="floating-disc">✦</div>
         <h1>
-          Search fashion by <span>image</span> or <span>language</span>.
+          Discover fashion through <span>image</span> or <span>language</span>.
         </h1>
         <div className="hero-actions">
           <button
@@ -30,22 +30,22 @@ export default function HomePage() {
         <article className="feature-card">
           <span className="feature-index">01</span>
           <h3>IMAGE SEARCH</h3>
-          <p>Upload a fashion image and continue to the static results page.</p>
+          <p>Upload a fashion image to discover visually similar pieces.</p>
         </article>
+
         <article className="feature-card">
           <span className="feature-index">02</span>
           <h3>TEXT SEARCH</h3>
           <p>
-            Enter a description such as “black shirt” and navigate through the
-            demo flow.
+            Describe the piece you want, such as “black shirt”, and explore matching styles.
           </p>
         </article>
+
         <article className="feature-card">
           <span className="feature-index">03</span>
           <h3>RESULTS</h3>
           <p>
-            Preview filters, product cards and neural-match scores using mock
-            data.
+            Explore refined matches, filters and similarity scores in one elegant view.
           </p>
         </article>
       </section>

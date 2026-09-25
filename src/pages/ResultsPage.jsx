@@ -11,8 +11,8 @@ export default function ResultsPage() {
     <div className="results-page">
       <section className="mini-hero">
         <div className="mini-hero-copy">
-          <p className="eyebrow">MATCHED ITEMS</p>
-          <h1>{query ? `Results for “${query}”` : 'Static result preview'}</h1>
+          <p className="eyebrow">MATCHED PIECES</p>
+          <h1>{query ? `Results for “${query}”` : 'CURATED RESULTS'}</h1>
         </div>
         <span className="result-count">8 ITEMS FOUND</span>
       </section>
@@ -21,7 +21,7 @@ export default function ResultsPage() {
         <FilterSidebar />
         <section className="results-content">
           <div className="results-heading">
-            <h2>MATCHED ITEMS <span>8 ITEMS FOUND</span></h2>
+            <h2>MATCHED PIECES <span>8 ITEMS FOUND</span></h2>
             <p>Sorted by: <strong>Visual Similarity %</strong></p>
           </div>
           <div className="product-grid">
@@ -32,7 +32,7 @@ export default function ResultsPage() {
 
       <section className="related-section">
         <div className="related-heading">
-          <h2>✣ SURREAL COUSINS // RELATED ARCHIVES</h2>
+          <h2>✣ YOU MAY ALSO LIKE</h2>
           <span>← &nbsp; →</span>
         </div>
         <div className="related-grid">

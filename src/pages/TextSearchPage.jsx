@@ -8,15 +8,15 @@ export default function TextSearchPage() {
   return (
     <div className="search-page">
       <section className="search-intro">
-        <p className="eyebrow">TEXT-TO-IMAGE SEARCH</p>
-        <h1>Describe what you want</h1>
+        <p className="eyebrow">FASHION TEXT SEARCH</p>
+        <h1>DESCRIBE YOUR STYLE</h1>
       </section>
 
       <section className="text-search-card">
         <label htmlFor="query">FASHION QUERY</label>
         <div className="query-input-wrap">
           <span>⌕</span>
-          <input id="query" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="e.g. black shirt, cyber sneakers..." />
+          <input id="query" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="e.g. black shirt, white dress, leather bag..." />
         </div>
 
         <div className="static-filter-grid">
@@ -27,7 +27,7 @@ export default function TextSearchPage() {
 
         <div className="form-actions">
           <button className="secondary-btn" onClick={() => setQuery('')}>CLEAR</button>
-          <button className="primary-btn" onClick={() => navigate('/results', { state: { query } })}>SEARCH</button>
+          <button className="primary-btn" onClick={() => navigate('/results', { state: { query } })}>DISCOVER</button>
         </div>
       </section>
     </div>
