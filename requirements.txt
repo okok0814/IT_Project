@@ -1,9 +1,18 @@
-fastapi
-uvicorn[standard]
-python-multipart
-numpy
-faiss-cpu
-pillow
-torch
-git+https://github.com/openai/CLIP.git
-transformers
+-r requirements-test.txt
+
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+python-multipart>=0.0.18,<1
+pydantic>=2,<3
+
+pandas>=2.2,<4
+matplotlib>=3.9,<4
+tqdm>=4.66,<5
+torchvision
+ftfy>=6,<7
+regex
+huggingface-hub>=0.34,<1
+clip @ git+https://github.com/openai/CLIP.git
+
+jupyterlab>=4,<5
+ipykernel>=6,<8

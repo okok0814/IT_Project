@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Client rejects unsupported and oversized uploads",
+    "Corrupt image shows server error and allows retry",
+    "Real upload, loading state, ten ranked results and working thumbnails",
+    "Mobile results fit viewport",
+    "Remove and reselect the same image",
+    "Service unavailable response is visible and retry remains enabled",
+    "Empty response shows no mock products"
+  ],
+  "page_errors": [],
+  "note": "Valid upload uses the real model/index. 503 and empty responses are simulated to exercise UI states."
+}
