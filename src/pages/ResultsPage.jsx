@@ -46,7 +46,7 @@ export default function ResultsPage() {
       </section>
 
       {hasApiResults && count === 0 ? (
-        <section className="results-empty">
+        <section className="results-empty" role="status">
           <p className="eyebrow">NO MATCHES FOUND</p>
 
           <h2>No products were returned by the image search.</h2>
@@ -62,8 +62,8 @@ export default function ResultsPage() {
           </button>
         </section>
       ) : (
-        <div className="results-layout">
-          <FilterSidebar />
+        <div className={`results-layout ${hasApiResults ? 'image-results-layout' : ''}`}>
+          {!hasApiResults && <FilterSidebar />}
 
           <section className="results-content">
             <div className="results-heading">
@@ -72,7 +72,7 @@ export default function ResultsPage() {
               </h2>
 
               <p>
-                Sorted by: <strong>Visual Similarity %</strong>
+                Sorted by: <strong>{hasApiResults ? 'Cosine similarity' : 'Visual Similarity %'}</strong>
               </p>
             </div>
 
@@ -88,7 +88,7 @@ export default function ResultsPage() {
         </div>
       )}
 
-      <section className="related-section">
+      {!hasApiResults && <section className="related-section">
         <div className="related-heading">
           <h2>✣ YOU MAY ALSO LIKE</h2>
 
@@ -108,7 +108,7 @@ export default function ResultsPage() {
             </article>
           ))}
         </div>
-      </section>
+      </section>}
     </div>
   )
 }

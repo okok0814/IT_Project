@@ -5,21 +5,30 @@ import { searchByImage } from '../api/fashionApi'
 export default function ImageSearchPage() {
   const navigate = useNavigate()
   const inputRef = useRef(null)
+  const requestRef = useRef(null)
 
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  useEffect(() => () => requestRef.current?.abort(), [])
+
   function handleFile(file) {
+    if (loading) return
     setError('')
 
     if (!file) {
       return
     }
 
-    if (!file.type.startsWith('image/')) {
-      setError('Please select a valid image file.')
+    if (!/\.(jpe?g|png|webp)$/i.test(file.name) ||
+        (file.type && !['image/jpeg', 'image/png', 'image/webp'].includes(file.type))) {
+      setError('Unsupported format. Choose a JPG, PNG or WEBP image.')
+      return
+    }
+    if (file.size === 0 || file.size > 10 * 1024 * 1024) {
+      setError(file.size === 0 ? 'This file is empty.' : 'Image is too large. Maximum size is 10 MiB.')
       return
     }
 
@@ -40,6 +49,7 @@ export default function ImageSearchPage() {
     const file = event.target.files?.[0]
 
     handleFile(file)
+    event.target.value = ''
   }
 
   function handleDragOver(event) {
@@ -48,6 +58,11 @@ export default function ImageSearchPage() {
 
   function handleDrop(event) {
     event.preventDefault()
+    if (loading) return
+    if (event.dataTransfer.files.length !== 1) {
+      setError('Please upload one image at a time.')
+      return
+    }
 
     const file = event.dataTransfer.files?.[0]
 
@@ -78,15 +93,18 @@ export default function ImageSearchPage() {
   }
 
   async function handleSearch() {
-    if (!selectedFile || loading) {
+    if (!selectedFile || requestRef.current) {
       return
     }
 
     setLoading(true)
     setError('')
+    const controller = new AbortController()
+    requestRef.current = controller
+    const timeout = setTimeout(() => controller.abort(), 120000)
 
     try {
-      const results = await searchByImage(selectedFile, 8)
+      const results = await searchByImage(selectedFile, 8, { signal: controller.signal })
 
       navigate('/results', {
         state: {
@@ -97,11 +115,17 @@ export default function ImageSearchPage() {
       })
     } catch (searchError) {
       setError(
-        searchError instanceof Error
+        searchError.name === 'AbortError'
+          ? 'Search timed out. Please try again.'
+          : searchError instanceof TypeError
+          ? 'Cannot reach the search server. Please try again.'
+          : searchError instanceof Error
           ? searchError.message
           : 'Unable to connect to the backend.'
       )
     } finally {
+      clearTimeout(timeout)
+      requestRef.current = null
       setLoading(false)
     }
   }
@@ -163,7 +187,7 @@ export default function ImageSearchPage() {
 
               <small>
                 {loading
-                  ? 'Searching the backend...'
+                  ? 'Finding similar products...'
                   : 'Click the image to choose another one'}
               </small>
             </div>
@@ -180,7 +204,7 @@ export default function ImageSearchPage() {
             </p>
 
             <span className="upload-format">
-              JPG · PNG · WEBP
+              JPG · PNG · WEBP · UP TO 10 MiB · 25 MEGAPIXELS
             </span>
           </>
         )}
@@ -188,7 +212,7 @@ export default function ImageSearchPage() {
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
           onChange={chooseFile}
           disabled={loading}
           hidden
@@ -204,11 +228,12 @@ export default function ImageSearchPage() {
       )}
 
       {loading && (
-        <div className="search-status search-status-loading" aria-live="polite">
+        <div className="search-status search-status-loading" role="status" aria-live="polite">
           <span className="loading-spinner" aria-hidden="true" />
 
           <div>
             <strong>SEARCHING...</strong>
+            <span>Finding similar products. The first search may take longer.</span>
           </div>
         </div>
       )}

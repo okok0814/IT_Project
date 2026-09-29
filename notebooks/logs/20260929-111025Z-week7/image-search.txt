@@ -1,0 +1,28 @@
+UTC: 2026-09-29T11:10:44.126644+00:00
+CWD: D:\code\IT_Project
+COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe -m scripts.verify_image_search --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --output D:\code\IT_Project\notebooks\logs\20260929-111025Z-week7\image-search.json
+
+10180.jpg: HTTP 200, 11896 ms, passed=True
+13016.jpg: HTTP 200, 303 ms, passed=True
+16806.jpg: HTTP 200, 338 ms, passed=True
+2227.jpg: HTTP 200, 229 ms, passed=True
+24408.jpg: HTTP 200, 209 ms, passed=True
+2886.jpg: HTTP 200, 267 ms, passed=True
+31105.jpg: HTTP 200, 305 ms, passed=True
+31172.jpg: HTTP 200, 305 ms, passed=True
+32812.jpg: HTTP 200, 172 ms, passed=True
+34066.jpg: HTTP 200, 209 ms, passed=True
+36203.jpg: HTTP 200, 161 ms, passed=True
+38654.jpg: HTTP 200, 155 ms, passed=True
+38947.jpg: HTTP 200, 236 ms, passed=True
+41750.jpg: HTTP 200, 257 ms, passed=True
+4727.jpg: HTTP 200, 231 ms, passed=True
+49839.jpg: HTTP 200, 156 ms, passed=True
+52125.jpg: HTTP 200, 150 ms, passed=True
+54529.jpg: HTTP 200, 163 ms, passed=True
+59759.jpg: HTTP 200, 179 ms, passed=True
+8353.jpg: HTTP 200, 279 ms, passed=True
+Evidence: D:\code\IT_Project\notebooks\logs\20260929-111025Z-week7\image-search.json; failures: []
+
+EXIT_CODE: 0
+UTC_END: 2026-09-29T11:11:06.467586+00:00

@@ -1,6 +1,9 @@
 import { buildBackendImageUrl } from '../api/fashionApi'
+import { useState } from 'react'
 
 export default function ProductCard({ product }) {
+  const [failedImage, setFailedImage] = useState('')
+  const isApiResult = typeof product.similarity_score === 'number'
   const similarityScore =
     typeof product.similarity_score === 'number'
       ? product.similarity_score
@@ -21,17 +24,18 @@ export default function ProductCard({ product }) {
   return (
     <article className="product-card">
       <div className="product-art product-art-real">
-        {imageSrc ? (
+        {imageSrc && failedImage !== imageSrc ? (
           <img
             className="product-image"
             src={imageSrc}
             alt={`Fashion product ${product.product_id ?? product.id ?? ''}`}
             loading="lazy"
+            onError={() => setFailedImage(imageSrc)}
           />
         ) : (
           <>
             <div className="scanline" />
-            <span className="product-symbol">{product.symbol ?? '◫'}</span>
+            <span className="product-symbol">{imageSrc ? 'Image unavailable' : product.symbol ?? '◫'}</span>
           </>
         )}
       </div>
@@ -55,9 +59,9 @@ export default function ProductCard({ product }) {
         )}
 
         <div className="match-row">
-          <span>VISUAL MATCH</span>
+          <span>{isApiResult ? 'COSINE SIMILARITY' : 'VISUAL MATCH'}</span>
 
-          <strong>{scorePercent}%</strong>
+          <strong>{isApiResult ? similarityScore.toFixed(3) : `${scorePercent}%`}</strong>
         </div>
 
         <div className="meter">

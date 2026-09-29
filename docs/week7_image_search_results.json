@@ -1,0 +1,1576 @@
+{
+  "timestamp_utc": "2026-09-29T09:41:42.880659+00:00",
+  "python": "3.11.9",
+  "packages": {
+    "flask": "3.1.3",
+    "pillow": "12.3.0",
+    "torch": "2.14.0",
+    "transformers": "4.57.6",
+    "faiss-cpu": "1.15.1",
+    "numpy": "2.4.6"
+  },
+  "model": "patrickjohncyh/fashion-clip",
+  "real_encoder": true,
+  "index_vectors": 44419,
+  "image_dir": "D:\\code\\dataset\\Fashion Product Images Dataset\\archive\\fashion-dataset\\images",
+  "query_dir": "D:\\code\\IT_Project\\data\\d1\\sample_images",
+  "unique_real_images": 20,
+  "passed": 20,
+  "warm_mean_ms": 206.53,
+  "warm_p95_ms": 274.38,
+  "variants": [
+    {
+      "format": "PNG",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "format": "WEBP",
+      "status": 200,
+      "passed": true
+    }
+  ],
+  "records": [
+    {
+      "file": "10180.jpg",
+      "sha256": "49d5939adb56f333be18d5461727c0ccaeeb6b43e47eb65ee689309ce6362ab6",
+      "status": 200,
+      "elapsed_ms": 9596.39,
+      "includes_model_load": true,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/10180.jpg",
+            "product_id": "10180",
+            "similarity_score": 0.889556
+          },
+          {
+            "image_url": "/dataset2/images/23827.jpg",
+            "product_id": "23827",
+            "similarity_score": 0.851875
+          },
+          {
+            "image_url": "/dataset2/images/39546.jpg",
+            "product_id": "39546",
+            "similarity_score": 0.8511
+          },
+          {
+            "image_url": "/dataset2/images/17649.jpg",
+            "product_id": "17649",
+            "similarity_score": 0.846837
+          },
+          {
+            "image_url": "/dataset2/images/11859.jpg",
+            "product_id": "11859",
+            "similarity_score": 0.840987
+          },
+          {
+            "image_url": "/dataset2/images/42092.jpg",
+            "product_id": "42092",
+            "similarity_score": 0.835481
+          },
+          {
+            "image_url": "/dataset2/images/44712.jpg",
+            "product_id": "44712",
+            "similarity_score": 0.832645
+          },
+          {
+            "image_url": "/dataset2/images/39311.jpg",
+            "product_id": "39311",
+            "similarity_score": 0.832133
+          },
+          {
+            "image_url": "/dataset2/images/11863.jpg",
+            "product_id": "11863",
+            "similarity_score": 0.831824
+          },
+          {
+            "image_url": "/dataset2/images/46101.jpg",
+            "product_id": "46101",
+            "similarity_score": 0.831228
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "13016.jpg",
+      "sha256": "25106f30c1fa2b71243516da74020720ed2cf104b4d332b95be97bbea4429bee",
+      "status": 200,
+      "elapsed_ms": 250.08,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/13016.jpg",
+            "product_id": "13016",
+            "similarity_score": 0.892607
+          },
+          {
+            "image_url": "/dataset2/images/13013.jpg",
+            "product_id": "13013",
+            "similarity_score": 0.870815
+          },
+          {
+            "image_url": "/dataset2/images/15543.jpg",
+            "product_id": "15543",
+            "similarity_score": 0.843386
+          },
+          {
+            "image_url": "/dataset2/images/53457.jpg",
+            "product_id": "53457",
+            "similarity_score": 0.84214
+          },
+          {
+            "image_url": "/dataset2/images/53458.jpg",
+            "product_id": "53458",
+            "similarity_score": 0.838427
+          },
+          {
+            "image_url": "/dataset2/images/39715.jpg",
+            "product_id": "39715",
+            "similarity_score": 0.831555
+          },
+          {
+            "image_url": "/dataset2/images/11519.jpg",
+            "product_id": "11519",
+            "similarity_score": 0.827577
+          },
+          {
+            "image_url": "/dataset2/images/39617.jpg",
+            "product_id": "39617",
+            "similarity_score": 0.82406
+          },
+          {
+            "image_url": "/dataset2/images/11492.jpg",
+            "product_id": "11492",
+            "similarity_score": 0.824031
+          },
+          {
+            "image_url": "/dataset2/images/47572.jpg",
+            "product_id": "47572",
+            "similarity_score": 0.819567
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "16806.jpg",
+      "sha256": "9724d7b1569610d5428d4796e7279a0613be16ede567e65a44631e0a25e22ec4",
+      "status": 200,
+      "elapsed_ms": 270.41,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/16806.jpg",
+            "product_id": "16806",
+            "similarity_score": 0.881365
+          },
+          {
+            "image_url": "/dataset2/images/16803.jpg",
+            "product_id": "16803",
+            "similarity_score": 0.761187
+          },
+          {
+            "image_url": "/dataset2/images/27232.jpg",
+            "product_id": "27232",
+            "similarity_score": 0.742173
+          },
+          {
+            "image_url": "/dataset2/images/33509.jpg",
+            "product_id": "33509",
+            "similarity_score": 0.742173
+          },
+          {
+            "image_url": "/dataset2/images/5002.jpg",
+            "product_id": "5002",
+            "similarity_score": 0.730944
+          },
+          {
+            "image_url": "/dataset2/images/9995.jpg",
+            "product_id": "9995",
+            "similarity_score": 0.730017
+          },
+          {
+            "image_url": "/dataset2/images/41975.jpg",
+            "product_id": "41975",
+            "similarity_score": 0.728029
+          },
+          {
+            "image_url": "/dataset2/images/40161.jpg",
+            "product_id": "40161",
+            "similarity_score": 0.728029
+          },
+          {
+            "image_url": "/dataset2/images/41976.jpg",
+            "product_id": "41976",
+            "similarity_score": 0.728029
+          },
+          {
+            "image_url": "/dataset2/images/37522.jpg",
+            "product_id": "37522",
+            "similarity_score": 0.724329
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "2227.jpg",
+      "sha256": "c167d6983b9f2ce9513f26fab22847052158230fa04938f9505eacad13b295c1",
+      "status": 200,
+      "elapsed_ms": 187.6,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/2227.jpg",
+            "product_id": "2227",
+            "similarity_score": 0.867011
+          },
+          {
+            "image_url": "/dataset2/images/38550.jpg",
+            "product_id": "38550",
+            "similarity_score": 0.82064
+          },
+          {
+            "image_url": "/dataset2/images/6395.jpg",
+            "product_id": "6395",
+            "similarity_score": 0.818363
+          },
+          {
+            "image_url": "/dataset2/images/12965.jpg",
+            "product_id": "12965",
+            "similarity_score": 0.817985
+          },
+          {
+            "image_url": "/dataset2/images/40317.jpg",
+            "product_id": "40317",
+            "similarity_score": 0.815694
+          },
+          {
+            "image_url": "/dataset2/images/6393.jpg",
+            "product_id": "6393",
+            "similarity_score": 0.814743
+          },
+          {
+            "image_url": "/dataset2/images/23895.jpg",
+            "product_id": "23895",
+            "similarity_score": 0.813685
+          },
+          {
+            "image_url": "/dataset2/images/5611.jpg",
+            "product_id": "5611",
+            "similarity_score": 0.813671
+          },
+          {
+            "image_url": "/dataset2/images/15457.jpg",
+            "product_id": "15457",
+            "similarity_score": 0.812605
+          },
+          {
+            "image_url": "/dataset2/images/44572.jpg",
+            "product_id": "44572",
+            "similarity_score": 0.811571
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "24408.jpg",
+      "sha256": "a12fe5cb11035ff0f364515caca8be452107eab5605b73031041d9f1669c190e",
+      "status": 200,
+      "elapsed_ms": 174.7,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/24408.jpg",
+            "product_id": "24408",
+            "similarity_score": 0.877003
+          },
+          {
+            "image_url": "/dataset2/images/25584.jpg",
+            "product_id": "25584",
+            "similarity_score": 0.7729
+          },
+          {
+            "image_url": "/dataset2/images/38651.jpg",
+            "product_id": "38651",
+            "similarity_score": 0.771435
+          },
+          {
+            "image_url": "/dataset2/images/6629.jpg",
+            "product_id": "6629",
+            "similarity_score": 0.770508
+          },
+          {
+            "image_url": "/dataset2/images/9048.jpg",
+            "product_id": "9048",
+            "similarity_score": 0.769925
+          },
+          {
+            "image_url": "/dataset2/images/25566.jpg",
+            "product_id": "25566",
+            "similarity_score": 0.769837
+          },
+          {
+            "image_url": "/dataset2/images/13179.jpg",
+            "product_id": "13179",
+            "similarity_score": 0.768573
+          },
+          {
+            "image_url": "/dataset2/images/15310.jpg",
+            "product_id": "15310",
+            "similarity_score": 0.766958
+          },
+          {
+            "image_url": "/dataset2/images/24213.jpg",
+            "product_id": "24213",
+            "similarity_score": 0.763667
+          },
+          {
+            "image_url": "/dataset2/images/20886.jpg",
+            "product_id": "20886",
+            "similarity_score": 0.763666
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "2886.jpg",
+      "sha256": "c044855ae7c6f1bed080e2c66f181cda3688fba5cbe973e856f360b6529c4e8c",
+      "status": 200,
+      "elapsed_ms": 229.42,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/2886.jpg",
+            "product_id": "2886",
+            "similarity_score": 0.838138
+          },
+          {
+            "image_url": "/dataset2/images/2885.jpg",
+            "product_id": "2885",
+            "similarity_score": 0.762873
+          },
+          {
+            "image_url": "/dataset2/images/19048.jpg",
+            "product_id": "19048",
+            "similarity_score": 0.753413
+          },
+          {
+            "image_url": "/dataset2/images/2890.jpg",
+            "product_id": "2890",
+            "similarity_score": 0.730106
+          },
+          {
+            "image_url": "/dataset2/images/19050.jpg",
+            "product_id": "19050",
+            "similarity_score": 0.697369
+          },
+          {
+            "image_url": "/dataset2/images/2878.jpg",
+            "product_id": "2878",
+            "similarity_score": 0.696601
+          },
+          {
+            "image_url": "/dataset2/images/26185.jpg",
+            "product_id": "26185",
+            "similarity_score": 0.696235
+          },
+          {
+            "image_url": "/dataset2/images/3140.jpg",
+            "product_id": "3140",
+            "similarity_score": 0.689297
+          },
+          {
+            "image_url": "/dataset2/images/14372.jpg",
+            "product_id": "14372",
+            "similarity_score": 0.684093
+          },
+          {
+            "image_url": "/dataset2/images/5288.jpg",
+            "product_id": "5288",
+            "similarity_score": 0.681701
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "31105.jpg",
+      "sha256": "f1bb7a6665179f7a082a1251242a20a9ed15b757a1bdb5360fa0153a3cb0adec",
+      "status": 200,
+      "elapsed_ms": 255.26,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/31105.jpg",
+            "product_id": "31105",
+            "similarity_score": 0.888225
+          },
+          {
+            "image_url": "/dataset2/images/33304.jpg",
+            "product_id": "33304",
+            "similarity_score": 0.888225
+          },
+          {
+            "image_url": "/dataset2/images/33305.jpg",
+            "product_id": "33305",
+            "similarity_score": 0.863749
+          },
+          {
+            "image_url": "/dataset2/images/33303.jpg",
+            "product_id": "33303",
+            "similarity_score": 0.785188
+          },
+          {
+            "image_url": "/dataset2/images/31104.jpg",
+            "product_id": "31104",
+            "similarity_score": 0.777538
+          },
+          {
+            "image_url": "/dataset2/images/33302.jpg",
+            "product_id": "33302",
+            "similarity_score": 0.777538
+          },
+          {
+            "image_url": "/dataset2/images/38952.jpg",
+            "product_id": "38952",
+            "similarity_score": 0.727343
+          },
+          {
+            "image_url": "/dataset2/images/33143.jpg",
+            "product_id": "33143",
+            "similarity_score": 0.727343
+          },
+          {
+            "image_url": "/dataset2/images/38953.jpg",
+            "product_id": "38953",
+            "similarity_score": 0.727343
+          },
+          {
+            "image_url": "/dataset2/images/38490.jpg",
+            "product_id": "38490",
+            "similarity_score": 0.667168
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "31172.jpg",
+      "sha256": "3dbf384ae6cda63ae86f6409d4c4a760f09df36bcf9fe1e543cbd143663cdb75",
+      "status": 200,
+      "elapsed_ms": 266.76,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 3,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/34156.jpg",
+            "product_id": "34156",
+            "similarity_score": 0.850676
+          },
+          {
+            "image_url": "/dataset2/images/34157.jpg",
+            "product_id": "34157",
+            "similarity_score": 0.850676
+          },
+          {
+            "image_url": "/dataset2/images/31172.jpg",
+            "product_id": "31172",
+            "similarity_score": 0.850676
+          },
+          {
+            "image_url": "/dataset2/images/40152.jpg",
+            "product_id": "40152",
+            "similarity_score": 0.769102
+          },
+          {
+            "image_url": "/dataset2/images/41969.jpg",
+            "product_id": "41969",
+            "similarity_score": 0.769102
+          },
+          {
+            "image_url": "/dataset2/images/41970.jpg",
+            "product_id": "41970",
+            "similarity_score": 0.769102
+          },
+          {
+            "image_url": "/dataset2/images/17611.jpg",
+            "product_id": "17611",
+            "similarity_score": 0.748271
+          },
+          {
+            "image_url": "/dataset2/images/35441.jpg",
+            "product_id": "35441",
+            "similarity_score": 0.746741
+          },
+          {
+            "image_url": "/dataset2/images/41973.jpg",
+            "product_id": "41973",
+            "similarity_score": 0.733683
+          },
+          {
+            "image_url": "/dataset2/images/37566.jpg",
+            "product_id": "37566",
+            "similarity_score": 0.72993
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "32812.jpg",
+      "sha256": "0c5a7b9ea53f8e41825e12581f111399312f709ef192b3bb96b13f91ce1cfae3",
+      "status": 200,
+      "elapsed_ms": 153.6,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/32812.jpg",
+            "product_id": "32812",
+            "similarity_score": 0.874478
+          },
+          {
+            "image_url": "/dataset2/images/19018.jpg",
+            "product_id": "19018",
+            "similarity_score": 0.834438
+          },
+          {
+            "image_url": "/dataset2/images/32806.jpg",
+            "product_id": "32806",
+            "similarity_score": 0.826096
+          },
+          {
+            "image_url": "/dataset2/images/39569.jpg",
+            "product_id": "39569",
+            "similarity_score": 0.818772
+          },
+          {
+            "image_url": "/dataset2/images/39598.jpg",
+            "product_id": "39598",
+            "similarity_score": 0.815867
+          },
+          {
+            "image_url": "/dataset2/images/49826.jpg",
+            "product_id": "49826",
+            "similarity_score": 0.813973
+          },
+          {
+            "image_url": "/dataset2/images/44195.jpg",
+            "product_id": "44195",
+            "similarity_score": 0.809851
+          },
+          {
+            "image_url": "/dataset2/images/47477.jpg",
+            "product_id": "47477",
+            "similarity_score": 0.809543
+          },
+          {
+            "image_url": "/dataset2/images/56927.jpg",
+            "product_id": "56927",
+            "similarity_score": 0.80941
+          },
+          {
+            "image_url": "/dataset2/images/44188.jpg",
+            "product_id": "44188",
+            "similarity_score": 0.808405
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "34066.jpg",
+      "sha256": "73025e0559f43425661792f07a34d23d03ff0898a3135e39afcea9a442517e9a",
+      "status": 200,
+      "elapsed_ms": 175.99,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/34066.jpg",
+            "product_id": "34066",
+            "similarity_score": 0.89419
+          },
+          {
+            "image_url": "/dataset2/images/31126.jpg",
+            "product_id": "31126",
+            "similarity_score": 0.89419
+          },
+          {
+            "image_url": "/dataset2/images/34065.jpg",
+            "product_id": "34065",
+            "similarity_score": 0.786342
+          },
+          {
+            "image_url": "/dataset2/images/31127.jpg",
+            "product_id": "31127",
+            "similarity_score": 0.786342
+          },
+          {
+            "image_url": "/dataset2/images/31167.jpg",
+            "product_id": "31167",
+            "similarity_score": 0.735074
+          },
+          {
+            "image_url": "/dataset2/images/24929.jpg",
+            "product_id": "24929",
+            "similarity_score": 0.731263
+          },
+          {
+            "image_url": "/dataset2/images/13310.jpg",
+            "product_id": "13310",
+            "similarity_score": 0.721596
+          },
+          {
+            "image_url": "/dataset2/images/18175.jpg",
+            "product_id": "18175",
+            "similarity_score": 0.69782
+          },
+          {
+            "image_url": "/dataset2/images/31168.jpg",
+            "product_id": "31168",
+            "similarity_score": 0.696518
+          },
+          {
+            "image_url": "/dataset2/images/34167.jpg",
+            "product_id": "34167",
+            "similarity_score": 0.696518
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "36203.jpg",
+      "sha256": "1ec0b3b74d18f89058003853e33a2c9fb31840fdc696e365f16ab57bbb29df06",
+      "status": 200,
+      "elapsed_ms": 170.96,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/36203.jpg",
+            "product_id": "36203",
+            "similarity_score": 0.884117
+          },
+          {
+            "image_url": "/dataset2/images/13298.jpg",
+            "product_id": "13298",
+            "similarity_score": 0.746568
+          },
+          {
+            "image_url": "/dataset2/images/41975.jpg",
+            "product_id": "41975",
+            "similarity_score": 0.737645
+          },
+          {
+            "image_url": "/dataset2/images/40161.jpg",
+            "product_id": "40161",
+            "similarity_score": 0.737645
+          },
+          {
+            "image_url": "/dataset2/images/41976.jpg",
+            "product_id": "41976",
+            "similarity_score": 0.737645
+          },
+          {
+            "image_url": "/dataset2/images/40155.jpg",
+            "product_id": "40155",
+            "similarity_score": 0.731516
+          },
+          {
+            "image_url": "/dataset2/images/41977.jpg",
+            "product_id": "41977",
+            "similarity_score": 0.731516
+          },
+          {
+            "image_url": "/dataset2/images/13243.jpg",
+            "product_id": "13243",
+            "similarity_score": 0.714825
+          },
+          {
+            "image_url": "/dataset2/images/13242.jpg",
+            "product_id": "13242",
+            "similarity_score": 0.714825
+          },
+          {
+            "image_url": "/dataset2/images/33497.jpg",
+            "product_id": "33497",
+            "similarity_score": 0.710839
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "38654.jpg",
+      "sha256": "e6620768be204a6d823128ee97d68b6491b7b5d8ed6c5818cc290c15e91fc601",
+      "status": 200,
+      "elapsed_ms": 169.74,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/38654.jpg",
+            "product_id": "38654",
+            "similarity_score": 0.877222
+          },
+          {
+            "image_url": "/dataset2/images/15746.jpg",
+            "product_id": "15746",
+            "similarity_score": 0.865075
+          },
+          {
+            "image_url": "/dataset2/images/42126.jpg",
+            "product_id": "42126",
+            "similarity_score": 0.860278
+          },
+          {
+            "image_url": "/dataset2/images/25414.jpg",
+            "product_id": "25414",
+            "similarity_score": 0.856801
+          },
+          {
+            "image_url": "/dataset2/images/12696.jpg",
+            "product_id": "12696",
+            "similarity_score": 0.855065
+          },
+          {
+            "image_url": "/dataset2/images/25468.jpg",
+            "product_id": "25468",
+            "similarity_score": 0.854087
+          },
+          {
+            "image_url": "/dataset2/images/9403.jpg",
+            "product_id": "9403",
+            "similarity_score": 0.843498
+          },
+          {
+            "image_url": "/dataset2/images/22708.jpg",
+            "product_id": "22708",
+            "similarity_score": 0.839825
+          },
+          {
+            "image_url": "/dataset2/images/12693.jpg",
+            "product_id": "12693",
+            "similarity_score": 0.837681
+          },
+          {
+            "image_url": "/dataset2/images/6741.jpg",
+            "product_id": "6741",
+            "similarity_score": 0.836259
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "38947.jpg",
+      "sha256": "55aa73eaf1a30cc49951b671caa778cda0af485bc0857fba64aa5ee6bfc08e94",
+      "status": 200,
+      "elapsed_ms": 234.66,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/38947.jpg",
+            "product_id": "38947",
+            "similarity_score": 0.884044
+          },
+          {
+            "image_url": "/dataset2/images/38946.jpg",
+            "product_id": "38946",
+            "similarity_score": 0.884044
+          },
+          {
+            "image_url": "/dataset2/images/33152.jpg",
+            "product_id": "33152",
+            "similarity_score": 0.884044
+          },
+          {
+            "image_url": "/dataset2/images/38286.jpg",
+            "product_id": "38286",
+            "similarity_score": 0.812142
+          },
+          {
+            "image_url": "/dataset2/images/41755.jpg",
+            "product_id": "41755",
+            "similarity_score": 0.799972
+          },
+          {
+            "image_url": "/dataset2/images/43683.jpg",
+            "product_id": "43683",
+            "similarity_score": 0.799972
+          },
+          {
+            "image_url": "/dataset2/images/4904.jpg",
+            "product_id": "4904",
+            "similarity_score": 0.786505
+          },
+          {
+            "image_url": "/dataset2/images/9951.jpg",
+            "product_id": "9951",
+            "similarity_score": 0.781968
+          },
+          {
+            "image_url": "/dataset2/images/8383.jpg",
+            "product_id": "8383",
+            "similarity_score": 0.778883
+          },
+          {
+            "image_url": "/dataset2/images/8382.jpg",
+            "product_id": "8382",
+            "similarity_score": 0.778883
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "41750.jpg",
+      "sha256": "fd156f8d8030360a8b17d31ddbd96d6a6a4b1d9e6724a6d67fe6c8c9d2d1d5b7",
+      "status": 200,
+      "elapsed_ms": 310.14,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/41750.jpg",
+            "product_id": "41750",
+            "similarity_score": 0.82792
+          },
+          {
+            "image_url": "/dataset2/images/43682.jpg",
+            "product_id": "43682",
+            "similarity_score": 0.82792
+          },
+          {
+            "image_url": "/dataset2/images/40980.jpg",
+            "product_id": "40980",
+            "similarity_score": 0.713371
+          },
+          {
+            "image_url": "/dataset2/images/38492.jpg",
+            "product_id": "38492",
+            "similarity_score": 0.713371
+          },
+          {
+            "image_url": "/dataset2/images/40979.jpg",
+            "product_id": "40979",
+            "similarity_score": 0.713371
+          },
+          {
+            "image_url": "/dataset2/images/34097.jpg",
+            "product_id": "34097",
+            "similarity_score": 0.711302
+          },
+          {
+            "image_url": "/dataset2/images/12833.jpg",
+            "product_id": "12833",
+            "similarity_score": 0.70536
+          },
+          {
+            "image_url": "/dataset2/images/37620.jpg",
+            "product_id": "37620",
+            "similarity_score": 0.698309
+          },
+          {
+            "image_url": "/dataset2/images/4191.jpg",
+            "product_id": "4191",
+            "similarity_score": 0.687339
+          },
+          {
+            "image_url": "/dataset2/images/40974.jpg",
+            "product_id": "40974",
+            "similarity_score": 0.685425
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "4727.jpg",
+      "sha256": "efcc2ae3d4f980b82c452adc3bd4fdfe76f2bde51de1e6108672a6112943ffdf",
+      "status": 200,
+      "elapsed_ms": 235.07,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/4727.jpg",
+            "product_id": "4727",
+            "similarity_score": 0.785627
+          },
+          {
+            "image_url": "/dataset2/images/4203.jpg",
+            "product_id": "4203",
+            "similarity_score": 0.772931
+          },
+          {
+            "image_url": "/dataset2/images/48247.jpg",
+            "product_id": "48247",
+            "similarity_score": 0.741894
+          },
+          {
+            "image_url": "/dataset2/images/35881.jpg",
+            "product_id": "35881",
+            "similarity_score": 0.738711
+          },
+          {
+            "image_url": "/dataset2/images/36321.jpg",
+            "product_id": "36321",
+            "similarity_score": 0.724918
+          },
+          {
+            "image_url": "/dataset2/images/54907.jpg",
+            "product_id": "54907",
+            "similarity_score": 0.720165
+          },
+          {
+            "image_url": "/dataset2/images/5423.jpg",
+            "product_id": "5423",
+            "similarity_score": 0.718008
+          },
+          {
+            "image_url": "/dataset2/images/4207.jpg",
+            "product_id": "4207",
+            "similarity_score": 0.717846
+          },
+          {
+            "image_url": "/dataset2/images/4204.jpg",
+            "product_id": "4204",
+            "similarity_score": 0.71753
+          },
+          {
+            "image_url": "/dataset2/images/25516.jpg",
+            "product_id": "25516",
+            "similarity_score": 0.714856
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "49839.jpg",
+      "sha256": "b5d0479d03858b39cdf3ce70cc90da606a7cddf29158be3d6961fe6bfe348ffe",
+      "status": 200,
+      "elapsed_ms": 156.16,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/49839.jpg",
+            "product_id": "49839",
+            "similarity_score": 0.869987
+          },
+          {
+            "image_url": "/dataset2/images/53445.jpg",
+            "product_id": "53445",
+            "similarity_score": 0.826592
+          },
+          {
+            "image_url": "/dataset2/images/44722.jpg",
+            "product_id": "44722",
+            "similarity_score": 0.820476
+          },
+          {
+            "image_url": "/dataset2/images/3626.jpg",
+            "product_id": "3626",
+            "similarity_score": 0.819262
+          },
+          {
+            "image_url": "/dataset2/images/25485.jpg",
+            "product_id": "25485",
+            "similarity_score": 0.815397
+          },
+          {
+            "image_url": "/dataset2/images/46109.jpg",
+            "product_id": "46109",
+            "similarity_score": 0.814667
+          },
+          {
+            "image_url": "/dataset2/images/53883.jpg",
+            "product_id": "53883",
+            "similarity_score": 0.811382
+          },
+          {
+            "image_url": "/dataset2/images/48528.jpg",
+            "product_id": "48528",
+            "similarity_score": 0.80862
+          },
+          {
+            "image_url": "/dataset2/images/6182.jpg",
+            "product_id": "6182",
+            "similarity_score": 0.807787
+          },
+          {
+            "image_url": "/dataset2/images/49830.jpg",
+            "product_id": "49830",
+            "similarity_score": 0.802307
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "52125.jpg",
+      "sha256": "50db6d79d03aec9b9bddf5ed83708cf49bc2933be9d758b11527d8bd0ce5c130",
+      "status": 200,
+      "elapsed_ms": 156.53,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/52125.jpg",
+            "product_id": "52125",
+            "similarity_score": 0.872817
+          },
+          {
+            "image_url": "/dataset2/images/50722.jpg",
+            "product_id": "50722",
+            "similarity_score": 0.872817
+          },
+          {
+            "image_url": "/dataset2/images/36745.jpg",
+            "product_id": "36745",
+            "similarity_score": 0.740267
+          },
+          {
+            "image_url": "/dataset2/images/2699.jpg",
+            "product_id": "2699",
+            "similarity_score": 0.737571
+          },
+          {
+            "image_url": "/dataset2/images/2704.jpg",
+            "product_id": "2704",
+            "similarity_score": 0.725871
+          },
+          {
+            "image_url": "/dataset2/images/2707.jpg",
+            "product_id": "2707",
+            "similarity_score": 0.715473
+          },
+          {
+            "image_url": "/dataset2/images/50721.jpg",
+            "product_id": "50721",
+            "similarity_score": 0.706491
+          },
+          {
+            "image_url": "/dataset2/images/52123.jpg",
+            "product_id": "52123",
+            "similarity_score": 0.706491
+          },
+          {
+            "image_url": "/dataset2/images/40149.jpg",
+            "product_id": "40149",
+            "similarity_score": 0.704267
+          },
+          {
+            "image_url": "/dataset2/images/4903.jpg",
+            "product_id": "4903",
+            "similarity_score": 0.702781
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "54529.jpg",
+      "sha256": "0d40691c46ed14b58bb9f0ad608056268671abf5ea1ea2e1bead2752e967aeb1",
+      "status": 200,
+      "elapsed_ms": 147.2,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/54529.jpg",
+            "product_id": "54529",
+            "similarity_score": 0.797929
+          },
+          {
+            "image_url": "/dataset2/images/13064.jpg",
+            "product_id": "13064",
+            "similarity_score": 0.773853
+          },
+          {
+            "image_url": "/dataset2/images/3637.jpg",
+            "product_id": "3637",
+            "similarity_score": 0.758909
+          },
+          {
+            "image_url": "/dataset2/images/13186.jpg",
+            "product_id": "13186",
+            "similarity_score": 0.754205
+          },
+          {
+            "image_url": "/dataset2/images/39678.jpg",
+            "product_id": "39678",
+            "similarity_score": 0.749842
+          },
+          {
+            "image_url": "/dataset2/images/24251.jpg",
+            "product_id": "24251",
+            "similarity_score": 0.749031
+          },
+          {
+            "image_url": "/dataset2/images/23911.jpg",
+            "product_id": "23911",
+            "similarity_score": 0.746383
+          },
+          {
+            "image_url": "/dataset2/images/44776.jpg",
+            "product_id": "44776",
+            "similarity_score": 0.741287
+          },
+          {
+            "image_url": "/dataset2/images/13116.jpg",
+            "product_id": "13116",
+            "similarity_score": 0.736088
+          },
+          {
+            "image_url": "/dataset2/images/41441.jpg",
+            "product_id": "41441",
+            "similarity_score": 0.736025
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "59759.jpg",
+      "sha256": "329f4ac864f2d2cd60a8239baeb092904d35d7cd03b4a7bdfd4559363660b3e9",
+      "status": 200,
+      "elapsed_ms": 150.28,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/59759.jpg",
+            "product_id": "59759",
+            "similarity_score": 0.884002
+          },
+          {
+            "image_url": "/dataset2/images/47571.jpg",
+            "product_id": "47571",
+            "similarity_score": 0.853229
+          },
+          {
+            "image_url": "/dataset2/images/54130.jpg",
+            "product_id": "54130",
+            "similarity_score": 0.845681
+          },
+          {
+            "image_url": "/dataset2/images/54121.jpg",
+            "product_id": "54121",
+            "similarity_score": 0.84335
+          },
+          {
+            "image_url": "/dataset2/images/47598.jpg",
+            "product_id": "47598",
+            "similarity_score": 0.842136
+          },
+          {
+            "image_url": "/dataset2/images/47576.jpg",
+            "product_id": "47576",
+            "similarity_score": 0.833652
+          },
+          {
+            "image_url": "/dataset2/images/53870.jpg",
+            "product_id": "53870",
+            "similarity_score": 0.833516
+          },
+          {
+            "image_url": "/dataset2/images/45404.jpg",
+            "product_id": "45404",
+            "similarity_score": 0.822035
+          },
+          {
+            "image_url": "/dataset2/images/47579.jpg",
+            "product_id": "47579",
+            "similarity_score": 0.817242
+          },
+          {
+            "image_url": "/dataset2/images/41735.jpg",
+            "product_id": "41735",
+            "similarity_score": 0.817117
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "file": "8353.jpg",
+      "sha256": "72cbd4a9b8928b606b32780365835dea355339d68d5d96b533177ebbc819fa74",
+      "status": 200,
+      "elapsed_ms": 229.57,
+      "includes_model_load": false,
+      "passed": true,
+      "self_rank": 1,
+      "result_image_statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "response": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/8353.jpg",
+            "product_id": "8353",
+            "similarity_score": 0.891551
+          },
+          {
+            "image_url": "/dataset2/images/8351.jpg",
+            "product_id": "8351",
+            "similarity_score": 0.842238
+          },
+          {
+            "image_url": "/dataset2/images/39331.jpg",
+            "product_id": "39331",
+            "similarity_score": 0.749003
+          },
+          {
+            "image_url": "/dataset2/images/39332.jpg",
+            "product_id": "39332",
+            "similarity_score": 0.749003
+          },
+          {
+            "image_url": "/dataset2/images/33263.jpg",
+            "product_id": "33263",
+            "similarity_score": 0.749003
+          },
+          {
+            "image_url": "/dataset2/images/48424.jpg",
+            "product_id": "48424",
+            "similarity_score": 0.743319
+          },
+          {
+            "image_url": "/dataset2/images/43686.jpg",
+            "product_id": "43686",
+            "similarity_score": 0.730419
+          },
+          {
+            "image_url": "/dataset2/images/41754.jpg",
+            "product_id": "41754",
+            "similarity_score": 0.730419
+          },
+          {
+            "image_url": "/dataset2/images/43685.jpg",
+            "product_id": "43685",
+            "similarity_score": 0.730419
+          },
+          {
+            "image_url": "/dataset2/images/52129.jpg",
+            "product_id": "52129",
+            "similarity_score": 0.727929
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    }
+  ],
+  "note": "Functional catalog-query test, not a held-out relevance evaluation or thesis Recall@K result."
+}

@@ -1,0 +1,27 @@
+UTC: 2026-09-29T11:11:06.467586+00:00
+CWD: D:\code\IT_Project
+COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe -m scripts.verify_image_search_ui --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --output-dir D:\code\IT_Project\notebooks\logs\20260929-111025Z-week7
+
+127.0.0.1 - - [29/Sep/2026 18:11:24] "POST /api/v1/search/image HTTP/1.1" 400 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "POST /api/v1/search/image HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "GET /dataset2/images/39546.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "GET /dataset2/images/23827.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "GET /dataset2/images/17649.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "GET /dataset2/images/10180.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "GET /dataset2/images/44712.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "GET /dataset2/images/11859.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:04] "GET /dataset2/images/42092.jpg HTTP/1.1" 200 -
+127.0.0.1 - - [29/Sep/2026 18:12:05] "GET /dataset2/images/39311.jpg HTTP/1.1" 200 -
+[
+  "Client rejects unsupported and oversized uploads",
+  "Corrupt image shows server error and allows retry",
+  "Real upload through teammate API helper, loading state, eight ranked results and working thumbnails",
+  "Mobile results fit viewport",
+  "Remove and reselect the same image",
+  "Service unavailable response is visible and retry remains enabled",
+  "Malformed API results show an error instead of mock results or a crash",
+  "Empty response shows no mock products"
+]
+
+EXIT_CODE: 0
+UTC_END: 2026-09-29T11:12:10.328653+00:00
