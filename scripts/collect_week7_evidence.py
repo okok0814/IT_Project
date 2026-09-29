@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -19,6 +20,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--image-dir", required=True)
     parser.add_argument("--output-dir", default=None)
+    parser.add_argument("--with-ui", action="store_true", help="Run browser checks; requires Vite on port 5173 and a free backend port 5000")
+    parser.add_argument("--with-build", action="store_true", help="Build the frontend and save its output")
     args = parser.parse_args()
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%SZ")
     output = Path(args.output_dir).resolve() if args.output_dir else ROOT / "notebooks/logs" / f"{stamp}-week7"
@@ -47,7 +50,8 @@ def main():
                   "note": "Working-tree files were tested; git_head is NOT a commit containing these uncommitted changes.",
                   "source_sha256": {}}
     sources = [*ROOT.glob("src/backend/*.py"), *ROOT.glob("tests/*.py"),
-               ROOT / "scripts/verify_image_search.py", Path(__file__).resolve(),
+               *ROOT.glob("src/**/*.jsx"), *ROOT.glob("src/api/*.js"), *ROOT.glob("src/css/*.css"),
+               *ROOT.glob("scripts/*.py"), ROOT / "vite.config.js", ROOT / "package.json", ROOT / "package-lock.json",
                *ROOT.glob("requirements*.txt")]
     for path in sources:
         provenance["source_sha256"][path.relative_to(ROOT).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
@@ -58,6 +62,14 @@ def main():
     run("pytest.txt", [sys.executable, "-m", "pytest", "-q", f"--junitxml={output / 'pytest.xml'}"])
     run("image-search.txt", [sys.executable, "-m", "scripts.verify_image_search", "--image-dir", args.image_dir,
                             "--output", str(output / "image-search.json")])
+    if args.with_ui:
+        run("browser.txt", [sys.executable, "-m", "scripts.verify_image_search_ui", "--image-dir", args.image_dir,
+                            "--output-dir", str(output)])
+    if args.with_build:
+        node = shutil.which("node") or next((str(p) for p in (ROOT / ".cache/node").glob("*/node.exe")), None)
+        if not node:
+            raise SystemExit("Node.js is required to build the frontend")
+        run("build.txt", [node, str(ROOT / "node_modules/vite/bin/vite.js"), "build"])
     cases = ET.parse(output / "pytest.xml").getroot().findall(".//testcase")
     result = json.loads((output / "image-search.json").read_text(encoding="utf-8"))
     rows = result["records"]

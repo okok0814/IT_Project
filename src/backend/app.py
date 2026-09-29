@@ -26,16 +26,16 @@ def create_app(config=None, search_service=None):
         # Must exceed Werkzeug's 64 KiB multipart parser buffer, including file chunks.
         MAX_FORM_MEMORY_SIZE=512 * 1024,
         MAX_FORM_PARTS=10,
-        IMAGE_DIR=os.environ.get("IMAGE_DIR", str(ROOT / "data/dataset2/images")),
-        INDEX_PATH=os.environ.get("INDEX_PATH", str(ROOT / "embeddings/index/fashionclip_image_embeddings_flat.index")),
+        IMAGE_DIR=os.environ.get("IMAGE_DIR") or os.environ.get("FASHION_IMAGES_DIR") or str(ROOT / "data/dataset2/images"),
+        INDEX_PATH=os.environ.get("INDEX_PATH") or os.environ.get("FASHION_INDEX_PATH") or str(ROOT / "embeddings/index/fashionclip_image_embeddings_flat.index"),
         PRODUCT_IDS_PATH=os.environ.get("PRODUCT_IDS_PATH", str(ROOT / "embeddings/product_ids.npy")),
-        MODEL_PATH=os.environ.get("MODEL_PATH", "patrickjohncyh/fashion-clip"),
+        MODEL_PATH=os.environ.get("MODEL_PATH") or os.environ.get("MODEL_HF_NAME") or "patrickjohncyh/fashion-clip",
         MODEL_CACHE=str(ROOT / ".cache/huggingface"),
     )
     if config:
         app.config.update(config)
     app.config["IMAGE_DIR"] = str(Path(app.config["IMAGE_DIR"]).resolve())
-    CORS(app, origins=[os.environ.get("ALLOWED_ORIGIN", "http://localhost:5173")])
+    CORS(app, origins=[os.environ.get("ALLOWED_ORIGIN", "http://localhost:5173"), "http://127.0.0.1:5173"])
     app.extensions["search_service"] = search_service
     load_lock = Lock()
 
@@ -132,4 +132,4 @@ def create_app(config=None, search_service=None):
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=False)
+    app.run(host="127.0.0.1", port=int(os.environ.get("PORT", "5000")), debug=False)

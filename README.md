@@ -1,7 +1,8 @@
 # Fashion image search — Week 7
 
 React/Vite frontend + Flask API. Upload a JPG, PNG or WEBP; FashionCLIP encodes
-the image and FAISS returns the ten most similar catalog products. The index
+the image and the integrated UI requests eight similar catalog products (the
+API default is ten when `top_k` is omitted). The index
 contains 44,419 products. The research scripts and notebooks remain available
 for the separate thesis experiments.
 
@@ -78,10 +79,15 @@ per-image results, environment versions and source/artifact hashes, run:
 .\.venv\Scripts\python.exe -m scripts.collect_week7_evidence --image-dir 'D:\code\dataset\Fashion Product Images Dataset\archive\fashion-dataset\images'
 ```
 
+Add `--with-ui --with-build` to include browser tests and the frontend build.
+For these options keep Vite running on port 5173 and leave backend port 5000
+free; the browser test starts and stops its own backend.
+
 Each run creates a new UTC-stamped directory under `notebooks/logs/` and keeps
 earlier runs. The report links to one specific run so its measurements can be
-checked without mixing results. The editable [Word report](docs/week7_image_search_report.docx)
-contains the same evidence references as the Markdown report.
+checked without mixing results. See the latest [integration report](docs/week7_integration_report.md)
+and [Word version](docs/week7_integration_report.docx). The earlier Week 7 report
+and its evidence remain available as the pre-integration record.
 
 For browser checks, keep Vite running, stop the separate backend on port 5000,
 and run (the script starts/stops its own backend):
@@ -91,7 +97,7 @@ and run (the script starts/stops its own backend):
 ```
 
 This uses installed Chrome; add `--channel msedge` to use Edge. See
-[the Week 7 report](docs/week7_image_search_report.md),
+[the integrated Week 7 report](docs/week7_integration_report.md),
 [API documentation](docs/API_docs.md), and
 [raw real-image results](docs/week7_image_search_results.json).
 
@@ -100,7 +106,14 @@ This uses installed Chrome; add `--channel msedge` to use Edge. See
 - `IMAGE_DIR`: absolute path to Dataset 2's **images** folder, not its parent.
 - `INDEX_PATH`, `PRODUCT_IDS_PATH`: override the default matching artifacts.
 - `MODEL_PATH`: local FashionCLIP checkpoint directory or the cached default model ID.
+- `FASHION_IMAGES_DIR`, `FASHION_INDEX_PATH`, `MODEL_HF_NAME`: teammate-compatible
+  aliases; `IMAGE_DIR`, `INDEX_PATH`, `MODEL_PATH` take precedence when set.
+- `PORT`: backend port, default 5000. Change the Vite proxy target too if changed.
+- `VITE_API_BASE_URL`: optional backend origin in `.env.local` for the frontend;
+  by default the API helper uses Vite's same-origin `/api` and `/dataset2` proxies.
 - `ALLOWED_ORIGIN`: direct API CORS origin, default `http://localhost:5173`.
+- Direct API calls from `http://127.0.0.1:5173` are also allowed. With the virtual
+  environment activated, `npm run backend` starts the backend as a Python module.
 - HTTP 503: inspect the backend console for missing/mismatched artifacts or model files.
 - `/health` is a liveness check; `model_loaded: false` is expected before the first valid search.
 - Input limit: 10 MiB per image, 25 million pixels, still JPG/PNG/WEBP only.

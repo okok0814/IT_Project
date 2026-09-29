@@ -8,7 +8,7 @@ export default function HomePage() {
       <section className="hero-panel">
         <div className="floating-disc">✦</div>
         <h1>
-          Discover fashion through <span>image</span> or <span>language</span>.
+          KAYKAYMYDU FASHION DISCOVER
         </h1>
         <div className="hero-actions">
           <button

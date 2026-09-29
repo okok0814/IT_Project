@@ -28,6 +28,9 @@ Only these fields are accepted in this week's runnable endpoint. The Week 5
 metadata-filter notebook remains available; its filters are not silently applied
 or ignored here. Text/filter UI integration is the next milestone.
 
+The integrated frontend explicitly sends `top_k=8`, preserving the teammate's
+layout. The backend default remains 10 when the field is omitted.
+
 Allowed extensions: `.jpg`, `.jpeg`, `.png`, `.webp` (case insensitive).
 The MIME type and decoded file format must agree with the extension. Missing
 MIME or `application/octet-stream` is accepted only if the actual image validates.
@@ -95,6 +98,13 @@ Vite development and preview proxy `/api` and `/dataset2` to `127.0.0.1:5000`.
 For direct API calls, CORS allows `http://localhost:5173` by default; configure
 `ALLOWED_ORIGIN` for another frontend origin. The frontend sends browser-generated
 multipart boundaries, shows loading/errors, and renders the real returned images.
+
+The teammate's API helper supports `VITE_API_BASE_URL` (backend origin) as an
+optional override. Direct calls from `http://127.0.0.1:5173` are also allowed.
+Server configuration supports `FASHION_IMAGES_DIR`, `FASHION_INDEX_PATH` and
+`MODEL_HF_NAME` as aliases; the primary `IMAGE_DIR`, `INDEX_PATH`, `MODEL_PATH`
+variables take precedence. `npm run backend` uses `python -m src.backend.app`;
+activate the virtual environment first.
 
 Implementation references: [Flask upload limits](https://flask.palletsprojects.com/en/stable/patterns/fileuploads/)
 and [CLIP image features](https://huggingface.co/docs/transformers/model_doc/clip).

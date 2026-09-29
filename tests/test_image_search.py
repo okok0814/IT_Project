@@ -155,3 +155,34 @@ def test_cors_and_http_errors(setup):
     assert "Access-Control-Allow-Origin" not in client.get("/health", headers={"Origin": "https://unrelated.example"}).headers
     assert client.get("/search/image").status_code == 405
     assert client.get("/search/image").json["success"] is False
+
+
+def test_teammate_configuration_aliases(monkeypatch, tmp_path):
+    for key in ["IMAGE_DIR", "INDEX_PATH", "MODEL_PATH"]:
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("FASHION_IMAGES_DIR", str(tmp_path))
+    monkeypatch.setenv("FASHION_INDEX_PATH", "teammate.index")
+    monkeypatch.setenv("MODEL_HF_NAME", "local-fashionclip")
+    config = create_app().config
+    assert config["IMAGE_DIR"] == str(tmp_path.resolve())
+    assert config["INDEX_PATH"] == "teammate.index"
+    assert config["MODEL_PATH"] == "local-fashionclip"
+
+
+def test_primary_configuration_takes_precedence(monkeypatch, tmp_path):
+    monkeypatch.setenv("FASHION_IMAGES_DIR", "other-images")
+    monkeypatch.setenv("FASHION_INDEX_PATH", "other.index")
+    monkeypatch.setenv("MODEL_HF_NAME", "other-model")
+    monkeypatch.setenv("IMAGE_DIR", str(tmp_path))
+    monkeypatch.setenv("INDEX_PATH", "primary.index")
+    monkeypatch.setenv("MODEL_PATH", "primary-model")
+    config = create_app().config
+    assert config["IMAGE_DIR"] == str(tmp_path.resolve())
+    assert config["INDEX_PATH"] == "primary.index"
+    assert config["MODEL_PATH"] == "primary-model"
+
+
+def test_direct_ip_frontend_origin(setup):
+    client, _ = setup
+    response = client.options("/search/image", headers={"Origin": "http://127.0.0.1:5173", "Access-Control-Request-Method": "POST"})
+    assert response.headers["Access-Control-Allow-Origin"] == "http://127.0.0.1:5173"
