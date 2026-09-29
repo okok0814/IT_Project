@@ -122,8 +122,7 @@ export default function ImageSearchPage() {
         <h1>FIND YOUR PERFECT MATCH</h1>
 
         <p>
-          Upload an image and let FashionCLIP + FAISS search for visually similar
-          products.
+          Upload an image for visually similar products.
         </p>
       </section>
 
@@ -210,10 +209,6 @@ export default function ImageSearchPage() {
 
           <div>
             <strong>SEARCHING...</strong>
-
-            <span>
-              FashionCLIP is encoding the image and FAISS is finding similar products.
-            </span>
           </div>
         </div>
       )}
