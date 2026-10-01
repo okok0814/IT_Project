@@ -18,49 +18,72 @@ function tokenize(query) {
     .filter(Boolean)
 }
 
-function scoreProduct(product, tokens) {
+function matchesQuery(product, tokens) {
   if (tokens.length === 0) {
-    return 1
+    return true
   }
 
-  const fields = [
+  const searchable = normalize([
     product.gender,
     product.category,
     product.color,
     product.usage,
     product.master_category,
     product.sub_category,
-  ]
+  ].join(' '))
 
-  const searchable = normalize(fields.join(' '))
+  // All query words must appear somewhere in the real product metadata.
+  return tokens.every((token) => searchable.includes(token))
+}
+
+function getTextMatchScore(product, tokens) {
+  if (tokens.length === 0) {
+    return 1
+  }
+
+  const searchable = normalize([
+    product.gender,
+    product.category,
+    product.color,
+    product.usage,
+    product.master_category,
+    product.sub_category,
+  ].join(' '))
+
   const matched = tokens.filter((token) => searchable.includes(token)).length
-
   return matched / tokens.length
 }
 
-function searchTextDemo({ query, gender, category, color, topK = 12 }) {
+function searchTextDemo({ query, gender, category, color }) {
   const tokens = tokenize(query)
 
   return textSearchDemoCatalog
     .filter((product) => !gender || product.gender === gender)
     .filter((product) => !category || product.category === category)
     .filter((product) => !color || product.color === color)
+    .filter((product) => matchesQuery(product, tokens))
     .map((product) => ({
       ...product,
-      text_match_score: scoreProduct(product, tokens),
+      text_match_score: getTextMatchScore(product, tokens),
     }))
-    .filter((product) => tokens.length === 0 || product.text_match_score > 0)
-    .sort((a, b) => b.text_match_score - a.text_match_score)
-    .slice(0, topK)
+    .sort((a, b) => {
+      if (b.text_match_score !== a.text_match_score) {
+        return b.text_match_score - a.text_match_score
+      }
+
+      return String(a.product_id).localeCompare(String(b.product_id), undefined, {
+        numeric: true,
+      })
+    })
 }
 
 export default function TextSearchPage() {
   const navigate = useNavigate()
 
-  const [query, setQuery] = useState('')
-  const [gender, setGender] = useState('')
-  const [category, setCategory] = useState('')
-  const [color, setColor] = useState('')
+  const [query, setQuery] = useState('black shirt')
+  const [gender, setGender] = useState('Men')
+  const [category, setCategory] = useState('Shirts')
+  const [color, setColor] = useState('Black')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -87,15 +110,13 @@ export default function TextSearchPage() {
     setError('')
 
     try {
-      // Small delay so the loading state is visible in the UI/report screenshots.
-      await new Promise((resolve) => setTimeout(resolve, 450))
+      await new Promise((resolve) => setTimeout(resolve, 350))
 
       const results = searchTextDemo({
         query,
         gender,
         category,
         color,
-        topK: 12,
       })
 
       navigate('/results', {
@@ -123,7 +144,7 @@ export default function TextSearchPage() {
         <p className="eyebrow">FASHION TEXT SEARCH</p>
         <h1>DESCRIBE YOUR STYLE</h1>
         <p>
-          Search with fashion words, then narrow the preview with Dataset 2 metadata filters.
+          Search with words and filters.
         </p>
       </section>
 
