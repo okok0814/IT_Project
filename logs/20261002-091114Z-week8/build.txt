@@ -1,0 +1,22 @@
+UTC: 2026-10-02T09:12:09.232414+00:00
+CWD: D:\code\IT_Project
+COMMAND: D:\code\IT_Project\.cache\node\node-v22.23.3-win-x64\node.exe D:\code\IT_Project\node_modules\vite\bin\vite.js build
+
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 38 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                           0.47 kB │ gzip:  0.31 kB
+dist/assets/font2-C0sb7d9z.otf           73.67 kB
+dist/assets/font1-Cmi0CG_T.otf          200.96 kB
+dist/assets/LOGO1BLACK-BrvxKVMY.png     364.51 kB
+dist/assets/LOGO2BLACK-BGap4saJ.png     364.54 kB
+dist/assets/BACKGROUND-t-RWtFYB.mp4  21,816.09 kB
+dist/assets/index-9O4yUL0O.css           25.37 kB │ gzip:  6.14 kB
+dist/assets/index-PnrahCBo.js           281.83 kB │ gzip: 89.69 kB
+
+✓ built in 436ms
+
+EXIT_CODE: 0
+UTC_END: 2026-10-02T09:12:09.949835+00:00

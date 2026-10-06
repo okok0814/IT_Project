@@ -1,0 +1,31 @@
+{
+  "checks": [
+    "Real text retrieval: exact JSON filters, loading/disable, metadata, chips and thumbnails",
+    "Pagination operates on returned top-k results",
+    "Mobile results fit viewport",
+    "Filter-only selection sends empty query and displays no invented score",
+    "Impossible filter combination returns empty results and retries text search",
+    "503 and malformed response show errors with retry enabled (simulated responses)",
+    "Image upload still returns eight real results through the shared API helper"
+  ],
+  "outgoing_text_requests": [
+    {
+      "query": "summer dress",
+      "top_k": 50,
+      "gender": "Women",
+      "category": "Dresses",
+      "color": "Red"
+    },
+    {
+      "query": "",
+      "top_k": 50,
+      "gender": "",
+      "category": "Backpacks",
+      "color": ""
+    }
+  ],
+  "page_errors": [],
+  "video": null,
+  "demo_gif": "week8_demo.gif",
+  "demo_note": "Sequence of actual browser screenshots, resized for viewing; playback timing is illustrative, not a latency measurement."
+}

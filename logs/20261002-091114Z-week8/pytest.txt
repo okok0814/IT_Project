@@ -1,0 +1,10 @@
+UTC: 2026-10-02T09:11:15.280231+00:00
+CWD: D:\code\IT_Project
+COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe -m pytest -q --junitxml=D:\code\IT_Project\notebooks\logs\20261002-091114Z-week8\pytest.xml
+
+........................................................................ [ 80%]
+..................                                                       [100%]
+90 passed in 8.01s
+
+EXIT_CODE: 0
+UTC_END: 2026-10-02T09:11:24.711129+00:00

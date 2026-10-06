@@ -1,0 +1,13 @@
+{
+  "unit_tests": 90,
+  "unit_passed": 90,
+  "real_api_cases_passed": 20,
+  "index_vectors": 44419,
+  "thumbnail_http_200": 174,
+  "browser_checks_passed": 7,
+  "warm_mean_ms": 37.11,
+  "warm_p95_ms": 52.35,
+  "cold_ms": 10026.96,
+  "build_passed": true,
+  "demo": "week8_demo.gif"
+}

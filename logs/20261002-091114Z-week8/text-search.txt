@@ -1,0 +1,58 @@
+UTC: 2026-10-02T09:11:24.712126+00:00
+CWD: D:\code\IT_Project
+COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe -m scripts.verify_text_search --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --metadata-path "D:\code\dataset\Fashion Product Images Dataset\archive\fashion-dataset\styles.csv" --output-dir D:\code\IT_Project\notebooks\logs\20261002-091114Z-week8 --with-ui --record-demo
+
+Case 1: HTTP 200, 10/44419 candidates, 10027 ms; oracle PASS
+Case 2: HTTP 200, 10/462 candidates, 41 ms; oracle PASS
+Case 3: HTTP 200, 10/20 candidates, 39 ms; oracle PASS
+Case 4: HTTP 200, 10/35 candidates, 42 ms; oracle PASS
+Case 5: HTTP 200, 10/322 candidates, 41 ms; oracle PASS
+Case 6: HTTP 200, 10/263 candidates, 41 ms; oracle PASS
+Case 7: HTTP 200, 10/530 candidates, 40 ms; oracle PASS
+Case 8: HTTP 200, 10/258 candidates, 42 ms; oracle PASS
+Case 9: HTTP 200, 10/272 candidates, 41 ms; oracle PASS
+Case 10: HTTP 200, 10/18631 candidates, 39 ms; oracle PASS
+Case 11: HTTP 200, 10/3494 candidates, 39 ms; oracle PASS
+Case 12: HTTP 200, 10/724 candidates, 44 ms; oracle PASS
+Case 13: HTTP 200, 10/462 candidates, 42 ms; oracle PASS
+Case 14: HTTP 200, 10/526 candidates, 50 ms; oracle PASS
+Case 15: HTTP 200, 10/2036 candidates, 77 ms; oracle PASS
+Case 16: HTTP 200, 0/0 candidates, 6 ms; oracle PASS
+Case 17: HTTP 200, 0/0 candidates, 4 ms; oracle PASS
+Case 18: HTTP 200, 10/252 candidates, 7 ms; oracle PASS
+Case 19: HTTP 200, 13/13 candidates, 34 ms; oracle PASS
+Case 20: HTTP 200, 1/44419 candidates, 36 ms; oracle PASS
+{
+  "checks": [
+    "Real text retrieval: exact JSON filters, loading/disable, metadata, chips and thumbnails",
+    "Pagination operates on returned top-k results",
+    "Mobile results fit viewport",
+    "Filter-only selection sends empty query and displays no invented score",
+    "Impossible filter combination returns empty results and retries text search",
+    "503 and malformed response show errors with retry enabled (simulated responses)",
+    "Image upload still returns eight real results through the shared API helper"
+  ],
+  "outgoing_text_requests": [
+    {
+      "query": "summer dress",
+      "top_k": 50,
+      "gender": "Women",
+      "category": "Dresses",
+      "color": "Red"
+    },
+    {
+      "query": "",
+      "top_k": 50,
+      "gender": "",
+      "category": "Backpacks",
+      "color": ""
+    }
+  ],
+  "page_errors": [],
+  "video": null,
+  "demo_gif": "week8_demo.gif",
+  "demo_note": "Sequence of actual browser screenshots, resized for viewing; playback timing is illustrative, not a latency measurement."
+}
+
+EXIT_CODE: 0
+UTC_END: 2026-10-02T09:12:09.217318+00:00
