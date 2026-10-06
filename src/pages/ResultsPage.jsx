@@ -64,7 +64,7 @@ export default function ResultsPage() {
   const count = products.length
 
   const isImageSearch = searchType === 'image'
-  const isTextPreview = searchType === 'text-demo'
+  const isTextSearch = searchType === 'text'
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -96,7 +96,7 @@ export default function ResultsPage() {
     ? 'IMAGE SEARCH RESULTS'
     : query
       ? `Results for “${query}”`
-      : isTextPreview
+      : isTextSearch
         ? 'TEXT SEARCH RESULTS'
         : 'CURATED RESULTS'
 
@@ -126,8 +126,8 @@ export default function ResultsPage() {
           <p className="eyebrow">
             {isImageSearch
               ? 'VISUAL MATCHES'
-              : isTextPreview
-                ? 'FILTER PREVIEW'
+              : isTextSearch
+                ? 'TEXT MATCHES'
                 : 'MATCHED PIECES'}
           </p>
 
@@ -139,7 +139,7 @@ export default function ResultsPage() {
             </p>
           )}
 
-          {isTextPreview && appliedFilters.length > 0 && (
+          {isTextSearch && appliedFilters.length > 0 && (
             <div className="applied-filter-row" aria-label="Applied filters">
               <span className="applied-filter-label">APPLIED FILTERS</span>
 
@@ -189,8 +189,8 @@ export default function ResultsPage() {
                   <strong>
                     {isImageSearch
                       ? 'Cosine similarity'
-                      : isTextPreview
-                        ? 'Frontend text match'
+                      : isTextSearch
+                        ? (query ? 'Cosine similarity' : 'Product ID')
                         : 'Visual Similarity %'}
                   </strong>
                 </p>

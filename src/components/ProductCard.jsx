@@ -6,6 +6,7 @@ export default function ProductCard({ product }) {
 
   const isImageApiResult = typeof product.similarity_score === 'number'
   const isTextPreview = typeof product.text_match_score === 'number'
+  const isFilterOnly = product.match_type === 'metadata'
 
   const rawScore = isImageApiResult
     ? product.similarity_score
@@ -25,13 +26,13 @@ export default function ProductCard({ product }) {
 
   const imageSrc = buildBackendImageUrl(product.image_url)
 
-  const scoreLabel = isImageApiResult
+  const scoreLabel = isFilterOnly ? 'FILTER MATCH' : isImageApiResult
     ? 'COSINE SIMILARITY'
     : isTextPreview
       ? 'TEXT MATCH'
       : 'VISUAL MATCH'
 
-  const scoreValue = isImageApiResult
+  const scoreValue = isFilterOnly ? '—' : isImageApiResult
     ? rawScore.toFixed(3)
     : `${scorePercent}%`
 
@@ -85,9 +86,9 @@ export default function ProductCard({ product }) {
           <strong>{scoreValue}</strong>
         </div>
 
-        <div className="meter">
+        {!isFilterOnly && <div className="meter">
           <span style={{ width: `${scorePercent}%` }} />
-        </div>
+        </div>}
       </div>
     </article>
   )

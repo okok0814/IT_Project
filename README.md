@@ -29,7 +29,7 @@ The project supports image-based fashion search and provides a text-search inter
 - Display applied filters on the results page.
 - Display matching products in a responsive product grid.
 
-> The current runnable Flask backend has not yet integrated the text-search endpoint. The text-search page currently uses a frontend preview based on Dataset 2 metadata so the interface and filtering flow can be tested before backend integration.
+The text-search page calls the real Flask endpoint. FashionCLIP ranks image embeddings from the text query, and the backend applies all selected metadata filters before selecting top-k products. Filter-only browsing is also supported.
 
 ### Results Page
 
@@ -40,7 +40,7 @@ The project supports image-based fashion search and provides a text-search inter
 - Category.
 - Color.
 - Usage information when available.
-- Similarity or text-match score.
+- Cosine similarity for image/text queries; a filter-match label without a score for filter-only browsing.
 - Empty-state handling when no products match the search.
 
 ### Responsive Interface
@@ -276,7 +276,13 @@ Used by the frontend to display product images from Dataset 2.
 POST /search/text
 ```
 
-The route currently exists in the Flask application but backend text-search integration is still pending.
+Also available at `POST /api/v1/search/text`, used by the frontend. Send JSON with flat fields:
+
+```json
+{"query":"white office shirt","top_k":50,"gender":"Men","category":"Shirts","color":"White"}
+```
+
+`top_k` defaults to 10 and accepts integers from 1 to 50. Blank/null filters impose no constraint. All selected filters must match; `category` means Dataset 2 `articleType`. A blank query is accepted when at least one filter is selected. See [the API documentation](docs/API_docs.md) for validation, response fields, and error codes.
 
 The current frontend text-search page can already be used to test:
 
@@ -398,10 +404,15 @@ INDEX_PATH
 PRODUCT_IDS_PATH
 MODEL_PATH
 MODEL_HF_NAME
+METADATA_PATH
+FASHION_METADATA_PATH
 PORT
 ALLOWED_ORIGIN
 VITE_API_BASE_URL
+BACKEND_URL
 ```
+
+Text-search metadata defaults to `styles.csv` next to the image directory, for example `D:\code\dataset\Fashion Product Images Dataset\archive\fashion-dataset\styles.csv`. Use `METADATA_PATH` for another location. `BACKEND_URL` changes Vite's proxy target (default `http://127.0.0.1:5000`); `VITE_API_BASE_URL` changes the browser's API origin.
 
 ---
 
@@ -418,6 +429,8 @@ Then run:
 ```powershell
 npm run backend
 ```
+
+Activate `.venv` first when using this npm command so it uses the installed Python dependencies.
 
 or:
 
@@ -530,7 +543,7 @@ DISCOVER
 
 The results page displays the selected filters together with matching Dataset 2 products.
 
-The current text-search result preview is intended for frontend integration and interface testing until the backend text-search endpoint is connected.
+The UI requests up to 50 backend results and shows eight per page. Text queries display cosine scores. Clear the query and choose a filter to browse matching metadata without a similarity score. Loading, empty results, and server/network errors are displayed in the existing interface.
 
 ---
 
@@ -572,6 +585,16 @@ Image-search verification scripts are also available under:
 scripts/
 ```
 
+Reproduce Week 8 with the real model, independent metadata/ranking checks, a Chrome browser integration check, a GIF demo of both search modes, and a production build:
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m scripts.collect_week8_evidence --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --with-ui --record-demo
+```
+
+Install `requirements-test.txt` and frontend dependencies first; the model cache, index, IDs and image vectors must already exist. Browser checks use locally installed Google Chrome. The runner starts and stops its own backend and Vite processes on available local ports; existing servers need not be running. It uses Node on PATH or the project's cached portable Node under `.cache/node`. Omit `--with-ui --record-demo` for API-only verification (the frontend build still runs).
+
+Logs, request/response records, dependency versions, source/artifact hashes, screenshots and the GIF are saved under `notebooks/logs/<UTC timestamp>-week8/`. The GIF shows actual browser checkpoints at illustrative playback timings; it is not a latency recording. See [the Week 8 report](docs/week8_text_search_report.md) for the completed run and remaining submission evidence.
+
 ---
 
 ## Notes
@@ -580,4 +603,4 @@ scripts/
 - Large model files and FAISS artifacts can be stored separately and configured using environment variables.
 - The repository mainly contains source code, notebooks, scripts, documentation, tests, and frontend assets.
 - Image search currently uses the real FashionCLIP + FAISS backend.
-- Text-search and metadata-filter controls are available in the frontend, while the runnable backend text-search endpoint is still pending integration.
+- Text search uses the real FashionCLIP backend and checks gender/category/color filters against metadata aligned to indexed product IDs.

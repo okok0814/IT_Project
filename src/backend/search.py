@@ -5,6 +5,8 @@ from urllib.parse import quote
 
 import numpy as np
 
+from .metadata import ProductMetadata
+
 
 class FashionSearch:
     def __init__(self, config):
@@ -34,6 +36,9 @@ class FashionSearch:
         self.processor = CLIPProcessor.from_pretrained(config["MODEL_PATH"], use_fast=False, **kwargs)
         self.model = CLIPModel.from_pretrained(config["MODEL_PATH"], **kwargs).to(self.device).eval()
         self.lock = Lock()
+        self.metadata_path = config.get("METADATA_PATH") or str(self.image_dir.parent / "styles.csv")
+        self.metadata = None
+        self.metadata_lock = Lock()
 
     def search(self, image, top_k):
         import torch
@@ -41,15 +46,54 @@ class FashionSearch:
         with self.lock, torch.inference_mode():
             inputs = self.processor(images=image, return_tensors="pt").to(self.device)
             vector = self.model.get_image_features(**inputs).float().cpu().numpy()
+        return self._search_vector(vector, top_k)
+
+    def _embed_text(self, query):
+        import torch
+
+        with self.lock, torch.inference_mode():
+            inputs = self.processor(text=[query], return_tensors="pt", padding=True,
+                                    truncation=True, max_length=self.model.config.text_config.max_position_embeddings).to(self.device)
+            return self.model.get_text_features(**inputs).float().cpu().numpy()
+
+    def search_text(self, query, top_k, filters):
+        # Lazy metadata loading keeps existing image search independent of the CSV.
+        with self.metadata_lock:
+            if self.metadata is None:
+                self.metadata = ProductMetadata(self.metadata_path, self.ids)
+        mask = self.metadata.mask(filters)
+        if not mask.any():
+            return []
+        if not query:
+            # Filter-only browsing has deterministic ID ordering and no embedding score.
+            positions = sorted(np.flatnonzero(mask), key=lambda pos: str(self.ids[pos]))[:top_k]
+            return [self._result(pos, None, include_metadata=True) for pos in positions]
+        return self._search_vector(self._embed_text(query), top_k, mask)
+
+    def _result(self, position, score, include_metadata=False):
+        result = {"product_id": str(self.ids[position]),
+                  "image_url": f"/dataset2/images/{quote(str(self.ids[position]), safe='')}.jpg",
+                  "similarity_score": None if score is None else round(float(np.clip(score, -1, 1)), 6)}
+        if include_metadata:
+            result.update(self.metadata.rows[position])
+            result["name"] = result["name"] or f"Product {self.ids[position]}"
+            result["match_type"] = "metadata" if score is None else "semantic"
+        return result
+
+    def _search_vector(self, vector, top_k, mask=None):
         vector = np.ascontiguousarray(vector, dtype=np.float32)
         norm = np.linalg.norm(vector)
         if vector.shape != (1, self.index.d) or not np.isfinite(vector).all() or norm <= 0:
             raise ValueError("Invalid query embedding")
         vector /= norm
-        scores, positions = self.index.search(vector, min(top_k, self.index.ntotal))
-        return [
-            {"product_id": str(self.ids[pos]),
-             "image_url": f"/dataset2/images/{quote(str(self.ids[pos]), safe='')}.jpg",
-             "similarity_score": round(float(np.clip(score, -1, 1)), 6)}
-            for score, pos in zip(scores[0], positions[0]) if pos >= 0
-        ]
+        # Exact ranking over the full catalog when filtering: never filter only an
+        # unfiltered top-k shortlist, which can discard all valid matches.
+        candidate_k = self.index.ntotal if mask is not None else min(top_k, self.index.ntotal)
+        scores, positions = self.index.search(vector, candidate_k)
+        results = []
+        for score, pos in zip(scores[0], positions[0]):
+            if pos >= 0 and (mask is None or mask[pos]):
+                results.append(self._result(pos, score, include_metadata=mask is not None))
+                if len(results) == top_k:
+                    break
+        return results

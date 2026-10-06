@@ -1,84 +1,16 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   categoryOptions,
   colorOptions,
   genderOptions,
 } from '../data/filterOptions'
-import { textSearchDemoCatalog } from '../data/textSearchDemoCatalog'
-
-function normalize(value) {
-  return String(value ?? '').trim().toLowerCase()
-}
-
-function tokenize(query) {
-  return normalize(query)
-    .split(/\s+/)
-    .map((token) => token.trim())
-    .filter(Boolean)
-}
-
-function matchesQuery(product, tokens) {
-  if (tokens.length === 0) {
-    return true
-  }
-
-  const searchable = normalize([
-    product.gender,
-    product.category,
-    product.color,
-    product.usage,
-    product.master_category,
-    product.sub_category,
-  ].join(' '))
-
-  // All query words must appear somewhere in the real product metadata.
-  return tokens.every((token) => searchable.includes(token))
-}
-
-function getTextMatchScore(product, tokens) {
-  if (tokens.length === 0) {
-    return 1
-  }
-
-  const searchable = normalize([
-    product.gender,
-    product.category,
-    product.color,
-    product.usage,
-    product.master_category,
-    product.sub_category,
-  ].join(' '))
-
-  const matched = tokens.filter((token) => searchable.includes(token)).length
-  return matched / tokens.length
-}
-
-function searchTextDemo({ query, gender, category, color }) {
-  const tokens = tokenize(query)
-
-  return textSearchDemoCatalog
-    .filter((product) => !gender || product.gender === gender)
-    .filter((product) => !category || product.category === category)
-    .filter((product) => !color || product.color === color)
-    .filter((product) => matchesQuery(product, tokens))
-    .map((product) => ({
-      ...product,
-      text_match_score: getTextMatchScore(product, tokens),
-    }))
-    .sort((a, b) => {
-      if (b.text_match_score !== a.text_match_score) {
-        return b.text_match_score - a.text_match_score
-      }
-
-      return String(a.product_id).localeCompare(String(b.product_id), undefined, {
-        numeric: true,
-      })
-    })
-}
+import { searchByText } from '../api/fashionApi'
 
 export default function TextSearchPage() {
   const navigate = useNavigate()
+  const requestRef = useRef(null)
+  useEffect(() => () => requestRef.current?.abort(), [])
 
   const [query, setQuery] = useState('black shirt')
   const [gender, setGender] = useState('Men')
@@ -101,6 +33,7 @@ export default function TextSearchPage() {
   }
 
   async function handleSearch() {
+    if (requestRef.current) return
     if (!hasSearchInput) {
       setError('Enter a fashion query or choose at least one filter.')
       return
@@ -108,20 +41,17 @@ export default function TextSearchPage() {
 
     setLoading(true)
     setError('')
+    const controller = new AbortController()
+    requestRef.current = controller
+    const timeout = setTimeout(() => controller.abort(), 120000)
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 350))
-
-      const results = searchTextDemo({
-        query,
-        gender,
-        category,
-        color,
-      })
+      const filters = { gender, category, color }
+      const results = await searchByText(query, filters, 50, { signal: controller.signal })
 
       navigate('/results', {
         state: {
-          searchType: 'text-demo',
+          searchType: 'text',
           query: query.trim(),
           filters: {
             gender,
@@ -131,9 +61,13 @@ export default function TextSearchPage() {
           results,
         },
       })
-    } catch {
-      setError('Text-search preview failed. Please try again.')
+    } catch (error) {
+      setError(error.name === 'AbortError'
+        ? 'Search timed out. Please try again.'
+        : error instanceof TypeError ? 'Cannot reach the search server. Please try again.' : error.message)
     } finally {
+      clearTimeout(timeout)
+      requestRef.current = null
       setLoading(false)
     }
   }
@@ -156,6 +90,7 @@ export default function TextSearchPage() {
 
           <input
             id="query"
+            maxLength={1000}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={(event) => {
@@ -169,9 +104,11 @@ export default function TextSearchPage() {
         </div>
 
         <div className="static-filter-grid">
-          <label>
+          <label htmlFor="gender-filter">
             Gender
             <select
+              id="gender-filter"
+              aria-label="Gender"
               value={gender}
               onChange={(event) => setGender(event.target.value)}
               disabled={loading}
@@ -185,9 +122,11 @@ export default function TextSearchPage() {
             </select>
           </label>
 
-          <label>
+          <label htmlFor="category-filter">
             Category
             <select
+              id="category-filter"
+              aria-label="Category"
               value={category}
               onChange={(event) => setCategory(event.target.value)}
               disabled={loading}
@@ -201,9 +140,11 @@ export default function TextSearchPage() {
             </select>
           </label>
 
-          <label>
+          <label htmlFor="color-filter">
             Color
             <select
+              id="color-filter"
+              aria-label="Color"
               value={color}
               onChange={(event) => setColor(event.target.value)}
               disabled={loading}

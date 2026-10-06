@@ -11,6 +11,7 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 
 from .search import FashionSearch
+from .metadata import FILTER_FIELDS
 
 ROOT = Path(__file__).resolve().parents[2]
 MAX_IMAGE_BYTES = 10 * 1024 * 1024
@@ -31,6 +32,7 @@ def create_app(config=None, search_service=None):
         PRODUCT_IDS_PATH=os.environ.get("PRODUCT_IDS_PATH", str(ROOT / "embeddings/product_ids.npy")),
         MODEL_PATH=os.environ.get("MODEL_PATH") or os.environ.get("MODEL_HF_NAME") or "patrickjohncyh/fashion-clip",
         MODEL_CACHE=str(ROOT / ".cache/huggingface"),
+        METADATA_PATH=os.environ.get("METADATA_PATH") or os.environ.get("FASHION_METADATA_PATH"),
     )
     if config:
         app.config.update(config)
@@ -47,8 +49,16 @@ def create_app(config=None, search_service=None):
 
     @app.errorhandler(HTTPException)
     def http_error(exc):
-        message = "Upload is too large. Maximum image size is 10 MiB." if isinstance(exc, RequestEntityTooLarge) else exc.description
+        message = exc.description
+        if isinstance(exc, RequestEntityTooLarge):
+            message = "Text search request is too large. Maximum is 16 KiB." if request.path.endswith("/search/text") else "Upload is too large. Maximum image size is 10 MiB."
         return error(message, exc.code)
+
+    def get_search_service():
+        with load_lock:
+            if app.extensions["search_service"] is None:
+                app.extensions["search_service"] = FashionSearch(app.config)
+        return app.extensions["search_service"]
 
     @app.get("/health")
     def health():
@@ -103,10 +113,7 @@ def create_app(config=None, search_service=None):
         except (UnidentifiedImageError, OSError, ValueError, SyntaxError):
             return error("Cannot decode this image. It may be corrupt or truncated.", 400)
         try:
-            with load_lock:
-                if app.extensions["search_service"] is None:
-                    app.extensions["search_service"] = FashionSearch(app.config)
-            return success(app.extensions["search_service"].search(rgb, top_k))
+            return success(get_search_service().search(rgb, top_k))
         except (OSError, ImportError, ValueError):
             app.logger.exception("Image search configuration or data failure")
             return error("Image search is unavailable. Check the model, index, product IDs and IMAGE_DIR on the server.", 503)
@@ -123,8 +130,43 @@ def create_app(config=None, search_service=None):
         return send_from_directory(app.config["IMAGE_DIR"], filename)
 
     @app.post("/search/text")
+    @app.post("/api/v1/search/text")
     def search_text():
-        return error("Text search integration is not implemented yet.", 501)
+        request.max_content_length = 16 * 1024
+        if not request.is_json:
+            return error("Send an application/json object for text search.", 415)
+        body = request.get_json()
+        if not isinstance(body, dict):
+            return error("Text search body must be a JSON object.", 400)
+        if set(body) - {"query", "top_k", *FILTER_FIELDS}:
+            return error("Supported fields are query, top_k, gender, category and color.", 400)
+        query = body.get("query", "")
+        if not isinstance(query, str) or len(query) > 1000:
+            return error("query must be a string of at most 1000 characters.", 400)
+        query = " ".join(query.split())
+        top_k = body.get("top_k", 10)
+        if type(top_k) is not int or not 1 <= top_k <= 50:
+            return error("top_k must be an integer from 1 to 50.", 400)
+        filters = {}
+        for field in FILTER_FIELDS:
+            value = body.get(field)
+            if value is None:
+                continue
+            if not isinstance(value, str) or len(value) > 100:
+                return error(f"{field} must be a string of at most 100 characters or null.", 400)
+            value = " ".join(value.split())
+            if value:
+                filters[field] = value
+        if not query and not filters:
+            return error("Enter a text query or choose at least one filter.", 400)
+        try:
+            return success(get_search_service().search_text(query, top_k, filters))
+        except (OSError, ImportError, ValueError):
+            app.logger.exception("Text search configuration or data failure")
+            return error("Text search is unavailable. Check the model, index, product IDs, IMAGE_DIR and METADATA_PATH on the server.", 503)
+        except Exception:
+            app.logger.exception("Text search failed")
+            return error("Text search failed. Please try again.", 500)
 
     return app
 
