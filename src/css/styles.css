@@ -1726,3 +1726,109 @@ small,
     padding: 14px 10px;
   }
 }
+
+
+
+/* =========================================================
+   FINAL PRODUCT GRID RESPONSIVE UPDATE
+   Desktop: 4 columns
+   iPad / tablet: 4 columns
+   Mobile: 2 columns
+   ========================================================= */
+
+/* Desktop + iPad/tablet */
+@media (max-width: 1120px) {
+  .product-grid,
+  .related-products-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .product-art,
+  .related-products-grid .product-art {
+    min-height: 180px;
+  }
+
+  .product-image,
+  .related-products-grid .product-image {
+    min-height: 180px;
+  }
+}
+
+/* Phone */
+@media (max-width: 760px) {
+  .product-grid,
+  .related-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .product-card {
+    min-width: 0;
+  }
+
+  .product-art,
+  .related-products-grid .product-art {
+    min-height: 170px;
+    margin: 8px 8px 0;
+  }
+
+  .product-image,
+  .related-products-grid .product-image {
+    min-height: 170px;
+  }
+
+  .product-copy {
+    padding: 10px;
+  }
+
+  .product-copy h3 {
+    min-height: 34px;
+    font-size: 11px;
+  }
+
+  .product-id {
+    font-size: 10px;
+  }
+
+  .product-meta,
+  .product-usage {
+    font-size: 9px;
+  }
+
+  .match-row {
+    font-size: 8px;
+  }
+
+  .related-section {
+    padding: 18px 12px;
+  }
+}
+
+/* Very small phones: still keep 2 columns */
+@media (max-width: 420px) {
+  .product-grid,
+  .related-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .product-art,
+  .related-products-grid .product-art {
+    min-height: 145px;
+  }
+
+  .product-image,
+  .related-products-grid .product-image {
+    min-height: 145px;
+  }
+
+  .product-copy {
+    padding: 8px;
+  }
+
+  .product-copy h3 {
+    min-height: 30px;
+    font-size: 10px;
+  }
+}
