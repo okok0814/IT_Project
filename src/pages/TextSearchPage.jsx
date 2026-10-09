@@ -12,10 +12,10 @@ export default function TextSearchPage() {
   const requestRef = useRef(null)
   useEffect(() => () => requestRef.current?.abort(), [])
 
-  const [query, setQuery] = useState('black shirt')
-  const [gender, setGender] = useState('Men')
-  const [category, setCategory] = useState('Shirts')
-  const [color, setColor] = useState('Black')
+  const [query, setQuery] = useState('')
+  const [gender, setGender] = useState('')
+  const [category, setCategory] = useState('')
+  const [color, setColor] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
