@@ -33,6 +33,8 @@ The text-search page calls the real Flask endpoint. FashionCLIP ranks image embe
 
 ### Results Page
 
+The **YOU MAY ALSO LIKE** panel now calls the backend for products in complementary categories. Choose an item with **Pair with**; the server reuses its stored image vector and returns the nearest eligible neighbors (for example, a shirt can return bottoms or footwear). Loading, retry and empty states are independent of the main results. The teammate's panel layout and direct catalog browsing are retained.
+
 - Responsive product grid.
 - Product image.
 - Product ID.
@@ -570,6 +572,22 @@ npm run preview
 ---
 
 ## Testing
+
+Week 9 related-product verification (real catalog, independent ranking checks, browser checks, screenshots, and build):
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m scripts.collect_week9_evidence --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --with-ui
+```
+
+Use the same installed dependencies, model cache and search artifacts as Week 8. This runner owns its temporary backend/Vite servers and saves live logs, source/artifact hashes, responses and screenshots under `logs/<UTC timestamp>-week9/`. Browser checks use local Google Chrome. See [the Week 9 report](docs/week9_related_products_report.md).
+
+The related-products endpoint can also be called directly:
+
+```powershell
+Invoke-RestMethod 'http://localhost:5000/products/10180/related?top_k=8'
+```
+
+Both this route and `/api/v1/products/10180/related` return the existing JSON envelope. Category rules and gender-label handling are defined in [related.py](src/backend/related.py); the full request/error contract is in [API_docs.md](docs/API_docs.md). Unknown IDs return 404. Unsupported categories return an empty array. Similarity scores rank eligible neighbors; they are not trained outfit-compatibility scores.
 
 Backend tests:
 

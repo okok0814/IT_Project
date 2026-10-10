@@ -1,0 +1,11 @@
+{
+  "unit_tests": 128,
+  "unit_passed": 128,
+  "real_api_cases_passed": 20,
+  "index_vectors": 44419,
+  "thumbnail_http_200": 179,
+  "browser_checks_passed": 8,
+  "encoder_calls_during_related_checks": 0,
+  "image_and_text_regressions_passed": true,
+  "build_passed": true
+}

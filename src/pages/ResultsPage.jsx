@@ -1,14 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
+import { getRelatedProducts } from '../api/fashionApi'
 import { textSearchDemoCatalog } from '../data/textSearchDemoCatalog'
 
 const ITEMS_PER_PAGE = 8
 const RECOMMENDATION_LIMIT = 8
-
-const catalogById = new Map(
-  textSearchDemoCatalog.map((product) => [String(product.product_id), product]),
-)
 
 function buildPageItems(currentPage, totalPages) {
   if (totalPages <= 10) {
@@ -48,121 +45,6 @@ function buildPageItems(currentPage, totalPages) {
   }
 
   return pages
-}
-
-function normalize(value) {
-  return String(value ?? '').trim().toLowerCase()
-}
-
-function tokenize(value) {
-  return normalize(value)
-    .split(/\s+/)
-    .map((token) => token.trim())
-    .filter(Boolean)
-}
-
-function getRecommendationScore(candidate, context) {
-  let score = 0
-
-  if (context.filters.gender && candidate.gender === context.filters.gender) {
-    score += 8
-  }
-
-  if (context.filters.category && candidate.category === context.filters.category) {
-    score += 10
-  }
-
-  if (context.filters.color && candidate.color === context.filters.color) {
-    score += 7
-  }
-
-  for (const seed of context.seedProducts) {
-    if (candidate.category && candidate.category === seed.category) score += 8
-    if (candidate.sub_category && candidate.sub_category === seed.sub_category) score += 6
-    if (candidate.master_category && candidate.master_category === seed.master_category) score += 4
-    if (candidate.gender && candidate.gender === seed.gender) score += 3
-    if (candidate.color && candidate.color === seed.color) score += 2
-    if (candidate.usage && candidate.usage === seed.usage) score += 1
-  }
-
-  if (context.queryTokens.length > 0) {
-    const searchable = normalize([
-      candidate.gender,
-      candidate.category,
-      candidate.color,
-      candidate.usage,
-      candidate.master_category,
-      candidate.sub_category,
-    ].join(' '))
-
-    for (const token of context.queryTokens) {
-      if (searchable.includes(token)) {
-        score += 2
-      }
-    }
-  }
-
-  return score
-}
-
-function buildRecommendations({
-  currentProducts,
-  query,
-  filters,
-}) {
-  if (!Array.isArray(currentProducts) || currentProducts.length === 0) {
-    return []
-  }
-
-  const currentIds = new Set(
-    currentProducts
-      .map((product) => product.product_id ?? product.id)
-      .filter((id) => id !== undefined && id !== null)
-      .map(String),
-  )
-
-  const seedProducts = currentProducts
-    .slice(0, 8)
-    .map((product) => {
-      const id = product.product_id ?? product.id
-
-      if (id === undefined || id === null) {
-        return product
-      }
-
-      return catalogById.get(String(id)) ?? product
-    })
-    .filter(Boolean)
-
-  const context = {
-    filters,
-    seedProducts,
-    queryTokens: tokenize(query),
-  }
-
-  return textSearchDemoCatalog
-    .filter((candidate) => !currentIds.has(String(candidate.product_id)))
-    .map((candidate) => ({
-      candidate,
-      score: getRecommendationScore(candidate, context),
-    }))
-    .filter((item) => item.score > 0)
-    .sort((a, b) => {
-      if (b.score !== a.score) {
-        return b.score - a.score
-      }
-
-      return String(a.candidate.product_id).localeCompare(
-        String(b.candidate.product_id),
-        undefined,
-        { numeric: true },
-      )
-    })
-    .slice(0, RECOMMENDATION_LIMIT)
-    .map(({ candidate }) => ({
-      ...candidate,
-      match_type: 'metadata',
-    }))
 }
 
 export default function ResultsPage() {
@@ -212,23 +94,39 @@ export default function ResultsPage() {
     [currentPage, totalPages],
   )
 
-  const recommendationProducts = useMemo(
-    () => hasSearchResults
-      ? buildRecommendations({
-          currentProducts: products,
-          query,
-          filters,
-        })
-      : [],
-    [
-      hasSearchResults,
-      products,
-      query,
-      filters.gender,
-      filters.category,
-      filters.color,
-    ],
-  )
+  const [selectedProductId, setSelectedProductId] = useState('')
+  const [retryRelated, setRetryRelated] = useState(0)
+  const [related, setRelated] = useState({ sourceId: '', status: 'idle', products: [], error: '' })
+  const sourceProductId = hasSearchResults && products.length
+    ? (products.some(product => product.product_id === selectedProductId)
+      ? selectedProductId : products[0].product_id)
+    : ''
+
+  useEffect(() => {
+    if (!sourceProductId) return
+    const controller = new AbortController()
+    let active = true
+    const timeout = setTimeout(() => controller.abort(), 120000)
+    setRelated({ sourceId: sourceProductId, status: 'loading', products: [], error: '' })
+    getRelatedProducts(sourceProductId, RECOMMENDATION_LIMIT, { signal: controller.signal })
+      .then(products => {
+        if (active) setRelated({ sourceId: sourceProductId, status: 'ready', products, error: '' })
+      })
+      .catch(error => {
+        if (active) setRelated({ sourceId: sourceProductId, status: 'error', products: [],
+          error: error.name === 'AbortError' ? 'Recommendations timed out. Please try again.'
+            : error instanceof TypeError ? 'Cannot reach the recommendation server.' : error.message })
+      })
+      .finally(() => clearTimeout(timeout))
+    return () => {
+      active = false
+      clearTimeout(timeout)
+      controller.abort()
+    }
+  }, [sourceProductId, retryRelated])
+
+  const relatedStatus = related.sourceId === sourceProductId ? related.status : 'loading'
+  const recommendationProducts = relatedStatus === 'ready' ? related.products : []
 
   const heading = isImageSearch
     ? 'IMAGE SEARCH RESULTS'
@@ -414,18 +312,40 @@ export default function ResultsPage() {
         </>
       )}
 
-      {hasSearchResults && recommendationProducts.length > 0 && (
+      {sourceProductId && (
         <section className="related-section" aria-labelledby="related-title">
           <div className="related-heading">
             <div>
               <h2 id="related-title">YOU MAY ALSO LIKE</h2>
+              <p className="related-description">Explore pieces from complementary categories to pair with your chosen item.</p>
             </div>
 
             <span className="related-count">
-              {recommendationProducts.length} SUGGESTIONS
+              {relatedStatus === 'loading' ? 'LOADING...' : `${recommendationProducts.length} SUGGESTIONS`}
             </span>
           </div>
 
+          <div className="related-source-control">
+            <label htmlFor="related-source">Pair with</label>
+            <select id="related-source" value={sourceProductId}
+              onChange={event => setSelectedProductId(event.target.value)}>
+              {products.map(product => (
+                <option key={product.product_id} value={product.product_id}>
+                  {product.name || `Product ${product.product_id}`} ({product.product_id})
+                </option>
+              ))}
+            </select>
+          </div>
+          {relatedStatus === 'loading' && <p role="status">Finding complementary products...</p>}
+          {relatedStatus === 'error' && (
+            <div role="alert" className="search-status search-status-error">
+              <span>{related.error}</span>
+              <button type="button" className="secondary-btn" onClick={() => setRetryRelated(value => value + 1)}>RETRY RECOMMENDATIONS</button>
+            </div>
+          )}
+          {relatedStatus === 'ready' && !recommendationProducts.length && (
+            <p role="status">No complementary products are available for this item yet. Try another item.</p>
+          )}
           <div className="related-products-grid">
             {recommendationProducts.map((product) => (
               <ProductCard

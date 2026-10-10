@@ -6,6 +6,11 @@ from urllib.parse import quote
 import numpy as np
 
 from .metadata import ProductMetadata
+from .related import COMPLEMENTARY_CATEGORIES, COMPATIBLE_GENDERS
+
+
+class ProductNotFoundError(LookupError):
+    pass
 
 
 class FashionSearch:
@@ -56,11 +61,14 @@ class FashionSearch:
                                     truncation=True, max_length=self.model.config.text_config.max_position_embeddings).to(self.device)
             return self.model.get_text_features(**inputs).float().cpu().numpy()
 
-    def search_text(self, query, top_k, filters):
+    def _ensure_metadata(self):
         # Lazy metadata loading keeps existing image search independent of the CSV.
         with self.metadata_lock:
             if self.metadata is None:
                 self.metadata = ProductMetadata(self.metadata_path, self.ids)
+
+    def search_text(self, query, top_k, filters):
+        self._ensure_metadata()
         mask = self.metadata.mask(filters)
         if not mask.any():
             return []
@@ -69,6 +77,27 @@ class FashionSearch:
             positions = sorted(np.flatnonzero(mask), key=lambda pos: str(self.ids[pos]))[:top_k]
             return [self._result(pos, None, include_metadata=True) for pos in positions]
         return self._search_vector(self._embed_text(query), top_k, mask)
+
+    def related_products(self, product_id, top_k):
+        positions = np.flatnonzero(self.ids == product_id)
+        if not len(positions):
+            raise ProductNotFoundError(product_id)
+        self._ensure_metadata()
+        position = int(positions[0])
+        categories = COMPLEMENTARY_CATEGORIES.get(self.metadata.values["category"][position], frozenset())
+        genders = COMPATIBLE_GENDERS.get(self.metadata.values["gender"][position], frozenset())
+        mask = np.isin(self.metadata.values["category"], list(categories))
+        mask &= np.isin(self.metadata.values["gender"], list(genders))
+        mask[position] = False
+        if not mask.any():
+            return []
+        # The catalog product already has an embedding: no image/text inference.
+        vector = self.index.reconstruct(position).reshape(1, -1)
+        results = self._search_vector(vector, top_k, mask)
+        for result in results:
+            result["match_type"] = "complementary"
+            result["source_product_id"] = product_id
+        return results
 
     def _result(self, position, score, include_metadata=False):
         result = {"product_id": str(self.ids[position]),

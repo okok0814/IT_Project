@@ -1,4 +1,4 @@
-# Fashion Search API — Week 8
+# Fashion Search API — Week 9
 
 Local backend: `http://localhost:5000`. Start with `python -m src.backend.app`.
 The runnable app is Flask; previous FastAPI notebook experiments are historical.
@@ -150,6 +150,73 @@ require the metadata CSV.
 
 These checks establish request/filter correctness. They do not establish relevance
 quality or Vietnamese-language retrieval accuracy; those require labeled evaluation.
+
+## GET /products/\<product_id\>/related
+
+Alias: `GET /api/v1/products/<product_id>/related` (used by the results panel).
+Example: `/api/v1/products/10180/related?top_k=8`.
+
+| Parameter | Rule |
+| --- | --- |
+| product_id (path) | Existing catalog ID, 1–64 ASCII letters/digits/underscores/hyphens; treated as a string |
+| top_k (query) | Optional, default 8; integer from 1 to 50 |
+
+Duplicate `top_k` and unknown query parameters are rejected. Search-page category
+and color filters are **not** forwarded here: they describe the source item, while
+related products belong to complementary categories.
+
+The backend reconstructs the source product's stored image embedding, ranks the
+index by cosine similarity, applies complementary-category and gender constraints,
+excludes the source ID, then selects top-k. It does not re-encode the source image
+or use text inference. The shared service still loads the checkpoint when first
+initialized; this endpoint does not require a new model or index.
+
+The explicit MVP rules live in [related.py](../src/backend/related.py):
+
+| Source group | Eligible target groups |
+| --- | --- |
+| Tops (Shirts, Tshirts, Tops, Jackets, etc.) | Bottoms or footwear |
+| Bottoms (Jeans, Trousers, Shorts, Skirts, etc.) | Tops or footwear |
+| Footwear | Tops, bottoms, one-piece outfits or ethnic tops |
+| One-piece outfits (Dresses, Jumpsuit, Sarees, etc.) | Footwear, Handbags or Clutches |
+| Handbags or Clutches | One-piece outfits, tops or footwear |
+| Kurtas or Kurtis | Churidar, Salwar, Patiala, Leggings, Jeans, Trousers or footwear |
+| Churidar, Salwar or Patiala | Kurtas, Kurtis or footwear |
+
+See the rule module for the exact Dataset 2 articleType lists. Men/Women sources
+allow their own gender label plus Unisex; Unisex sources allow adult Men, Women
+and Unisex. Boys and Girls each stay within their own label. This is a documented
+catalog heuristic, not inferred personal identity. Unsupported categories (e.g.
+Watches or cosmetics), unknown gender labels and no eligible neighbors return
+HTTP 200 with `data: []`. There is no unrestricted or same-category fallback.
+
+The usual response envelope contains an array of products with the same metadata
+and numeric `similarity_score` as text search, plus `match_type: "complementary"`
+and `source_product_id`. Results are sorted by decreasing cosine similarity;
+equal scores have no promised ID order. Fewer than top-k are returned when fewer
+eligible products exist. Top-k applies across the union of allowed categories,
+so there is no per-category quota. Cosine scores are not outfit compatibility
+probabilities; the rules only make this a simple baseline for outfit suggestions.
+
+```powershell
+Invoke-RestMethod 'http://localhost:5000/products/10180/related?top_k=8'
+```
+
+| HTTP | Meaning |
+| --- | --- |
+| 200 | Related products, possibly an empty array |
+| 400 | Invalid ID syntax, invalid/duplicate top_k or unknown query field |
+| 404 | Source product ID is not in the index |
+| 405 | Method other than GET/HEAD/OPTIONS |
+| 503 | Search service, metadata or catalog artifacts unavailable/incompatible |
+| 500 | Unexpected retrieval failure; details logged on server |
+
+The existing **YOU MAY ALSO LIKE** panel requests eight results for the first
+search result by default. Its **Pair with** selector can choose another item in
+the returned result set. Loading, empty and error states remain inside the panel;
+retrying or a failed recommendation request preserves the main search results.
+Changing the source aborts the earlier request. Direct catalog browsing and empty
+search results do not automatically request related products.
 
 ## Frontend / CORS
 

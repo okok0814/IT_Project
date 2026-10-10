@@ -1,6 +1,7 @@
 """Run from the repository root: python -m src.backend.app."""
 import io
 import os
+import re
 import warnings
 from pathlib import Path
 from threading import Lock
@@ -10,7 +11,7 @@ from flask_cors import CORS
 from PIL import Image, ImageOps, UnidentifiedImageError
 from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 
-from .search import FashionSearch
+from .search import FashionSearch, ProductNotFoundError
 from .metadata import FILTER_FIELDS
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -167,6 +168,27 @@ def create_app(config=None, search_service=None):
         except Exception:
             app.logger.exception("Text search failed")
             return error("Text search failed. Please try again.", 500)
+
+    @app.get("/products/<product_id>/related")
+    @app.get("/api/v1/products/<product_id>/related")
+    def related_products(product_id):
+        if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", product_id):
+            return error("product_id must contain 1 to 64 letters, digits, underscores or hyphens.", 400)
+        if set(request.args) - {"top_k"} or len(request.args.getlist("top_k")) > 1:
+            return error("Only one optional top_k parameter is supported for related products.", 400)
+        raw_k = request.args.get("top_k", "8")
+        if not re.fullmatch(r"[0-9]{1,3}", raw_k) or not 1 <= int(raw_k) <= 50:
+            return error("top_k must be an integer from 1 to 50.", 400)
+        try:
+            return success(get_search_service().related_products(product_id, int(raw_k)))
+        except ProductNotFoundError:
+            return error("Product not found in the search catalog.", 404)
+        except (OSError, ImportError, ValueError):
+            app.logger.exception("Related products configuration or data failure")
+            return error("Related products are unavailable. Check the index, product IDs, images, metadata and model configuration on the server.", 503)
+        except Exception:
+            app.logger.exception("Related products failed")
+            return error("Related products failed. Please try again.", 500)
 
     return app
 

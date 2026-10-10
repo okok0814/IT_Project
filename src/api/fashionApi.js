@@ -26,6 +26,11 @@ export async function searchByText(query, filters = {}, topK = 50, { signal } = 
   return readSearchResponse(response, { allowMetadata: !query.trim() })
 }
 
+export async function getRelatedProducts(productId, topK = 8, { signal } = {}) {
+  const response = await fetch(`${API_BASE_URL}/api/v1/products/${encodeURIComponent(productId)}/related?top_k=${topK}`, { signal })
+  return readSearchResponse(response)
+}
+
 async function readSearchResponse(response, { allowMetadata = false } = {}) {
 
   let payload = null

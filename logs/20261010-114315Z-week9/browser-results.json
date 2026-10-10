@@ -1,0 +1,56 @@
+{
+  "checks": [
+    "Real text results call related endpoint with source ID/top_k; loading and complementary results",
+    "Changing seed, isolated 503 error and successful retry preserve main results",
+    "Malformed and network-failure responses show errors without fallback products (simulated)",
+    "Rapid source changes cancel stale requests and keep the latest recommendations",
+    "Unsupported source category has a real empty state and preserves filter-only results",
+    "Empty search hides recommendations; direct catalog browsing remains available",
+    "Real image upload also loads related products for its first result",
+    "Mobile panel, source selector and real thumbnails fit viewport"
+  ],
+  "page_errors": [],
+  "outgoing_related_requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18882/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18881/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18881/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18761/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18761/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/11375/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10098/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10098/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10180/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10180/related?top_k=8"
+    }
+  ],
+  "note": "Valid/empty searches use real HTTP data; 503, malformed and network failures are simulated."
+}

@@ -1,0 +1,91 @@
+UTC: 2026-10-10T11:43:26.750069+00:00
+CWD: D:\code\IT_Project
+COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe -m scripts.verify_related_products --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --metadata-path "D:\code\dataset\Fashion Product Images Dataset\archive\fashion-dataset\styles.csv" --output-dir D:\code\IT_Project\logs\20261010-114315Z-week9 --with-ui
+
+Related case 1: 10051 / Shirts / Men, 50/7640 candidates, 523.69 ms: PASS
+Related case 2: 10005 / Tshirts / Men, 1/7640 candidates, 36.47 ms: PASS
+Related case 3: 10324 / Tops / Women, 8/4267 candidates, 40.95 ms: PASS
+Related case 4: 11093 / Sweaters / Women, 8/4267 candidates, 37.81 ms: PASS
+Related case 5: 11233 / Jeans / Women, 8/6825 candidates, 40.5 ms: PASS
+Related case 6: 10257 / Trousers / Men, 8/15069 candidates, 40.01 ms: PASS
+Related case 7: 10000 / Skirts / Women, 8/6825 candidates, 47.86 ms: PASS
+Related case 8: 11098 / Leggings / Women, 8/6825 candidates, 41.13 ms: PASS
+Related case 9: 10035 / Sports Shoes / Men, 8/10251 candidates, 49.36 ms: PASS
+Related case 10: 10271 / Heels / Women, 8/7300 candidates, 47.43 ms: PASS
+Related case 11: 11967 / Casual Shoes / Unisex, 8/17460 candidates, 47.86 ms: PASS
+Related case 12: 10649 / Shirts / Boys, 8/160 candidates, 52.28 ms: PASS
+Related case 13: 12849 / Dresses / Girls, 8/60 candidates, 33.3 ms: PASS
+Related case 14: 10016 / Dresses / Women, 8/5398 candidates, 32.48 ms: PASS
+Related case 15: 12345 / Sarees / Women, 8/5398 candidates, 32.43 ms: PASS
+Related case 16: 10196 / Handbags / Women, 8/7748 candidates, 45.84 ms: PASS
+Related case 17: 11534 / Kurtas / Women, 8/3923 candidates, 36.2 ms: PASS
+Related case 18: 11245 / Churidar / Women, 8/5347 candidates, 33.36 ms: PASS
+Related case 19: 10098 / Watches / Men, 0/0 candidates, 6.63 ms: PASS
+Related case 20: 49080 / Lipstick / Women, 0/0 candidates, 6.4 ms: PASS
+Browser PASS: Real text results call related endpoint with source ID/top_k; loading and complementary results
+Browser PASS: Changing seed, isolated 503 error and successful retry preserve main results
+Browser PASS: Malformed and network-failure responses show errors without fallback products (simulated)
+Browser PASS: Rapid source changes cancel stale requests and keep the latest recommendations
+Browser PASS: Unsupported source category has a real empty state and preserves filter-only results
+Browser PASS: Empty search hides recommendations; direct catalog browsing remains available
+Browser PASS: Real image upload also loads related products for its first result
+Browser PASS: Mobile panel, source selector and real thumbnails fit viewport
+{
+  "checks": [
+    "Real text results call related endpoint with source ID/top_k; loading and complementary results",
+    "Changing seed, isolated 503 error and successful retry preserve main results",
+    "Malformed and network-failure responses show errors without fallback products (simulated)",
+    "Rapid source changes cancel stale requests and keep the latest recommendations",
+    "Unsupported source category has a real empty state and preserves filter-only results",
+    "Empty search hides recommendations; direct catalog browsing remains available",
+    "Real image upload also loads related products for its first result",
+    "Mobile panel, source selector and real thumbnails fit viewport"
+  ],
+  "page_errors": [],
+  "outgoing_related_requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18882/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18881/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18881/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18761/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/18761/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/11375/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10098/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10098/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10180/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:64669/api/v1/products/10180/related?top_k=8"
+    }
+  ],
+  "note": "Valid/empty searches use real HTTP data; 503, malformed and network failures are simulated."
+}
+
+EXIT_CODE: 0
+UTC_END: 2026-10-10T11:44:16.700037+00:00

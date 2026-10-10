@@ -17,3 +17,11 @@ This replaces the earlier draft that used a `status` field.
 - Filter-only requests return `match_type: "metadata"` and
   `similarity_score: null`, ordered by string product ID. Empty results use
   HTTP 200 with `data: []`; invalid requests use the documented error envelope.
+- `GET /products/<product_id>/related` and its `/api/v1` alias accept optional
+  query `top_k` (1–50, default 8). Results reuse the product metadata/score shape,
+  add `source_product_id`, and use `match_type: "complementary"`.
+  Candidates must satisfy the backend category/gender rules, and exclude the
+  source item, before top-k selection. The score is image-vector cosine.
+- Unknown source IDs return 404; unsupported source categories or no eligible
+  candidates return 200 with an empty array. Invalid/duplicate/unknown query
+  parameters return 400. See [the rules and examples](API_docs.md).

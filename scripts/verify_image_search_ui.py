@@ -50,14 +50,14 @@ def main():
             expect(page.get_by_role("status")).to_contain_text("Finding similar products")
             expect(page.get_by_role("button", name="SEARCHING")).to_be_disabled()
             page.wait_for_url("**/results", timeout=120000)
-            expect(page.locator(".product-card")).to_have_count(8)
-            for img in page.locator(".product-image").all():
+            expect(page.locator(".product-grid .product-card")).to_have_count(8)
+            for img in page.locator(".product-grid .product-image").all():
                 img.scroll_into_view_if_needed()
                 expect(img).to_be_visible()
                 expect(img).to_have_js_property("complete", True)
                 assert img.evaluate("img => img.naturalWidth > 0")
             expect(page.locator(".result-count")).to_have_text("8 ITEMS FOUND")
-            expect(page.locator(".related-section")).to_have_count(0)
+            expect(page.locator(".related-section")).to_be_visible()
             checks.append("Real upload through teammate API helper, loading state, eight ranked results and working thumbnails")
             page.evaluate("window.scrollTo(0, 0)")
             page.screenshot(path=str(output / "desktop.png"), full_page=True)
@@ -86,8 +86,8 @@ def main():
             checks.append("Malformed API results show an error instead of mock results or a crash")
             page.route("**/api/v1/search/image", lambda route: route.fulfill(json={"success": True, "data": [], "error": None}))
             button.click()
-            expect(page.get_by_role("status")).to_contain_text("No products were returned")
-            expect(page.locator(".product-card")).to_have_count(0)
+            expect(page.get_by_role("status")).to_contain_text("No products matched")
+            expect(page.locator(".product-grid .product-card")).to_have_count(0)
             checks.append("Empty response shows no mock products")
             assert not errors, errors
             browser.close()

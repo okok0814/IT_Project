@@ -196,10 +196,10 @@ def verify_browser(base, output, node, record_video, record_demo=False):
                     page.unroute("**/api/v1/search/text")
                     page.wait_for_url("**/results")
                     assert results and all(row["gender"] == "Women" and row["category"] == "Dresses" and row["color"] == "Red" for row in results)
-                    expect(page.locator(".product-card")).to_have_count(min(8, len(results)))
+                    expect(page.locator(".product-grid .product-card")).to_have_count(min(8, len(results)))
                     expect(page.get_by_label("Applied filters")).to_contain_text("Women")
                     expect(page.locator(".result-count")).to_contain_text(str(len(results)))
-                    for image in page.locator(".product-image").all():
+                    for image in page.locator(".product-grid .product-image").all():
                         image.scroll_into_view_if_needed()
                         expect(image).to_have_js_property("complete", True)
                         assert image.evaluate("img => img.naturalWidth > 0")
@@ -208,9 +208,9 @@ def verify_browser(base, output, node, record_video, record_demo=False):
                     page.screenshot(path=str(output / "text-desktop.png"), full_page=True)
                     capture_demo(page)
                     if len(results) > 8:
-                        first_ids = page.locator(".product-id").all_text_contents()
+                        first_ids = page.locator(".product-grid .product-id").all_text_contents()
                         page.get_by_role("button", name="Next page", exact=True).click()
-                        assert page.locator(".product-id").all_text_contents() != first_ids
+                        assert page.locator(".product-grid .product-id").all_text_contents() != first_ids
                         checks.append("Pagination operates on returned top-k results")
                     page.set_viewport_size({"width": 390, "height": 844})
                     assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
@@ -225,8 +225,8 @@ def verify_browser(base, output, node, record_video, record_demo=False):
                         page.get_by_role("button", name="DISCOVER", exact=True).click()
                     requests_seen.append(request_info.value.post_data_json)
                     page.wait_for_url("**/results")
-                    expect(page.locator(".match-row").first).to_contain_text("FILTER MATCH")
-                    expect(page.locator(".meter")).to_have_count(0)
+                    expect(page.locator(".product-grid .match-row").first).to_contain_text("FILTER MATCH")
+                    expect(page.locator(".product-grid .meter")).to_have_count(0)
                     capture_demo(page)
                     checks.append("Filter-only selection sends empty query and displays no invented score")
                     page.goto(frontend + "/search/text")
@@ -236,7 +236,7 @@ def verify_browser(base, output, node, record_video, record_demo=False):
                     page.get_by_role("button", name="DISCOVER", exact=True).click()
                     page.wait_for_url("**/results")
                     expect(page.get_by_role("status")).to_contain_text("No products matched")
-                    expect(page.locator(".product-card")).to_have_count(0)
+                    expect(page.locator(".product-grid .product-card")).to_have_count(0)
                     capture_demo(page)
                     page.get_by_role("button", name="TRY ANOTHER SEARCH").click()
                     checks.append("Impossible filter combination returns empty results and retries text search")
@@ -255,8 +255,8 @@ def verify_browser(base, output, node, record_video, record_demo=False):
                     capture_demo(page)
                     page.get_by_role("button", name="DISCOVER MATCHES").click()
                     page.wait_for_url("**/results", timeout=120000)
-                    expect(page.locator(".product-card")).to_have_count(8)
-                    for image in page.locator(".product-image").all():
+                    expect(page.locator(".product-grid .product-card")).to_have_count(8)
+                    for image in page.locator(".product-grid .product-image").all():
                         image.scroll_into_view_if_needed()
                         expect(image).to_have_js_property("complete", True)
                         assert image.evaluate("img => img.naturalWidth > 0")
