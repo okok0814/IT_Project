@@ -165,9 +165,10 @@ Duplicate `top_k` and unknown query parameters are rejected. Search-page categor
 and color filters are **not** forwarded here: they describe the source item, while
 related products belong to complementary categories.
 
-The backend reconstructs the source product's stored image embedding, ranks the
-index by cosine similarity, applies complementary-category and gender constraints,
-excludes the source ID, then selects top-k. It does not re-encode the source image
+The backend reconstructs the source product's stored image embedding, selects
+candidates using complementary-category and gender constraints, excludes the
+source ID, then computes exact cosine top-k within that subset using a per-request
+FAISS selector. It does not re-encode the source image
 or use text inference. The shared service still loads the checkpoint when first
 initialized; this endpoint does not require a new model or index.
 
@@ -235,3 +236,44 @@ activate the virtual environment first.
 
 Implementation references: [Flask upload limits](https://flask.palletsprojects.com/en/stable/patterns/fileuploads/)
 and [CLIP image features](https://huggingface.co/docs/transformers/model_doc/clip).
+
+## Search result cache and performance verification
+
+Image, text and related-product endpoints share a bounded in-memory result cache
+within each Flask application instance. Defaults: `SEARCH_CACHE_SIZE=256` entries
+and `SEARCH_CACHE_TTL_SECONDS=300` seconds. Set either value to `0` to disable it.
+Size and TTL must be nonnegative, and TTL must be finite. Environment settings
+take effect when the backend starts.
+
+`X-Search-Cache` on successful search responses reports:
+
+| Value | Meaning |
+| --- | --- |
+| `MISS` | This request computed and stored the result |
+| `HIT` | Reused a result before its TTL expired |
+| `COALESCED` | Waited for an identical request already computing that result |
+| `BYPASS` | Cache disabled |
+
+The header is exposed through CORS; the JSON response contract is unchanged.
+Only successful result lists, including empty lists, are cached. Errors are never
+cached. Validation still happens before lookup, including image format, byte and
+pixel limits and decoding checks. Images are keyed by SHA-256 of file bytes and
+top-k; uploaded files/pixels are not retained in the cache. Text keys include the
+whitespace-normalized query, top-k and all normalized filters; related keys include
+source ID and top-k. Route aliases share keys. Different top-k values deliberately
+have separate entries.
+
+Entries expire after insertion (hits do not extend TTL); expired entries are
+removed at the next lookup and the least recently used entry is evicted when
+full. Concurrent identical misses share one computation, while different keys
+can proceed independently. Model inference retains its existing lock.
+
+The catalog, metadata and model are a read-only snapshot for the lifetime of the
+service. **Restart backend workers after updating these artifacts or category
+rules.** TTL alone does not reload artifacts. Each worker has its own cache;
+there is no Redis, shared cross-worker cache or public cache-reset endpoint.
+Image cache hits still decode uploads, so they cost more than text/related hits.
+
+See [test_report.md](test_report.md) for measured latency, raw logs and limitations,
+and [load_test_api.py](../scripts/load_test_api.py) for the workload. The exact
+subset search uses [FAISS per-query selectors](https://github.com/facebookresearch/faiss/wiki/Setting-search-parameters-for-one-query).

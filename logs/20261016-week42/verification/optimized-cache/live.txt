@@ -1,0 +1,27 @@
+2026-10-16T10:08:35.698064+00:00 COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe D:\code\IT_Project\scripts\load_test_api.py --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --requests 48 --concurrency 1 4 8 --output-dir D:\code\IT_Project\logs\20261016-week10\verification\optimized-cache --label optimized-cache --cache-size 256
+2026-10-16T10:08:36.608488+00:00 Initializing optimized-cache with real catalog/model...
+2026-10-16T10:08:47.574581+00:00 image_repeat           c=1 n=48 errors=0 p50=33.5 p95=44.3 ms rps=26.93 cache={'MISS': 1, 'HIT': 47}
+2026-10-16T10:08:48.590680+00:00 image_repeat           c=4 n=48 errors=0 p50=70.8 p95=195.3 ms rps=47.76 cache={'COALESCED': 3, 'HIT': 44, 'MISS': 1}
+2026-10-16T10:08:49.807176+00:00 image_repeat           c=8 n=48 errors=0 p50=141.7 p95=470.4 ms rps=40.18 cache={'COALESCED': 7, 'HIT': 40, 'MISS': 1}
+2026-10-16T10:08:54.807624+00:00 image_varied           c=1 n=48 errors=0 p50=49.5 p95=236.5 ms rps=9.63 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:08:58.773572+00:00 image_varied           c=4 n=48 errors=0 p50=77.1 p95=793.2 ms rps=12.15 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:09:02.705505+00:00 image_varied           c=8 n=48 errors=0 p50=467.2 p95=1552.0 ms rps=12.36 cache={'MISS': 20, 'COALESCED': 7, 'HIT': 21}
+2026-10-16T10:09:02.901702+00:00 text_repeat            c=1 n=48 errors=0 p50=2.6 p95=3.9 ms rps=305.20 cache={'MISS': 1, 'HIT': 47}
+2026-10-16T10:09:03.094816+00:00 text_repeat            c=4 n=48 errors=0 p50=10.6 p95=28.4 ms rps=320.74 cache={'COALESCED': 3, 'HIT': 44, 'MISS': 1}
+2026-10-16T10:09:03.273452+00:00 text_repeat            c=8 n=48 errors=0 p50=20.7 p95=37.1 ms rps=322.07 cache={'COALESCED': 7, 'HIT': 40, 'MISS': 1}
+2026-10-16T10:09:04.123747+00:00 text_varied            c=1 n=48 errors=0 p50=4.0 p95=38.2 ms rps=61.58 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:09:05.092631+00:00 text_varied            c=4 n=48 errors=0 p50=4.8 p95=220.7 ms rps=54.86 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:09:05.932856+00:00 text_varied            c=8 n=48 errors=0 p50=63.1 p95=278.9 ms rps=64.25 cache={'MISS': 20, 'HIT': 22, 'COALESCED': 6}
+2026-10-16T10:09:06.667104+00:00 text_filtered_varied   c=1 n=48 errors=0 p50=3.7 p95=28.7 ms rps=75.12 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:09:07.422682+00:00 text_filtered_varied   c=4 n=48 errors=0 p50=4.9 p95=135.9 ms rps=73.82 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:09:08.160374+00:00 text_filtered_varied   c=8 n=48 errors=0 p50=57.9 p95=226.9 ms rps=76.60 cache={'MISS': 20, 'HIT': 21, 'COALESCED': 7}
+2026-10-16T10:09:08.634834+00:00 related_repeat         c=1 n=48 errors=0 p50=3.6 p95=17.5 ms rps=116.48 cache={'MISS': 1, 'HIT': 47}
+2026-10-16T10:09:08.829362+00:00 related_repeat         c=4 n=48 errors=0 p50=9.1 p95=18.2 ms rps=358.13 cache={'COALESCED': 3, 'HIT': 44, 'MISS': 1}
+2026-10-16T10:09:09.006442+00:00 related_repeat         c=8 n=48 errors=0 p50=18.5 p95=21.7 ms rps=397.97 cache={'COALESCED': 7, 'HIT': 40, 'MISS': 1}
+2026-10-16T10:09:09.703485+00:00 related_varied         c=1 n=48 errors=0 p50=15.5 p95=19.3 ms rps=76.82 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:09:09.939753+00:00 related_varied         c=4 n=48 errors=0 p50=12.7 p95=23.3 ms rps=270.55 cache={'MISS': 20, 'HIT': 28}
+2026-10-16T10:09:10.173293+00:00 related_varied         c=8 n=48 errors=0 p50=19.6 p95=38.7 ms rps=316.20 cache={'MISS': 20, 'HIT': 27, 'COALESCED': 1}
+2026-10-16T10:09:10.906265+00:00 filter_only            c=1 n=48 errors=0 p50=15.7 p95=17.6 ms rps=72.13 cache={'MISS': 1, 'HIT': 47}
+2026-10-16T10:09:11.239827+00:00 filter_only            c=4 n=48 errors=0 p50=14.1 p95=63.6 ms rps=211.59 cache={'HIT': 47, 'MISS': 1}
+2026-10-16T10:09:11.500338+00:00 filter_only            c=8 n=48 errors=0 p50=23.7 p95=26.8 ms rps=312.80 cache={'HIT': 47, 'MISS': 1}
+2026-10-16T10:09:12.906377+00:00 Evidence: D:\code\IT_Project\logs\20261016-week10\verification\optimized-cache; 1152 requests, 0 errors

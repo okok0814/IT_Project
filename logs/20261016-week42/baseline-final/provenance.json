@@ -1,0 +1,37 @@
+{
+  "timestamp_utc": "2026-10-16T10:04:03.006106+00:00",
+  "label": "baseline",
+  "git_head": "483bf44d6837639608a0a20e5943b0a77fddcd26",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "cpu_count": 8,
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "backend_directory": "D:\\code\\IT_Project\\.cache\\week10-baseline\\backend",
+  "source_sha256": {
+    "app.py": "2b0fe87f1835457f5cef9c88930541a10d934ec1de10dddc44fcd680e26e266a",
+    "metadata.py": "37888a10774e6fed31380fd6b51e68c393b5bf8e12f8c14103d35bbc17dc6878",
+    "related.py": "14e809250469410a2ce9d31dc5b8a866e07e8132fcd261f03934b119537eb1b6",
+    "search.py": "b103014eac48c234d341e74235d1c7fcd8be8e42f023e6f2a3a25582b0bc6934"
+  },
+  "runner_sha256": "33b27ff1b1045aea1a1544451f7ac6651ca5c18997beafafca1c3949ca99ac74",
+  "artifact_sha256": {
+    "INDEX_PATH": "314cbe16f28c5b093fff7b874ddf992163f73e536cfbe75bed41f6fdfd3fb117",
+    "PRODUCT_IDS_PATH": "a61aad3e399fbc2fe581bf707d652c4cee0b446c5109c16bc122046d6fbc910f",
+    "METADATA_PATH": "cd86bd2d71b4065ed91786a52aa6ccc0eed343949791c663be9af35f105a128c"
+  },
+  "config": {
+    "IMAGE_DIR": "D:\\code\\dataset\\Fashion Product Images Dataset\\archive\\fashion-dataset\\images",
+    "METADATA_PATH": "D:\\code\\dataset\\Fashion Product Images Dataset\\archive\\fashion-dataset\\styles.csv",
+    "INDEX_PATH": "D:\\code\\IT_Project\\embeddings\\index\\fashionclip_image_embeddings_flat.index",
+    "PRODUCT_IDS_PATH": "D:\\code\\IT_Project\\embeddings\\product_ids.npy",
+    "MODEL_CACHE": "D:\\code\\IT_Project\\.cache\\huggingface",
+    "SEARCH_CACHE_SIZE": 0
+  },
+  "requests_per_batch": 48,
+  "concurrency": [
+    1,
+    4,
+    8
+  ],
+  "note": "Source hashes identify working-tree code. Closed-loop client and threaded Werkzeug server share one host/process; not a production capacity claim."
+}

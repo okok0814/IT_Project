@@ -1,0 +1,33 @@
+UTC: 2026-10-16T10:07:10.112898+00:00
+COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe -X utf8 -m scripts.load_test_api --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --requests 48 --concurrency 1 4 8 --output-dir D:\code\IT_Project\logs\20261016-week10\verification\optimized-no-cache --label optimized-no-cache --cache-size 0
+
+2026-10-16T10:07:10.397894+00:00 COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe D:\code\IT_Project\scripts\load_test_api.py --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --requests 48 --concurrency 1 4 8 --output-dir D:\code\IT_Project\logs\20261016-week10\verification\optimized-no-cache --label optimized-no-cache --cache-size 0
+2026-10-16T10:07:11.146288+00:00 Initializing optimized-no-cache with real catalog/model...
+2026-10-16T10:07:28.593394+00:00 image_repeat           c=1 n=48 errors=0 p50=183.8 p95=230.2 ms rps=5.24 cache={'BYPASS': 48}
+2026-10-16T10:07:37.944480+00:00 image_repeat           c=4 n=48 errors=0 p50=798.0 p95=841.8 ms rps=5.14 cache={'BYPASS': 48}
+2026-10-16T10:07:47.666306+00:00 image_repeat           c=8 n=48 errors=0 p50=1585.6 p95=1702.3 ms rps=4.95 cache={'BYPASS': 48}
+2026-10-16T10:07:57.384650+00:00 image_varied           c=1 n=48 errors=0 p50=222.1 p95=255.6 ms rps=4.96 cache={'BYPASS': 48}
+2026-10-16T10:08:05.697702+00:00 image_varied           c=4 n=48 errors=0 p50=687.6 p95=764.7 ms rps=5.80 cache={'BYPASS': 48}
+2026-10-16T10:08:14.536020+00:00 image_varied           c=8 n=48 errors=0 p50=1377.8 p95=1596.2 ms rps=5.46 cache={'BYPASS': 48}
+2026-10-16T10:08:16.169038+00:00 text_repeat            c=1 n=48 errors=0 p50=27.6 p95=49.3 ms rps=30.50 cache={'BYPASS': 48}
+2026-10-16T10:08:17.630525+00:00 text_repeat            c=4 n=48 errors=0 p50=104.9 p95=165.5 ms rps=34.45 cache={'BYPASS': 48}
+2026-10-16T10:08:19.081491+00:00 text_repeat            c=8 n=48 errors=0 p50=216.1 p95=293.7 ms rps=34.78 cache={'BYPASS': 48}
+2026-10-16T10:08:20.822145+00:00 text_varied            c=1 n=48 errors=0 p50=34.1 p95=38.2 ms rps=28.91 cache={'BYPASS': 48}
+2026-10-16T10:08:22.403753+00:00 text_varied            c=4 n=48 errors=0 p50=122.4 p95=137.0 ms rps=32.09 cache={'BYPASS': 48}
+2026-10-16T10:08:24.087197+00:00 text_varied            c=8 n=48 errors=0 p50=252.7 p95=306.3 ms rps=30.18 cache={'BYPASS': 48}
+2026-10-16T10:08:25.527058+00:00 text_filtered_varied   c=1 n=48 errors=0 p50=27.1 p95=31.3 ms rps=35.79 cache={'BYPASS': 48}
+2026-10-16T10:08:26.869130+00:00 text_filtered_varied   c=4 n=48 errors=0 p50=101.1 p95=109.5 ms rps=38.82 cache={'BYPASS': 48}
+2026-10-16T10:08:28.333242+00:00 text_filtered_varied   c=8 n=48 errors=0 p50=203.9 p95=287.7 ms rps=35.68 cache={'BYPASS': 48}
+2026-10-16T10:08:29.400849+00:00 related_repeat         c=1 n=48 errors=0 p50=16.9 p95=34.4 ms rps=47.41 cache={'BYPASS': 48}
+2026-10-16T10:08:29.675061+00:00 related_repeat         c=4 n=48 errors=0 p50=18.3 p95=23.7 ms rps=213.01 cache={'BYPASS': 48}
+2026-10-16T10:08:29.967279+00:00 related_repeat         c=8 n=48 errors=0 p50=36.5 p95=44.0 ms rps=218.07 cache={'BYPASS': 48}
+2026-10-16T10:08:30.774941+00:00 related_varied         c=1 n=48 errors=0 p50=15.9 p95=20.0 ms rps=63.23 cache={'BYPASS': 48}
+2026-10-16T10:08:31.063305+00:00 related_varied         c=4 n=48 errors=0 p50=14.4 p95=24.4 ms rps=231.04 cache={'BYPASS': 48}
+2026-10-16T10:08:31.342063+00:00 related_varied         c=8 n=48 errors=0 p50=31.0 p95=48.1 ms rps=231.58 cache={'BYPASS': 48}
+2026-10-16T10:08:32.025401+00:00 filter_only            c=1 n=48 errors=0 p50=15.8 p95=18.5 ms rps=79.08 cache={'BYPASS': 48}
+2026-10-16T10:08:32.297513+00:00 filter_only            c=4 n=48 errors=0 p50=13.0 p95=18.0 ms rps=294.08 cache={'BYPASS': 48}
+2026-10-16T10:08:32.571125+00:00 filter_only            c=8 n=48 errors=0 p50=25.6 p95=30.5 ms rps=295.73 cache={'BYPASS': 48}
+2026-10-16T10:08:34.475689+00:00 Evidence: D:\code\IT_Project\logs\20261016-week10\verification\optimized-no-cache; 1152 requests, 0 errors
+
+EXIT_CODE: 0
+UTC_END: 2026-10-16T10:08:35.308455+00:00

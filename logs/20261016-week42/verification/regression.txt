@@ -1,0 +1,90 @@
+UTC: 2026-10-16T10:09:13.641056+00:00
+COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe -X utf8 -m scripts.verify_related_products --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --output-dir D:\code\IT_Project\logs\20261016-week10\verification\regression --with-ui
+
+Related case 1: 10051 / Shirts / Men, 50/7640 candidates, 459.05 ms: PASS
+Related case 2: 10005 / Tshirts / Men, 1/7640 candidates, 25.46 ms: PASS
+Related case 3: 10324 / Tops / Women, 8/4267 candidates, 6.87 ms: PASS
+Related case 4: 11093 / Sweaters / Women, 8/4267 candidates, 27.71 ms: PASS
+Related case 5: 11233 / Jeans / Women, 8/6825 candidates, 19.73 ms: PASS
+Related case 6: 10257 / Trousers / Men, 8/15069 candidates, 11.45 ms: PASS
+Related case 7: 10000 / Skirts / Women, 8/6825 candidates, 15.56 ms: PASS
+Related case 8: 11098 / Leggings / Women, 8/6825 candidates, 27.48 ms: PASS
+Related case 9: 10035 / Sports Shoes / Men, 8/10251 candidates, 30.82 ms: PASS
+Related case 10: 10271 / Heels / Women, 8/7300 candidates, 27.9 ms: PASS
+Related case 11: 11967 / Casual Shoes / Unisex, 8/17460 candidates, 26.85 ms: PASS
+Related case 12: 10649 / Shirts / Boys, 8/160 candidates, 17.72 ms: PASS
+Related case 13: 12849 / Dresses / Girls, 8/60 candidates, 25.93 ms: PASS
+Related case 14: 10016 / Dresses / Women, 8/5398 candidates, 16.34 ms: PASS
+Related case 15: 12345 / Sarees / Women, 8/5398 candidates, 6.85 ms: PASS
+Related case 16: 10196 / Handbags / Women, 8/7748 candidates, 26.05 ms: PASS
+Related case 17: 11534 / Kurtas / Women, 8/3923 candidates, 12.35 ms: PASS
+Related case 18: 11245 / Churidar / Women, 8/5347 candidates, 26.32 ms: PASS
+Related case 19: 10098 / Watches / Men, 0/0 candidates, 4.03 ms: PASS
+Related case 20: 49080 / Lipstick / Women, 0/0 candidates, 4.54 ms: PASS
+Browser PASS: Real text results call related endpoint with source ID/top_k; loading and complementary results
+Browser PASS: Changing seed, isolated 503 error and successful retry preserve main results
+Browser PASS: Malformed and network-failure responses show errors without fallback products (simulated)
+Browser PASS: Rapid source changes cancel stale requests and keep the latest recommendations
+Browser PASS: Unsupported source category has a real empty state and preserves filter-only results
+Browser PASS: Empty search hides recommendations; direct catalog browsing remains available
+Browser PASS: Real image upload also loads related products for its first result
+Browser PASS: Mobile panel, source selector and real thumbnails fit viewport
+{
+  "checks": [
+    "Real text results call related endpoint with source ID/top_k; loading and complementary results",
+    "Changing seed, isolated 503 error and successful retry preserve main results",
+    "Malformed and network-failure responses show errors without fallback products (simulated)",
+    "Rapid source changes cancel stale requests and keep the latest recommendations",
+    "Unsupported source category has a real empty state and preserves filter-only results",
+    "Empty search hides recommendations; direct catalog browsing remains available",
+    "Real image upload also loads related products for its first result",
+    "Mobile panel, source selector and real thumbnails fit viewport"
+  ],
+  "page_errors": [],
+  "outgoing_related_requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/18882/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/18881/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/18881/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/18761/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/18761/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/11375/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/10098/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/10098/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/10180/related?top_k=8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:58934/api/v1/products/10180/related?top_k=8"
+    }
+  ],
+  "note": "Valid/empty searches use real HTTP data; 503, malformed and network failures are simulated."
+}
+
+EXIT_CODE: 0
+UTC_END: 2026-10-16T10:10:05.234827+00:00

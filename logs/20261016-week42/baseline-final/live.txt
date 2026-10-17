@@ -1,0 +1,27 @@
+2026-10-16T10:04:02.935687+00:00 COMMAND: D:\code\IT_Project\.venv\Scripts\python.exe D:\code\IT_Project\scripts\load_test_api.py --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --backend-dir .cache/week10-baseline/backend --output-dir logs/20261016-week10/baseline-final --label baseline --cache-size 0
+2026-10-16T10:04:03.906452+00:00 Initializing baseline with real catalog/model...
+2026-10-16T10:04:23.536703+00:00 image_repeat           c=1 n=48 errors=0 p50=222.3 p95=293.6 ms rps=4.29 cache={'unavailable': 48}
+2026-10-16T10:04:33.373035+00:00 image_repeat           c=4 n=48 errors=0 p50=820.6 p95=869.5 ms rps=4.89 cache={'unavailable': 48}
+2026-10-16T10:04:44.005768+00:00 image_repeat           c=8 n=48 errors=0 p50=1690.6 p95=1911.8 ms rps=4.53 cache={'unavailable': 48}
+2026-10-16T10:04:55.140433+00:00 image_varied           c=1 n=48 errors=0 p50=250.0 p95=289.6 ms rps=4.32 cache={'unavailable': 48}
+2026-10-16T10:05:04.228141+00:00 image_varied           c=4 n=48 errors=0 p50=733.8 p95=928.1 ms rps=5.31 cache={'unavailable': 48}
+2026-10-16T10:05:13.453114+00:00 image_varied           c=8 n=48 errors=0 p50=1408.1 p95=1776.5 ms rps=5.23 cache={'unavailable': 48}
+2026-10-16T10:05:16.257568+00:00 text_repeat            c=1 n=48 errors=0 p50=49.1 p95=54.8 ms rps=17.47 cache={'unavailable': 48}
+2026-10-16T10:05:18.159797+00:00 text_repeat            c=4 n=48 errors=0 p50=135.2 p95=229.4 ms rps=26.21 cache={'unavailable': 48}
+2026-10-16T10:05:19.947019+00:00 text_repeat            c=8 n=48 errors=0 p50=281.3 p95=307.2 ms rps=28.05 cache={'unavailable': 48}
+2026-10-16T10:05:22.332102+00:00 text_varied            c=1 n=48 errors=0 p50=45.3 p95=52.6 ms rps=20.82 cache={'unavailable': 48}
+2026-10-16T10:05:24.163430+00:00 text_varied            c=4 n=48 errors=0 p50=140.1 p95=175.9 ms rps=27.55 cache={'unavailable': 48}
+2026-10-16T10:05:25.889898+00:00 text_varied            c=8 n=48 errors=0 p50=266.1 p95=287.3 ms rps=29.38 cache={'unavailable': 48}
+2026-10-16T10:05:28.577911+00:00 text_filtered_varied   c=1 n=48 errors=0 p50=51.8 p95=64.5 ms rps=18.52 cache={'unavailable': 48}
+2026-10-16T10:05:30.507655+00:00 text_filtered_varied   c=4 n=48 errors=0 p50=145.0 p95=202.7 ms rps=26.40 cache={'unavailable': 48}
+2026-10-16T10:05:32.416651+00:00 text_filtered_varied   c=8 n=48 errors=0 p50=289.8 p95=316.9 ms rps=26.73 cache={'unavailable': 48}
+2026-10-16T10:05:35.500623+00:00 related_repeat         c=1 n=48 errors=0 p50=61.5 p95=67.9 ms rps=16.06 cache={'unavailable': 48}
+2026-10-16T10:05:36.677798+00:00 related_repeat         c=4 n=48 errors=0 p50=87.6 p95=93.3 ms rps=45.74 cache={'unavailable': 48}
+2026-10-16T10:05:37.622682+00:00 related_repeat         c=8 n=48 errors=0 p50=135.4 p95=158.3 ms rps=58.45 cache={'unavailable': 48}
+2026-10-16T10:05:40.460480+00:00 related_varied         c=1 n=48 errors=0 p50=61.0 p95=68.5 ms rps=17.64 cache={'unavailable': 48}
+2026-10-16T10:05:41.500587+00:00 related_varied         c=4 n=48 errors=0 p50=75.5 p95=96.1 ms rps=52.11 cache={'unavailable': 48}
+2026-10-16T10:05:42.431123+00:00 related_varied         c=8 n=48 errors=0 p50=128.4 p95=187.2 ms rps=60.80 cache={'unavailable': 48}
+2026-10-16T10:05:43.417617+00:00 filter_only            c=1 n=48 errors=0 p50=16.7 p95=34.0 ms rps=53.80 cache={'unavailable': 48}
+2026-10-16T10:05:43.800743+00:00 filter_only            c=4 n=48 errors=0 p50=20.7 p95=31.2 ms rps=170.90 cache={'unavailable': 48}
+2026-10-16T10:05:44.168079+00:00 filter_only            c=8 n=48 errors=0 p50=40.5 p95=47.9 ms rps=185.61 cache={'unavailable': 48}
+2026-10-16T10:05:47.100500+00:00 Evidence: D:\code\IT_Project\logs\20261016-week10\baseline-final; 1152 requests, 0 errors

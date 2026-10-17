@@ -622,3 +622,58 @@ Logs, request/response records, dependency versions, source/artifact hashes, scr
 - The repository mainly contains source code, notebooks, scripts, documentation, tests, and frontend assets.
 - Image search currently uses the real FashionCLIP + FAISS backend.
 - Text search uses the real FashionCLIP backend and checks gender/category/color filters against metadata aligned to indexed product IDs.
+
+## Week 10: API load tests and profiling
+
+Install `requirements-test.txt`, provide the existing local FashionCLIP checkpoint,
+FAISS index, product IDs, image vectors and Dataset 2 images/metadata, then run:
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m scripts.collect_week10_evidence --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --with-ui
+```
+
+The runner extracts the Week 9 backend from commit
+`483bf44d6837639608a0a20e5943b0a77fddcd26` (override with `--baseline-ref`), runs the
+same local HTTP workload against that baseline and the current backend with cache
+disabled/enabled, and records separate cProfile traces. It also runs pytest,
+independent real-catalog ranking checks, browser regressions and the frontend build.
+It starts/stops its own local servers. `--with-ui` requires local Google Chrome;
+omit it for API-only regression checks (build still requires frontend dependencies).
+Evidence goes to a new `logs/<UTC timestamp>-week10/` folder. Run benchmarks one at
+a time with other heavy workloads stopped.
+
+Defaults: 48 requests for each scenario at 1, 4 and 8 concurrent clients. Scenarios
+include repeated and varied image, text and related queries, filtered text, and
+filter-only browsing. Each batch starts with an empty result cache; the varied
+workloads cycle through 20 inputs, so cache-enabled runs contain both misses and
+hits. Startup and warmup are separate from measured batches. These are small,
+closed-loop localhost tests, not production capacity estimates.
+
+For one measurement of the current backend without cache:
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m scripts.load_test_api --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --output-dir logs/my-api-load-test --cache-size 0
+```
+
+Use a new output folder for each run. View `.prof` files with Python's `pstats`
+module; adjacent `*-profile.txt` files list the slowest call paths. Load-test raw
+records and p50/p95/p99 latency, throughput and cache statuses are in `results.json`.
+
+The backend cache defaults to 256 result entries with a 300-second TTL per process.
+Set `$env:SEARCH_CACHE_SIZE="0"` before starting the backend to disable it; set
+`SEARCH_CACHE_TTL_SECONDS` to change expiry. Restart the backend after changing
+catalog artifacts, model or category rules. `X-Search-Cache` identifies cache hits,
+misses, shared computations and bypasses. No new dependencies are required.
+
+See [the Week 10 test report](docs/test_report.md) and [the API cache contract](docs/API_docs.md#search-result-cache-and-performance-verification).
+
+After the collector finishes, generate the full latency table and compare every
+measured result against baseline (use the new evidence directory printed above):
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m scripts.summarize_api_load --evidence-dir logs/<UTC-timestamp>-week10
+```
+
+This writes `comparison.md` and `comparison-checks.json`. The strict comparison
+checks IDs/order and score tolerance for the recorded workload; arbitrary ordering
+of tied scores remains allowed by the API contract.

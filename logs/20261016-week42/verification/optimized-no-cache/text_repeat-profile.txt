@@ -1,0 +1,53 @@
+         20794 function calls (18979 primitive calls) in 0.177 seconds
+
+   Ordered by: cumulative time
+   List reduced from 528 to 45 due to restriction <45>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        5    0.000    0.000    0.177    0.035 testing.py:204(open)
+        5    0.000    0.000    0.174    0.035 test.py:1062(open)
+        5    0.000    0.000    0.173    0.035 test.py:984(run_wsgi_app)
+        5    0.000    0.000    0.172    0.034 test.py:1230(run_wsgi_app)
+        5    0.000    0.000    0.172    0.034 app.py:1529(__call__)
+        5    0.000    0.000    0.172    0.034 app.py:1479(wsgi_app)
+        5    0.000    0.000    0.170    0.034 app.py:904(full_dispatch_request)
+        5    0.000    0.000    0.169    0.034 app.py:879(dispatch_request)
+        5    0.000    0.000    0.169    0.034 app.py:153(search_text)
+        5    0.000    0.000    0.167    0.033 app.py:55(cached_success)
+        5    0.000    0.000    0.165    0.033 cache.py:29(get_or_compute)
+        5    0.000    0.000    0.165    0.033 app.py:186(<lambda>)
+        5    0.000    0.000    0.164    0.033 search.py:70(search_text)
+        5    0.000    0.000    0.159    0.032 search.py:56(_embed_text)
+        5    0.000    0.000    0.154    0.031 generic.py:779(wrapper)
+        5    0.000    0.000    0.154    0.031 modeling_clip.py:861(get_text_features)
+   755/10    0.001    0.000    0.153    0.015 module.py:1779(_wrapped_call_impl)
+   755/10    0.003    0.000    0.153    0.015 module.py:1787(_call_impl)
+        5    0.000    0.000    0.153    0.031 modeling_clip.py:583(forward)
+        5    0.000    0.000    0.150    0.030 modeling_clip.py:500(forward)
+       60    0.000    0.000    0.149    0.002 modeling_layers.py:60(__call__)
+       60    0.002    0.000    0.148    0.002 modeling_clip.py:377(forward)
+      365    0.001    0.000    0.113    0.000 linear.py:130(forward)
+      365    0.111    0.000    0.111    0.000 {built-in method torch._C._nn.linear}
+       60    0.001    0.000    0.092    0.002 modeling_clip.py:361(forward)
+       60    0.002    0.000    0.037    0.001 modeling_clip.py:301(forward)
+      125    0.001    0.000    0.015    0.000 normalization.py:227(forward)
+      125    0.001    0.000    0.015    0.000 functional.py:2972(layer_norm)
+      125    0.014    0.000    0.014    0.000 {built-in method torch.layer_norm}
+       60    0.001    0.000    0.005    0.000 sdpa_attention.py:48(sdpa_attention_forward)
+        5    0.000    0.000    0.005    0.001 processing_utils.py:537(__call__)
+        5    0.001    0.000    0.004    0.001 search.py:115(_search_vector)
+        5    0.000    0.000    0.004    0.001 tokenization_utils_base.py:2995(__call__)
+        5    0.000    0.000    0.004    0.001 tokenization_utils_base.py:3093(_call_one)
+        5    0.000    0.000    0.004    0.001 tokenization_utils_base.py:3311(batch_encode_plus)
+        5    0.000    0.000    0.003    0.001 tokenization_utils.py:823(_batch_encode_plus)
+       60    0.002    0.000    0.003    0.000 activations.py:118(forward)
+       60    0.003    0.000    0.003    0.000 {built-in method torch._C._nn.scaled_dot_product_attention}
+        5    0.000    0.000    0.003    0.001 app.py:52(success)
+        5    0.000    0.000    0.003    0.001 __init__.py:138(jsonify)
+        5    0.000    0.000    0.003    0.001 provider.py:189(response)
+        5    0.000    0.000    0.002    0.000 testing.py:193(_request_from_builder_args)
+       10    0.000    0.000    0.002    0.000 response.py:144(__init__)
+     1765    0.002    0.000    0.002    0.000 module.py:1959(__getattr__)
+       10    0.000    0.000    0.002    0.000 response.py:111(__init__)
+
+

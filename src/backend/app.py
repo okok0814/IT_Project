@@ -1,5 +1,6 @@
 """Run from the repository root: python -m src.backend.app."""
 import io
+import hashlib
 import os
 import re
 import warnings
@@ -12,7 +13,8 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 
 from .search import FashionSearch, ProductNotFoundError
-from .metadata import FILTER_FIELDS
+from .metadata import FILTER_FIELDS, normalize_value
+from .cache import ResultCache
 
 ROOT = Path(__file__).resolve().parents[2]
 MAX_IMAGE_BYTES = 10 * 1024 * 1024
@@ -34,16 +36,27 @@ def create_app(config=None, search_service=None):
         MODEL_PATH=os.environ.get("MODEL_PATH") or os.environ.get("MODEL_HF_NAME") or "patrickjohncyh/fashion-clip",
         MODEL_CACHE=str(ROOT / ".cache/huggingface"),
         METADATA_PATH=os.environ.get("METADATA_PATH") or os.environ.get("FASHION_METADATA_PATH"),
+        SEARCH_CACHE_SIZE=os.environ.get("SEARCH_CACHE_SIZE", "256"),
+        SEARCH_CACHE_TTL_SECONDS=os.environ.get("SEARCH_CACHE_TTL_SECONDS", "300"),
     )
     if config:
         app.config.update(config)
     app.config["IMAGE_DIR"] = str(Path(app.config["IMAGE_DIR"]).resolve())
-    CORS(app, origins=[os.environ.get("ALLOWED_ORIGIN", "http://localhost:5173"), "http://127.0.0.1:5173"])
+    CORS(app, origins=[os.environ.get("ALLOWED_ORIGIN", "http://localhost:5173"), "http://127.0.0.1:5173"],
+         expose_headers=["X-Search-Cache"])
     app.extensions["search_service"] = search_service
+    cache = ResultCache(app.config["SEARCH_CACHE_SIZE"], app.config["SEARCH_CACHE_TTL_SECONDS"])
+    app.extensions["search_cache"] = cache
     load_lock = Lock()
 
     def success(data):
         return jsonify(success=True, data=data, error=None)
+
+    def cached_success(key, compute):
+        data, status = cache.get_or_compute(key, compute)
+        response = success(data)
+        response.headers["X-Search-Cache"] = status
+        return response
 
     def error(message, status):
         return jsonify(success=False, data=None, error=message), status
@@ -105,16 +118,23 @@ def create_app(config=None, search_service=None):
                     source.verify()
                 with Image.open(io.BytesIO(contents)) as source:
                     source.load()
-                    oriented = ImageOps.exif_transpose(source)
-                    rgba = oriented.convert("RGBA")
-                    rgb = Image.new("RGB", rgba.size, "white")
-                    rgb.paste(rgba, mask=rgba.getchannel("A"))
+                    ImageOps.exif_transpose(source, in_place=True)
+                    if "A" in source.getbands() or "transparency" in source.info:
+                        with source.convert("RGBA") as rgba, rgba.getchannel("A") as alpha:
+                            rgb = Image.new("RGB", rgba.size, "white")
+                            rgb.paste(rgba, mask=alpha)
+                    else:
+                        # Opaque JPG/PNG needs no RGBA buffer or alpha composite.
+                        rgb = source.convert("RGB")
         except (Image.DecompressionBombError, Image.DecompressionBombWarning):
             return error("Image dimensions are too large. Maximum is 25 megapixels.", 413)
         except (UnidentifiedImageError, OSError, ValueError, SyntaxError):
             return error("Cannot decode this image. It may be corrupt or truncated.", 400)
         try:
-            return success(get_search_service().search(rgb, top_k))
+            # Validate/decode every upload before a cache lookup. Retain only its
+            # digest and result metadata, never uploaded bytes or decoded pixels.
+            key = ("image", hashlib.sha256(contents).hexdigest(), top_k)
+            return cached_success(key, lambda: get_search_service().search(rgb, top_k))
         except (OSError, ImportError, ValueError):
             app.logger.exception("Image search configuration or data failure")
             return error("Image search is unavailable. Check the model, index, product IDs and IMAGE_DIR on the server.", 503)
@@ -161,7 +181,9 @@ def create_app(config=None, search_service=None):
         if not query and not filters:
             return error("Enter a text query or choose at least one filter.", 400)
         try:
-            return success(get_search_service().search_text(query, top_k, filters))
+            key = ("text", query, top_k,
+                   tuple((field, normalize_value(value, field)) for field, value in sorted(filters.items())))
+            return cached_success(key, lambda: get_search_service().search_text(query, top_k, filters))
         except (OSError, ImportError, ValueError):
             app.logger.exception("Text search configuration or data failure")
             return error("Text search is unavailable. Check the model, index, product IDs, IMAGE_DIR and METADATA_PATH on the server.", 503)
@@ -180,7 +202,8 @@ def create_app(config=None, search_service=None):
         if not re.fullmatch(r"[0-9]{1,3}", raw_k) or not 1 <= int(raw_k) <= 50:
             return error("top_k must be an integer from 1 to 50.", 400)
         try:
-            return success(get_search_service().related_products(product_id, int(raw_k)))
+            key = ("related", product_id, int(raw_k))
+            return cached_success(key, lambda: get_search_service().related_products(product_id, int(raw_k)))
         except ProductNotFoundError:
             return error("Product not found in the search catalog.", 404)
         except (OSError, ImportError, ValueError):

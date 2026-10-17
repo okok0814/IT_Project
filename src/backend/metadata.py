@@ -50,9 +50,22 @@ class ProductMetadata:
             raise ValueError(f"Metadata is missing {len(missing)} indexed product IDs")
         self.rows = [by_id[str(pid)] for pid in product_ids]
         self.values = {key: np.array([normalize_value(row[key], key) for row in self.rows]) for key in FILTER_FIELDS}
+        # Compare compact integer labels on requests instead of scanning arrays
+        # of long Unicode strings. Keep original values for display/rule lookup.
+        self.codes, self.codebooks = {}, {}
+        for field, values in self.values.items():
+            labels, codes = np.unique(values, return_inverse=True)
+            self.codebooks[field] = {label: number for number, label in enumerate(labels)}
+            self.codes[field] = codes.astype(np.int32)
+        self.id_order = np.argsort(np.asarray(product_ids, dtype=str))
 
     def mask(self, filters):
         result = np.ones(len(self.rows), dtype=bool)
         for field, value in filters.items():
-            result &= self.values[field] == normalize_value(value, field)
+            code = self.codebooks[field].get(normalize_value(value, field), -1)
+            result &= self.codes[field] == code
         return result
+
+    def any_of(self, field, values):
+        codes = [self.codebooks[field][value] for value in values if value in self.codebooks[field]]
+        return np.isin(self.codes[field], codes)

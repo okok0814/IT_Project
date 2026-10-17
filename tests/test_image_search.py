@@ -124,6 +124,16 @@ def test_orientation_and_alpha(setup):
     assert service.calls[-1][0].getpixel((0, 0)) == (255, 255, 255)
 
 
+def test_palette_and_rgb_transparency_still_composite_on_white(setup):
+    client, service = setup
+    for mode in ['P', 'RGB']:
+        output = io.BytesIO()
+        with Image.new(mode, (8, 8)) as image:
+            image.save(output, format='PNG', transparency=0 if mode == 'P' else (0, 0, 0))
+        assert post(client, output.getvalue(), 'transparent.png', 'image/png').status_code == 200
+        assert service.calls[-1][0].getpixel((0, 0)) == (255, 255, 255)
+
+
 def test_alias_and_image_serving(setup):
     client, service = setup
     response = client.post("/api/v1/search/image", data={"image": (io.BytesIO(image_bytes()), "test.jpg")})

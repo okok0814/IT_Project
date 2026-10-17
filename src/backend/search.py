@@ -74,7 +74,8 @@ class FashionSearch:
             return []
         if not query:
             # Filter-only browsing has deterministic ID ordering and no embedding score.
-            positions = sorted(np.flatnonzero(mask), key=lambda pos: str(self.ids[pos]))[:top_k]
+            order = self.metadata.id_order
+            positions = order[mask[order]][:top_k]
             return [self._result(pos, None, include_metadata=True) for pos in positions]
         return self._search_vector(self._embed_text(query), top_k, mask)
 
@@ -86,8 +87,10 @@ class FashionSearch:
         position = int(positions[0])
         categories = COMPLEMENTARY_CATEGORIES.get(self.metadata.values["category"][position], frozenset())
         genders = COMPATIBLE_GENDERS.get(self.metadata.values["gender"][position], frozenset())
-        mask = np.isin(self.metadata.values["category"], list(categories))
-        mask &= np.isin(self.metadata.values["gender"], list(genders))
+        if not categories or not genders:
+            return []
+        mask = self.metadata.any_of("category", categories)
+        mask &= self.metadata.any_of("gender", genders)
         mask[position] = False
         if not mask.any():
             return []
@@ -110,15 +113,26 @@ class FashionSearch:
         return result
 
     def _search_vector(self, vector, top_k, mask=None):
+        import faiss
+
         vector = np.ascontiguousarray(vector, dtype=np.float32)
         norm = np.linalg.norm(vector)
         if vector.shape != (1, self.index.d) or not np.isfinite(vector).all() or norm <= 0:
             raise ValueError("Invalid query embedding")
         vector /= norm
-        # Exact ranking over the full catalog when filtering: never filter only an
-        # unfiltered top-k shortlist, which can discard all valid matches.
-        candidate_k = self.index.ntotal if mask is not None else min(top_k, self.index.ntotal)
-        scores, positions = self.index.search(vector, candidate_k)
+        # IndexFlat + IDSelectorArray computes exact scores only for eligible
+        # rows, keeping a top-k heap instead of sorting the entire catalog.
+        # The selector belongs to this call; concurrent filters cannot interfere.
+        params = None
+        candidate_k = min(top_k, self.index.ntotal)
+        if mask is not None and not mask.all():
+            eligible = np.flatnonzero(mask).astype(np.int64)
+            if not len(eligible):
+                return []
+            selector = faiss.IDSelectorArray(eligible)
+            params = faiss.SearchParameters(sel=selector)
+            candidate_k = min(top_k, len(eligible))
+        scores, positions = self.index.search(vector, candidate_k, params=params)
         results = []
         for score, pos in zip(scores[0], positions[0]):
             if pos >= 0 and (mask is None or mask[pos]):

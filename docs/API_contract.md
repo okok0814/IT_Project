@@ -25,3 +25,7 @@ This replaces the earlier draft that used a `status` field.
 - Unknown source IDs return 404; unsupported source categories or no eligible
   candidates return 200 with an empty array. Invalid/duplicate/unknown query
   parameters return 400. See [the rules and examples](API_docs.md).
+- Successful search responses include `X-Search-Cache` (`MISS`, `HIT`,
+  `COALESCED`, or `BYPASS`). JSON shapes and validation rules are unchanged.
+  Cache defaults are 256 entries / 300 seconds per application instance;
+  see [cache configuration and invalidation](API_docs.md#search-result-cache-and-performance-verification).

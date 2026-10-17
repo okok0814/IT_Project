@@ -1,0 +1,53 @@
+         44383 function calls (41933 primitive calls) in 1.467 seconds
+
+   Ordered by: cumulative time
+   List reduced from 704 to 45 due to restriction <45>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        5    0.000    0.000    1.467    0.293 testing.py:204(open)
+        5    0.000    0.000    1.446    0.289 test.py:1062(open)
+        5    0.000    0.000    1.446    0.289 test.py:984(run_wsgi_app)
+        5    0.000    0.000    1.444    0.289 test.py:1230(run_wsgi_app)
+        5    0.000    0.000    1.444    0.289 app.py:1529(__call__)
+        5    0.000    0.000    1.444    0.289 app.py:1479(wsgi_app)
+        5    0.000    0.000    1.441    0.288 app.py:904(full_dispatch_request)
+        5    0.014    0.003    1.440    0.288 app.py:879(dispatch_request)
+        5    0.003    0.001    1.425    0.285 app.py:68(search_image)
+        5    0.000    0.000    1.080    0.216 search.py:48(search)
+        5    0.000    0.000    0.627    0.125 generic.py:779(wrapper)
+        5    0.000    0.000    0.627    0.125 modeling_clip.py:898(get_image_features)
+   760/10    0.003    0.000    0.627    0.063 module.py:1779(_wrapped_call_impl)
+   760/10    0.006    0.000    0.627    0.063 module.py:1787(_call_impl)
+        5    0.000    0.000    0.626    0.125 modeling_clip.py:726(forward)
+        5    0.001    0.000    0.571    0.114 modeling_clip.py:500(forward)
+       60    0.001    0.000    0.569    0.009 modeling_layers.py:60(__call__)
+       60    0.013    0.000    0.567    0.009 modeling_clip.py:377(forward)
+      365    0.002    0.000    0.487    0.001 linear.py:130(forward)
+      365    0.484    0.001    0.484    0.001 {built-in method torch._C._nn.linear}
+        5    0.000    0.000    0.414    0.083 processing_utils.py:537(__call__)
+        5    0.000    0.000    0.413    0.083 image_processing_utils.py:49(__call__)
+        5    0.007    0.001    0.413    0.083 image_processing_clip.py:202(preprocess)
+       60    0.003    0.000    0.332    0.006 modeling_clip.py:361(forward)
+        5    0.009    0.002    0.285    0.057 image_processing_clip.py:153(resize)
+        5    0.005    0.001    0.276    0.055 image_transforms.py:323(resize)
+       60    0.004    0.000    0.205    0.003 modeling_clip.py:301(forward)
+        5    0.000    0.000    0.180    0.036 Image.py:2329(resize)
+        5    0.180    0.036    0.180    0.036 {method 'resize' of 'ImagingCore' objects}
+       10    0.118    0.012    0.118    0.012 {method 'decode' of 'ImagingDecoder' objects}
+        5    0.000    0.000    0.109    0.022 Image.py:1840(paste)
+        5    0.109    0.022    0.109    0.022 {method 'paste' of 'ImagingCore' objects}
+       25    0.038    0.002    0.108    0.004 {built-in method numpy.array}
+        5    0.000    0.000    0.105    0.021 image_processing_clip.py:313(<listcomp>)
+        5    0.000    0.000    0.105    0.021 image_utils.py:287(to_numpy_array)
+       15    0.000    0.000    0.096    0.006 ImageFile.py:291(load)
+        5    0.000    0.000    0.088    0.018 image_transforms.py:162(to_pil_image)
+       10    0.003    0.000    0.070    0.007 Image.py:804(__array_interface__)
+       10    0.001    0.000    0.066    0.007 Image.py:842(tobytes)
+        5    0.000    0.000    0.064    0.013 Image.py:3378(fromarray)
+        5    0.000    0.000    0.063    0.013 Image.py:3288(frombuffer)
+        5    0.000    0.000    0.063    0.013 Image.py:3242(frombytes)
+       10    0.000    0.000    0.061    0.006 Image.py:3193(new)
+       10    0.061    0.006    0.061    0.006 {built-in method PIL._imaging.fill}
+        5    0.001    0.000    0.054    0.011 modeling_clip.py:195(forward)
+
+

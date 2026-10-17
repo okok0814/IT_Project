@@ -1,0 +1,53 @@
+         39738 function calls (33903 primitive calls) in 0.022 seconds
+
+   Ordered by: cumulative time
+   List reduced from 324 to 45 due to restriction <45>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        5    0.000    0.000    0.022    0.004 testing.py:204(open)
+        5    0.000    0.000    0.020    0.004 test.py:1062(open)
+        5    0.000    0.000    0.020    0.004 test.py:984(run_wsgi_app)
+        5    0.000    0.000    0.019    0.004 test.py:1230(run_wsgi_app)
+        5    0.000    0.000    0.018    0.004 app.py:1529(__call__)
+        5    0.000    0.000    0.018    0.004 app.py:1479(wsgi_app)
+        5    0.000    0.000    0.017    0.003 app.py:904(full_dispatch_request)
+        5    0.000    0.000    0.017    0.003 app.py:879(dispatch_request)
+        5    0.000    0.000    0.017    0.003 app.py:153(search_text)
+        5    0.000    0.000    0.016    0.003 app.py:55(cached_success)
+        5    0.000    0.000    0.014    0.003 cache.py:29(get_or_compute)
+   5755/5    0.007    0.000    0.011    0.002 copy.py:128(deepcopy)
+        5    0.000    0.000    0.011    0.002 copy.py:201(_deepcopy_list)
+      250    0.002    0.000    0.010    0.000 copy.py:227(_deepcopy_dict)
+        5    0.000    0.000    0.003    0.001 app.py:186(<lambda>)
+        5    0.000    0.000    0.003    0.001 search.py:70(search_text)
+        5    0.000    0.000    0.002    0.000 search.py:79(<listcomp>)
+      250    0.001    0.000    0.002    0.000 search.py:105(_result)
+        5    0.000    0.000    0.001    0.000 app.py:52(success)
+        5    0.000    0.000    0.001    0.000 __init__.py:138(jsonify)
+        5    0.000    0.000    0.001    0.000 provider.py:189(response)
+        5    0.000    0.000    0.001    0.000 testing.py:193(_request_from_builder_args)
+       10    0.000    0.000    0.001    0.000 provider.py:166(dumps)
+       10    0.000    0.000    0.001    0.000 __init__.py:183(dumps)
+    11819    0.001    0.000    0.001    0.000 {method 'get' of 'dict' objects}
+       10    0.000    0.000    0.001    0.000 encoder.py:183(encode)
+       10    0.001    0.000    0.001    0.000 encoder.py:205(iterencode)
+      300    0.000    0.000    0.001    0.000 parse.py:847(quote)
+       10    0.000    0.000    0.001    0.000 wsgi.py:31(get_current_url)
+        5    0.000    0.000    0.001    0.000 testing.py:49(__init__)
+        5    0.000    0.000    0.001    0.000 test.py:302(__init__)
+        5    0.000    0.000    0.001    0.000 app.py:922(finalize_request)
+        5    0.000    0.000    0.001    0.000 app.py:1298(process_response)
+       10    0.000    0.000    0.001    0.000 utils.py:162(get_current_url)
+      270    0.000    0.000    0.001    0.000 parse.py:923(quote_from_bytes)
+     6270    0.001    0.000    0.001    0.000 {built-in method builtins.id}
+        5    0.000    0.000    0.001    0.000 extension.py:217(cors_after_request)
+     5500    0.001    0.000    0.001    0.000 copy.py:182(_deepcopy_atomic)
+        5    0.000    0.000    0.001    0.000 test.py:759(get_request)
+       10    0.000    0.000    0.000    0.000 urls.py:61(uri_to_iri)
+        5    0.000    0.000    0.000    0.000 test.py:939(_add_cookies_to_wsgi)
+       10    0.000    0.000    0.000    0.000 ctx.py:377(push)
+        5    0.000    0.000    0.000    0.000 test.py:671(get_environ)
+        5    0.000    0.000    0.000    0.000 core.py:357(set_cors_headers)
+        5    0.000    0.000    0.000    0.000 request.py:588(get_json)
+
+

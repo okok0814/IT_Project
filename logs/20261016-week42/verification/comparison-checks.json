@@ -1,0 +1,31 @@
+{
+  "compared_responses": 2304,
+  "identical_product_order": true,
+  "maximum_score_difference": 1.0000000000287557e-06,
+  "score_tolerance": 2e-05,
+  "same_artifacts_and_load_runner": true,
+  "current_backend_matches_measured_source": true,
+  "sample_image_sha256": {
+    "10180.jpg": "49d5939adb56f333be18d5461727c0ccaeeb6b43e47eb65ee689309ce6362ab6",
+    "13016.jpg": "25106f30c1fa2b71243516da74020720ed2cf104b4d332b95be97bbea4429bee",
+    "16806.jpg": "9724d7b1569610d5428d4796e7279a0613be16ede567e65a44631e0a25e22ec4",
+    "2227.jpg": "c167d6983b9f2ce9513f26fab22847052158230fa04938f9505eacad13b295c1",
+    "24408.jpg": "a12fe5cb11035ff0f364515caca8be452107eab5605b73031041d9f1669c190e",
+    "2886.jpg": "c044855ae7c6f1bed080e2c66f181cda3688fba5cbe973e856f360b6529c4e8c",
+    "31105.jpg": "f1bb7a6665179f7a082a1251242a20a9ed15b757a1bdb5360fa0153a3cb0adec",
+    "31172.jpg": "3dbf384ae6cda63ae86f6409d4c4a760f09df36bcf9fe1e543cbd143663cdb75",
+    "32812.jpg": "0c5a7b9ea53f8e41825e12581f111399312f709ef192b3bb96b13f91ce1cfae3",
+    "34066.jpg": "73025e0559f43425661792f07a34d23d03ff0898a3135e39afcea9a442517e9a",
+    "36203.jpg": "1ec0b3b74d18f89058003853e33a2c9fb31840fdc696e365f16ab57bbb29df06",
+    "38654.jpg": "e6620768be204a6d823128ee97d68b6491b7b5d8ed6c5818cc290c15e91fc601",
+    "38947.jpg": "55aa73eaf1a30cc49951b671caa778cda0af485bc0857fba64aa5ee6bfc08e94",
+    "41750.jpg": "fd156f8d8030360a8b17d31ddbd96d6a6a4b1d9e6724a6d67fe6c8c9d2d1d5b7",
+    "4727.jpg": "efcc2ae3d4f980b82c452adc3bd4fdfe76f2bde51de1e6108672a6112943ffdf",
+    "49839.jpg": "b5d0479d03858b39cdf3ce70cc90da606a7cddf29158be3d6961fe6bfe348ffe",
+    "52125.jpg": "50db6d79d03aec9b9bddf5ed83708cf49bc2933be9d758b11527d8bd0ce5c130",
+    "54529.jpg": "0d40691c46ed14b58bb9f0ad608056268671abf5ea1ea2e1bead2752e967aeb1",
+    "59759.jpg": "329f4ac864f2d2cd60a8239baeb092904d35d7cd03b4a7bdfd4559363660b3e9",
+    "8353.jpg": "72cbd4a9b8928b606b32780365835dea355339d68d5d96b533177ebbc819fa74"
+  },
+  "note": "Exact IDs/order match for this workload. The API does not guarantee ordering between ties in general."
+}
