@@ -6,9 +6,12 @@ export default function HomePage() {
   return (
     <div className="home-page">
       <section className="hero-panel">
-        <div className="floating-disc">✦</div>
         <h1>
-          KAYKAYMYDU FASHION DISCOVER
+          KAYKAYMYDU{" "}
+          <br className="home-title-break" />
+          FASHION{" "}
+          <br className="home-title-break" />
+          DISCOVER
         </h1>
         <div className="hero-actions">
           <button

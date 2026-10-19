@@ -47,6 +47,32 @@ function buildPageItems(currentPage, totalPages) {
   return pages
 }
 
+function buildMobilePageItems(currentPage, totalPages) {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1)
+  }
+
+  const start = currentPage <= 3
+    ? 1
+    : Math.min(currentPage, totalPages - 3)
+  const end = start + 3
+  const pages = []
+
+  for (let page = start; page <= end; page += 1) {
+    pages.push(page)
+  }
+
+  if (end < totalPages) {
+    if (end < totalPages - 1) {
+      pages.push('right-ellipsis')
+    }
+
+    pages.push(totalPages)
+  }
+
+  return pages
+}
+
 export default function ResultsPage() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -59,8 +85,6 @@ export default function ResultsPage() {
 
   const hasSearchResults = Array.isArray(apiResults)
 
-  // Direct /results view also uses the full real Dataset 2 catalog.
-  // No mock products are used.
   const products = hasSearchResults ? apiResults : textSearchDemoCatalog
   const count = products.length
 
@@ -91,6 +115,10 @@ export default function ResultsPage() {
 
   const pageItems = useMemo(
     () => buildPageItems(currentPage, totalPages),
+    [currentPage, totalPages],
+  )
+  const mobilePageItems = useMemo(
+    () => buildMobilePageItems(currentPage, totalPages),
     [currentPage, totalPages],
   )
 
@@ -134,7 +162,7 @@ export default function ResultsPage() {
       ? `Results for “${query}”`
       : isTextSearch
         ? 'TEXT SEARCH RESULTS'
-        : 'DATASET 2 CATALOG'
+        : 'FASHION PRODUCT IMAGES DATASET'
 
   const appliedFilters = [
     filters.gender && { label: 'Gender', value: filters.gender },
@@ -164,7 +192,7 @@ export default function ResultsPage() {
               ? 'VISUAL MATCHES'
               : isTextSearch
                 ? 'TEXT MATCHES'
-                : 'REAL DATASET 2 PRODUCTS'}
+                : ''}
           </p>
 
           <h1>{heading}</h1>
@@ -172,12 +200,6 @@ export default function ResultsPage() {
           {isImageSearch && uploadedImageName && (
             <p>
               Results returned for <strong>{uploadedImageName}</strong>.
-            </p>
-          )}
-
-          {isCatalogView && (
-            <p>
-              Browsing the full real Dataset 2 metadata catalog.
             </p>
           )}
 
@@ -194,9 +216,6 @@ export default function ResultsPage() {
           )}
         </div>
 
-        <span className="result-count">
-          {count} {count === 1 ? 'ITEM' : 'ITEMS'} FOUND
-        </span>
       </section>
 
       {hasSearchResults && count === 0 ? (
@@ -227,7 +246,7 @@ export default function ResultsPage() {
               <p>
                 {isCatalogView ? (
                   <>
-                    Source: <strong>real Dataset 2 metadata</strong>
+                    Source: <strong>Fashion Product Images Dataset</strong>
                   </>
                 ) : (
                   <>
@@ -260,7 +279,7 @@ export default function ResultsPage() {
                 Page {currentPage} of {totalPages}
               </div>
 
-              <div className="pagination">
+              <div className="pagination pagination-desktop">
                 <button
                   type="button"
                   className="pagination-btn pagination-arrow"
@@ -272,6 +291,54 @@ export default function ResultsPage() {
                 </button>
 
                 {pageItems.map((item, index) => {
+                  if (typeof item === 'string') {
+                    return (
+                      <span
+                        className="pagination-ellipsis"
+                        key={`${item}-${index}`}
+                        aria-hidden="true"
+                      >
+                        …
+                      </span>
+                    )
+                  }
+
+                  return (
+                    <button
+                      type="button"
+                      className={`pagination-btn ${currentPage === item ? 'pagination-active' : ''}`}
+                      onClick={() => goToPage(item)}
+                      aria-current={currentPage === item ? 'page' : undefined}
+                      key={item}
+                    >
+                      {item}
+                    </button>
+                  )
+                })}
+
+                <button
+                  type="button"
+                  className="pagination-btn pagination-arrow"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  aria-label="Next page"
+                >
+                  &gt;
+                </button>
+              </div>
+
+              <div className="pagination pagination-mobile">
+                <button
+                  type="button"
+                  className="pagination-btn pagination-arrow"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  aria-label="Previous page"
+                >
+                  &lt;
+                </button>
+
+                {mobilePageItems.map((item, index) => {
                   if (typeof item === 'string') {
                     return (
                       <span
