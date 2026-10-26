@@ -34,7 +34,7 @@ def create_app(config=None, search_service=None):
         INDEX_PATH=os.environ.get("INDEX_PATH") or os.environ.get("FASHION_INDEX_PATH") or str(ROOT / "embeddings/index/fashionclip_image_embeddings_flat.index"),
         PRODUCT_IDS_PATH=os.environ.get("PRODUCT_IDS_PATH", str(ROOT / "embeddings/product_ids.npy")),
         MODEL_PATH=os.environ.get("MODEL_PATH") or os.environ.get("MODEL_HF_NAME") or "patrickjohncyh/fashion-clip",
-        MODEL_CACHE=str(ROOT / ".cache/huggingface"),
+        MODEL_CACHE=os.environ.get("MODEL_CACHE") or str(ROOT / ".cache/huggingface"),
         METADATA_PATH=os.environ.get("METADATA_PATH") or os.environ.get("FASHION_METADATA_PATH"),
         SEARCH_CACHE_SIZE=os.environ.get("SEARCH_CACHE_SIZE", "256"),
         SEARCH_CACHE_TTL_SECONDS=os.environ.get("SEARCH_CACHE_TTL_SECONDS", "300"),
@@ -45,6 +45,7 @@ def create_app(config=None, search_service=None):
     CORS(app, origins=[os.environ.get("ALLOWED_ORIGIN", "http://localhost:5173"), "http://127.0.0.1:5173"],
          expose_headers=["X-Search-Cache"])
     app.extensions["search_service"] = search_service
+    app.extensions["search_ready"] = False
     cache = ResultCache(app.config["SEARCH_CACHE_SIZE"], app.config["SEARCH_CACHE_TTL_SECONDS"])
     app.extensions["search_cache"] = cache
     load_lock = Lock()
@@ -77,6 +78,12 @@ def create_app(config=None, search_service=None):
     @app.get("/health")
     def health():
         return success({"status": "ok", "model_loaded": app.extensions["search_service"] is not None})
+
+    @app.get("/ready")
+    def ready():
+        if not app.extensions["search_ready"]:
+            return error("Search startup checks have not completed.", 503)
+        return success({"status": "ready", "model_loaded": True})
 
     @app.post("/search/image")
     @app.post("/api/v1/search/image")

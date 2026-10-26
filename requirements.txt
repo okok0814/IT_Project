@@ -1,10 +1,30 @@
--r requirements-test.txt
+# Complete Python environment: backend, tests, deployment and notebooks.
+# Install everything with: python -m pip install -r requirements.txt
+# Docker extracts only the marked runtime section; keep these markers intact.
 
+# BEGIN RUNTIME
+flask>=3.1,<4
+flask-cors>=6,<7
+pillow>=11,<13
+numpy>=1.26,<3
+faiss-cpu>=1.8,<2
+torch>=2.6,<3
+transformers>=4.45,<5
+gunicorn==23.0.0; sys_platform != "win32"
+# END RUNTIME
+
+# Automated tests and deployment verification.
+pytest>=8,<10
+requests>=2.32,<3
+playwright>=1.50,<2
+
+# Historical API experiments used by notebooks.
 fastapi>=0.115,<1
 uvicorn[standard]>=0.30,<1
 python-multipart>=0.0.18,<1
 pydantic>=2,<3
 
+# Data preparation and embedding experiments.
 pandas>=2.2,<4
 matplotlib>=3.9,<4
 tqdm>=4.66,<5
@@ -14,5 +34,6 @@ regex
 huggingface-hub>=0.34,<1
 clip @ git+https://github.com/openai/CLIP.git
 
+# Interactive notebooks.
 jupyterlab>=4,<5
 ipykernel>=6,<8

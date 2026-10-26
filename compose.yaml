@@ -1,0 +1,57 @@
+name: fashion-search
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: deploy/backend.Dockerfile
+    init: true
+    restart: unless-stopped
+    environment:
+      IMAGE_DIR: /data/catalog/images
+      METADATA_PATH: /data/catalog/styles.csv
+      INDEX_PATH: /data/embeddings/index/fashionclip_image_embeddings_flat.index
+      PRODUCT_IDS_PATH: /data/embeddings/product_ids.npy
+      MODEL_CACHE: /models/cache
+      MODEL_PATH: patrickjohncyh/fashion-clip
+      SEARCH_CACHE_SIZE: ${SEARCH_CACHE_SIZE:-256}
+      SEARCH_CACHE_TTL_SECONDS: ${SEARCH_CACHE_TTL_SECONDS:-300}
+    volumes:
+      - type: bind
+        source: ${DATASET_DIR:?Set DATASET_DIR in .env.docker to the folder containing images and styles.csv}
+        target: /data/catalog
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${EMBEDDINGS_DIR:-./embeddings}
+        target: /data/embeddings
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${MODEL_CACHE_DIR:-./.cache/huggingface}
+        target: /models/cache
+        read_only: true
+        bind:
+          create_host_path: false
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      start_period: 180s
+      retries: 5
+  frontend:
+    build:
+      context: .
+      dockerfile: deploy/frontend.Dockerfile
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1/nginx-health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3

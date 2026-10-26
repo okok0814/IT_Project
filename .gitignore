@@ -5,4 +5,5 @@ __pycache__/
 .pytest_cache/
 .cache/
 .env.local
+.env.docker
 ~$*.docx

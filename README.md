@@ -4,6 +4,26 @@ A fashion product retrieval system built with **React + Vite** on the frontend a
 
 The project supports image-based fashion search and provides a text-search interface with metadata filters for **gender, category, and color**. The system uses Dataset 2 product metadata and a FashionCLIP image index containing **44,419 products**.
 
+## Run with Docker Desktop
+
+Use Linux containers. Prepare the dataset, existing FAISS/product-ID files and local
+FashionCLIP cache, copy `.env.docker.example` to `.env.docker`, and set your host paths.
+Then run from the repository root:
+
+```powershell
+docker compose --env-file .env.docker up --build -d --wait --wait-timeout 300
+```
+
+Open **http://localhost:8080** after both services are healthy. Nginx serves the built
+React app and proxies requests to Gunicorn. Catalog/model files are mounted read-only;
+they are not downloaded by Git or baked into the images. The Docker backend validates
+artifacts and warms both encoders before readiness. No separate Vite/backend terminal
+is needed. Stop with `docker compose --env-file .env.docker stop`.
+
+See [the Docker installation/run guide](docs/DOCKER.md) for Windows paths, checkpoint
+preparation, troubleshooting, updates and verification. The Python/Node instructions
+below remain available for development without Docker.
+
 ---
 
 ## Features
@@ -150,8 +170,6 @@ IT_Project/
 │   └── test_image_search.py
 │
 ├── package.json
-├── requirements-backend.txt
-├── requirements-test.txt
 ├── requirements.txt
 ├── vite.config.js
 └── README.md
@@ -330,11 +348,19 @@ From the repository root:
 python -m venv .venv
 ```
 
-Install backend dependencies:
+Install the complete Python environment (backend, tests, deployment and notebooks):
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-backend.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
+
+`requirements.txt` is the single Python dependency list. Gunicorn is skipped on
+Windows by its platform marker. Docker extracts the section between
+`# BEGIN RUNTIME` and `# END RUNTIME` and applies `deploy/constraints.txt` to pin
+runtime versions, keeping notebook and test dependencies out of the image.
+Add backend dependencies inside that section; keep the two marker comments intact.
+The complete install requires Git for the OpenAI CLIP dependency. Frontend
+dependencies are still installed separately with `npm ci`.
 
 Download the FashionCLIP model once:
 
@@ -570,110 +596,3 @@ npm run preview
 ```
 
 ---
-
-## Testing
-
-Week 9 related-product verification (real catalog, independent ranking checks, browser checks, screenshots, and build):
-
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -m scripts.collect_week9_evidence --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --with-ui
-```
-
-Use the same installed dependencies, model cache and search artifacts as Week 8. This runner owns its temporary backend/Vite servers and saves live logs, source/artifact hashes, responses and screenshots under `logs/<UTC timestamp>-week9/`. Browser checks use local Google Chrome. See [the Week 9 report](docs/week9_related_products_report.md).
-
-The related-products endpoint can also be called directly:
-
-```powershell
-Invoke-RestMethod 'http://localhost:5000/products/10180/related?top_k=8'
-```
-
-Both this route and `/api/v1/products/10180/related` return the existing JSON envelope. Category rules and gender-label handling are defined in [related.py](src/backend/related.py); the full request/error contract is in [API_docs.md](docs/API_docs.md). Unknown IDs return 404. Unsupported categories return an empty array. Similarity scores rank eligible neighbors; they are not trained outfit-compatibility scores.
-
-Backend tests:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-test.txt
-
-.\.venv\Scripts\python.exe -m pytest -q
-```
-
-Image-search verification scripts are also available under:
-
-```text
-scripts/
-```
-
-Reproduce Week 8 with the real model, independent metadata/ranking checks, a Chrome browser integration check, a GIF demo of both search modes, and a production build:
-
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -m scripts.collect_week8_evidence --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --with-ui --record-demo
-```
-
-Install `requirements-test.txt` and frontend dependencies first; the model cache, index, IDs and image vectors must already exist. Browser checks use locally installed Google Chrome. The runner starts and stops its own backend and Vite processes on available local ports; existing servers need not be running. It uses Node on PATH or the project's cached portable Node under `.cache/node`. Omit `--with-ui --record-demo` for API-only verification (the frontend build still runs).
-
-Logs, request/response records, dependency versions, source/artifact hashes, screenshots and the GIF are saved under `notebooks/logs/<UTC timestamp>-week8/`. The GIF shows actual browser checkpoints at illustrative playback timings; it is not a latency recording. See [the Week 8 report](docs/week8_text_search_report.md) for the completed run and remaining submission evidence.
-
----
-
-## Notes
-
-- The full Dataset 2 should not be committed directly to Git unless necessary.
-- Large model files and FAISS artifacts can be stored separately and configured using environment variables.
-- The repository mainly contains source code, notebooks, scripts, documentation, tests, and frontend assets.
-- Image search currently uses the real FashionCLIP + FAISS backend.
-- Text search uses the real FashionCLIP backend and checks gender/category/color filters against metadata aligned to indexed product IDs.
-
-## Week 10: API load tests and profiling
-
-Install `requirements-test.txt`, provide the existing local FashionCLIP checkpoint,
-FAISS index, product IDs, image vectors and Dataset 2 images/metadata, then run:
-
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -m scripts.collect_week10_evidence --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --with-ui
-```
-
-The runner extracts the Week 9 backend from commit
-`483bf44d6837639608a0a20e5943b0a77fddcd26` (override with `--baseline-ref`), runs the
-same local HTTP workload against that baseline and the current backend with cache
-disabled/enabled, and records separate cProfile traces. It also runs pytest,
-independent real-catalog ranking checks, browser regressions and the frontend build.
-It starts/stops its own local servers. `--with-ui` requires local Google Chrome;
-omit it for API-only regression checks (build still requires frontend dependencies).
-Evidence goes to a new `logs/<UTC timestamp>-week10/` folder. Run benchmarks one at
-a time with other heavy workloads stopped.
-
-Defaults: 48 requests for each scenario at 1, 4 and 8 concurrent clients. Scenarios
-include repeated and varied image, text and related queries, filtered text, and
-filter-only browsing. Each batch starts with an empty result cache; the varied
-workloads cycle through 20 inputs, so cache-enabled runs contain both misses and
-hits. Startup and warmup are separate from measured batches. These are small,
-closed-loop localhost tests, not production capacity estimates.
-
-For one measurement of the current backend without cache:
-
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -m scripts.load_test_api --image-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset/images" --output-dir logs/my-api-load-test --cache-size 0
-```
-
-Use a new output folder for each run. View `.prof` files with Python's `pstats`
-module; adjacent `*-profile.txt` files list the slowest call paths. Load-test raw
-records and p50/p95/p99 latency, throughput and cache statuses are in `results.json`.
-
-The backend cache defaults to 256 result entries with a 300-second TTL per process.
-Set `$env:SEARCH_CACHE_SIZE="0"` before starting the backend to disable it; set
-`SEARCH_CACHE_TTL_SECONDS` to change expiry. Restart the backend after changing
-catalog artifacts, model or category rules. `X-Search-Cache` identifies cache hits,
-misses, shared computations and bypasses. No new dependencies are required.
-
-See [the Week 10 test report](docs/test_report.md) and [the API cache contract](docs/API_docs.md#search-result-cache-and-performance-verification).
-
-After the collector finishes, generate the full latency table and compare every
-measured result against baseline (use the new evidence directory printed above):
-
-```powershell
-.\.venv\Scripts\python.exe -X utf8 -m scripts.summarize_api_load --evidence-dir logs/<UTC-timestamp>-week10
-```
-
-This writes `comparison.md` and `comparison-checks.json`. The strict comparison
-checks IDs/order and score tolerance for the recorded workload; arbitrary ordering
-of tied scores remains allowed by the API contract.

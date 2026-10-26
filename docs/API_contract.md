@@ -1,5 +1,10 @@
 # API contract
 
+Docker serves the built UI and API at one origin (default `http://localhost:8080`).
+`GET /ready` returns 200 only after the Gunicorn entrypoint validates artifacts and
+warms both encoders; otherwise it returns the JSON error envelope with HTTP 503.
+`GET /health` remains the lightweight liveness endpoint. See [Docker setup](DOCKER.md).
+
 The current runnable contract is documented in [API_docs.md](API_docs.md).
 This replaces the earlier draft that used a `status` field.
 

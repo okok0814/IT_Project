@@ -1,7 +1,9 @@
-# Fashion Search API — Week 9
+# Fashion Search API
 
 Local backend: `http://localhost:5000`. Start with `python -m src.backend.app`.
 The runnable app is Flask; previous FastAPI notebook experiments are historical.
+For the Docker package, use `http://localhost:8080` through Nginx instead; see
+[installation and run instructions](DOCKER.md). The backend port stays internal.
 
 JSON responses use the Week 6 envelope:
 
@@ -83,8 +85,23 @@ Uploads are never saved or served by this route.
 {"success": true, "data": {"status": "ok", "model_loaded": false}, "error": null}
 ```
 
-This checks process liveness, not complete search readiness. A successful search
-is the end-to-end readiness check. `model_loaded` becomes true after loading.
+This checks process liveness, not complete search readiness. `model_loaded`
+becomes true after loading.
+
+## GET /ready
+
+The Gunicorn entrypoint validates the local artifacts, loads metadata and runs
+both text and image inference before marking the application ready:
+
+```json
+{"success": true, "data": {"status": "ready", "model_loaded": true}, "error": null}
+```
+
+Before that flag is set, the route returns HTTP 503 with the usual error envelope.
+Docker health checks use this route. Invalid artifacts fail worker startup;
+they do not produce a healthy deployment. The development entrypoint
+`python -m src.backend.app` keeps lazy initialization and does not set this flag,
+so its `/ready` remains 503. Test an actual search for end-to-end verification.
 
 ## POST /search/text
 
@@ -233,6 +250,10 @@ Server configuration supports `FASHION_IMAGES_DIR`, `FASHION_INDEX_PATH` and
 `MODEL_HF_NAME` as aliases; the primary `IMAGE_DIR`, `INDEX_PATH`, `MODEL_PATH`
 variables take precedence. `npm run backend` uses `python -m src.backend.app`;
 activate the virtual environment first.
+
+`MODEL_CACHE` overrides the Hugging Face cache directory. Docker mounts it at
+`/models/cache` read-only and enables offline model loading. Dataset, index,
+IDs and model cache are supplied separately from the container images.
 
 Implementation references: [Flask upload limits](https://flask.palletsprojects.com/en/stable/patterns/fileuploads/)
 and [CLIP image features](https://huggingface.co/docs/transformers/model_doc/clip).
