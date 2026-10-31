@@ -4,17 +4,21 @@ import { useState } from 'react'
 export default function ProductCard({ product }) {
   const [failedImage, setFailedImage] = useState('')
 
-  const isImageApiResult = typeof product.similarity_score === 'number'
-  const isTextPreview = typeof product.text_match_score === 'number'
+  const isImageApiResult = Number.isFinite(product.similarity_score)
+  const isTextPreview = Number.isFinite(product.text_match_score)
   const isFilterOnly = product.match_type === 'metadata'
 
   const rawScore = isImageApiResult
     ? product.similarity_score
     : isTextPreview
       ? product.text_match_score
-      : Number(product.score ?? 0) / 100
+      : Number.isFinite(product.score)
+        ? product.score / 100
+        : null
 
-  const scorePercent = Math.max(
+  const hasScore = rawScore !== null
+
+  const scorePercent = hasScore ? Math.max(
     0,
     Math.min(
       100,
@@ -22,7 +26,7 @@ export default function ProductCard({ product }) {
         ? Math.round(rawScore * 100)
         : Math.round(rawScore),
     ),
-  )
+  ) : 0
 
   const imageSrc = buildBackendImageUrl(product.image_url)
 
@@ -81,12 +85,12 @@ export default function ProductCard({ product }) {
           </p>
         )}
 
-        <div className="match-row">
+        {(isFilterOnly || hasScore) && <div className="match-row">
           <span>{scoreLabel}</span>
           <strong>{scoreValue}</strong>
-        </div>
+        </div>}
 
-        {!isFilterOnly && <div className="meter">
+        {!isFilterOnly && hasScore && <div className="meter">
           <span style={{ width: `${scorePercent}%` }} />
         </div>}
       </div>

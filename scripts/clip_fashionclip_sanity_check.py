@@ -1,10 +1,12 @@
-import glob
+import argparse
+from pathlib import Path
 import time
 
 import torch
 from PIL import Image
 
-SAMPLE_IMAGE_DIR = ".data/d1/sample_images/"
+ROOT = Path(__file__).resolve().parents[1]
+SAMPLE_IMAGE_DIR = ROOT / "data/d1/sample_images"
 SAMPLE_TEXT_QUERIES = [
     "a white collared shirt",
     "áo sơ mi trắng công sở",
@@ -12,17 +14,21 @@ SAMPLE_TEXT_QUERIES = [
 ]
 
 
-def run_clip():
+def sample_image_paths(images_dir=None):
+    folder = Path(images_dir) if images_dir is not None else Path(SAMPLE_IMAGE_DIR)
+    paths = sorted(path for path in folder.glob("*.jpg") if path.is_file())[:20]
+    if not paths:
+        raise FileNotFoundError(f"No JPEG sample images found in {folder.resolve()}")
+    return paths
+
+
+def run_clip(images_dir=None):
+    image_paths = sample_image_paths(images_dir)
     import clip
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"[CLIP] device = {device}")
 
     model, preprocess = clip.load("ViT-B/32", device=device)  # tải trọng số ở đây
-
-    image_paths = sorted(glob.glob(f"{SAMPLE_IMAGE_DIR}/*.jpg"))[:20]
-    if not image_paths:
-        print(f"[CLIP] Không tìm thấy ảnh trong {SAMPLE_IMAGE_DIR}")
-        return
 
     t0 = time.time()
     images = torch.stack([preprocess(Image.open(p)) for p in image_paths]).to(device)
@@ -42,22 +48,18 @@ def run_clip():
 
     for qi, query in enumerate(SAMPLE_TEXT_QUERIES):
         top_idx = similarity[qi].topk(min(3, len(image_paths))).indices.tolist()
-        top_files = [image_paths[i].split("/")[-1] for i in top_idx]
+        top_files = [image_paths[i].name for i in top_idx]
         print(f"[CLIP] Query: '{query}' -> top-{len(top_files)}: {top_files}")
 
 
-def run_fashionclip():
+def run_fashionclip(images_dir=None):
+    image_paths = sample_image_paths(images_dir)
     from transformers import CLIPModel, CLIPProcessor
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"[FashionCLIP] device = {device}")
 
     model = CLIPModel.from_pretrained("patrickjohncyh/fashion-clip").to(device)  # tải checkpoint ở đây
     processor = CLIPProcessor.from_pretrained("patrickjohncyh/fashion-clip")
-
-    image_paths = sorted(glob.glob(f"{SAMPLE_IMAGE_DIR}/*.jpg"))[:20]
-    if not image_paths:
-        print(f"[FashionCLIP] Không tìm thấy ảnh trong {SAMPLE_IMAGE_DIR}")
-        return
 
     images = [Image.open(p) for p in image_paths]
     t0 = time.time()
@@ -72,12 +74,20 @@ def run_fashionclip():
 
     for qi, query in enumerate(SAMPLE_TEXT_QUERIES):
         top_idx = logits_per_text[qi].topk(min(3, len(image_paths))).indices.tolist()
-        top_files = [image_paths[i].split("/")[-1] for i in top_idx]
+        top_files = [image_paths[i].name for i in top_idx]
         print(f"[FashionCLIP] Query: '{query}' -> top-{len(top_files)}: {top_files}")
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Compare CLIP and FashionCLIP on up to 20 local JPEG sample images.")
+    parser.add_argument("--images-dir", type=Path, default=SAMPLE_IMAGE_DIR,
+                        help="JPEG sample folder (default: repository data/d1/sample_images)")
+    args = parser.parse_args()
+    try:
+        sample_image_paths(args.images_dir)
+    except FileNotFoundError as exc:
+        parser.error(str(exc))
     print("=" * 60)
-    run_clip()
+    run_clip(args.images_dir)
     print("=" * 60)
-    run_fashionclip()
+    run_fashionclip(args.images_dir)

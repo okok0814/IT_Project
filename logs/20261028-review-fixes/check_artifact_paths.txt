@@ -1,0 +1,183 @@
+PASS: repository sample discovery works from an unrelated working directory
+PASS: both sanity runners reject missing images before importing model code
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: clip_image_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\clip_image_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.015ms  p95=0.016ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\clip_image_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.019ms  p95=0.025ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\clip_image_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: clip_text_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\clip_text_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.013ms  p95=0.014ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\clip_text_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.016ms  p95=0.016ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\clip_text_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: fashionclip_image_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\fashionclip_image_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.014ms  p95=0.019ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\fashionclip_image_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.016ms  p95=0.017ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\fashionclip_image_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: fashionclip_text_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\fashionclip_text_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.016ms  p95=0.021ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\fashionclip_text_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.015ms  p95=0.016ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\index\fashionclip_text_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+PASS: all four inputs produce eight readable indexes in <embeddings-dir>/index; input files unchanged
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: clip_image_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\clip_image_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.013ms  p95=0.015ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\clip_image_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.024ms  p95=0.038ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\clip_image_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: clip_text_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\clip_text_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.018ms  p95=0.022ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\clip_text_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.015ms  p95=0.016ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\clip_text_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: fashionclip_image_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\fashionclip_image_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.019ms  p95=0.034ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\fashionclip_image_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.016ms  p95=0.018ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\fashionclip_image_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+
+
+==================================================
+BẮT ĐẦU ĐÁNH GIÁ: fashionclip_text_embeddings.npy
+==================================================
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\input with spaces\fashionclip_text_embeddings.npy
+Shape: (160, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.014ms  p95=0.014ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\fashionclip_text_embeddings_flat.index
+
+[Điều chỉnh nlist] 160 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 4 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.015ms  p95=0.016ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\chosen output\fashionclip_text_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 100.0%
+PASS: explicit output directory is honored
+[SELF-TEST] Tạo 2000 vector ngẫu nhiên 512 chiều (KHÔNG PHẢI embedding thật)...
+Đang tải: C:\Users\toqua\AppData\Local\Temp\fashion-faiss-selftest-ruwwvsf4\fake_embeddings.npy
+Shape: (2000, 512)
+
+--- IndexFlatIP (brute-force, đúng 100%) ---
+mean=0.174ms  p95=0.212ms  (k=10, 100 lần)
+[Đã lưu] Flat Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-faiss-selftest-ruwwvsf4\index\fake_embeddings_flat.index
+
+[Điều chỉnh nlist] 2000 vector không đủ cho nlist=100 (cần ~3900) — giảm nlist xuống 50 cho hợp quy mô.
+
+--- IndexIVFFlat (approximate) ---
+mean=0.032ms  p95=0.046ms
+[Đã lưu] IVF Index tại: C:\Users\toqua\AppData\Local\Temp\fashion-faiss-selftest-ruwwvsf4\index\fake_embeddings_ivf.index
+
+Độ trùng khớp top-10 giữa IVF và Flat: 43.0%
+
+[SELF-TEST PASSED] Toàn bộ pipeline load->normalize->index->search chạy đúng logic.
+PASS: legacy self-test uses isolated temporary artifacts, ignoring real output destinations
+usage: indexing [-h] [--embeddings-dir EMBEDDINGS_DIR]
+                [--output-dir OUTPUT_DIR] [--self-test]
+indexing: error: Missing embedding files:
+C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\missing\clip_image_embeddings.npy
+C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\missing\clip_text_embeddings.npy
+C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\missing\fashionclip_image_embeddings.npy
+C:\Users\toqua\AppData\Local\Temp\fashion-artifact-path-check-69yf1qls\missing\fashionclip_text_embeddings.npy
+PASS: missing inputs fail before creating output artifacts
+PASS: real repository embeddings/index files were not modified

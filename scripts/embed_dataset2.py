@@ -5,29 +5,42 @@ Output trong ./embeddings/:
     clip_text_embeddings.npy           [N, 512]
     fashionclip_image_embeddings.npy   [N, 512]
     fashionclip_text_embeddings.npy    [N, 512]
+
+Saved features are normalized by the index-building stage; do not assume every
+raw feature file already has unit-length rows.
 """
 import os
 import time
+from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import torch
 from PIL import Image
 from tqdm import tqdm
 
-DATA_DIR = "./data/dataset2"
+ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = str(ROOT / "data/dataset2")
 IMAGES_DIR = os.path.join(DATA_DIR, "images")
 STYLES_CSV = os.path.join(DATA_DIR, "styles.csv")
-OUTPUT_DIR = "./embeddings"
+OUTPUT_DIR = str(ROOT / "embeddings")
 BATCH_SIZE = 64  # nếu Colab báo CUDA out of memory, giảm còn 32 rồi 16
 
 
 def load_valid_products():
+    if not Path(IMAGES_DIR).is_dir() or not Path(STYLES_CSV).is_file():
+        raise FileNotFoundError(
+            f"Dataset must contain images/ and styles.csv: {DATA_DIR}. "
+            "Use --dataset-dir to select the extracted dataset folder."
+        )
+    import pandas as pd
+
     df = pd.read_csv(STYLES_CSV, on_bad_lines="skip")
     df["id"] = df["id"].astype(str)
     ok_mask = df["id"].apply(lambda i: os.path.exists(os.path.join(IMAGES_DIR, f"{i}.jpg")))
     n_dropped = (~ok_mask).sum()
     df = df[ok_mask].reset_index(drop=True)
+    if df.empty:
+        raise ValueError("No metadata rows have matching JPG images; check --dataset-dir")
     print(f"{len(df)} sản phẩm có ảnh hợp lệ (đã loại {n_dropped} ID thiếu ảnh)")
     return df
 
@@ -131,15 +144,40 @@ def run(df, device):
     return clip_img, clip_txt, fclip_img, fclip_txt
 
 
+def configure_from_args(argv=None):
+    """Resolve CLI paths before loading a dataset or downloading model weights."""
+    global DATA_DIR, IMAGES_DIR, STYLES_CSV, OUTPUT_DIR, BATCH_SIZE
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Extract aligned CLIP/FashionCLIP catalog embeddings.")
+    parser.add_argument("--dataset-dir", type=Path, default=ROOT / "data/dataset2",
+                        help="Extracted folder containing images/ and styles.csv")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "embeddings",
+                        help="Directory for product_ids.npy and the four embedding files")
+    parser.add_argument("--batch-size", type=int, default=64)
+    parser.add_argument("--self_test", "--self-test", action="store_true",
+                       help="Check batching with fake encoders in an isolated temporary folder")
+    args = parser.parse_args(argv)
+    if args.batch_size < 1:
+        parser.error("--batch-size must be positive")
+    DATA_DIR = str(args.dataset_dir.resolve())
+    IMAGES_DIR = os.path.join(DATA_DIR, "images")
+    STYLES_CSV = os.path.join(DATA_DIR, "styles.csv")
+    OUTPUT_DIR = str(args.output_dir.resolve())
+    BATCH_SIZE = args.batch_size
+    return args
+
+
 if __name__ == "__main__":
-    import sys
+    args = configure_from_args()
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"device = {device}")
 
-    if "--self_test" in sys.argv:
+    if args.self_test:
         # Kiểm thử toàn bộ luồng batching + lưu file bằng encoder GIẢ (vector ngẫu nhiên đúng shape)
         # Mục đích: xác nhận logic batching/ghép nối/lưu file đúng TRƯỚC khi chạy tốn thời gian với model + dataset thật trên Colab.
         import tempfile
+        import pandas as pd
 
         def fake_encode(batch_ids, batch_texts):
             n = len(batch_ids)

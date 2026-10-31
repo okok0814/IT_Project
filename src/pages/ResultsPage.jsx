@@ -240,7 +240,9 @@ export default function ResultsPage() {
             <div className="results-heading">
               <h2>
                 {isCatalogView ? 'DATASET 2 PRODUCTS' : 'MATCHED PIECES'}{' '}
-                <span>{count} ITEMS FOUND</span>
+                <span>{count} {isCatalogView
+                  ? (count === 1 ? 'CATALOG ITEM' : 'CATALOG ITEMS')
+                  : (count === 1 ? 'RESULT RETURNED' : 'RESULTS RETURNED')}</span>
               </h2>
 
               <p>

@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "Unscored catalog cards omit score and meter; catalog count is labeled",
+    "Zero, positive and negative cosine scores remain visible; missing scores stay absent",
+    "Filter-only cards keep FILTER MATCH without a numeric meter",
+    "Existing numeric legacy and preview scores retain their presentation",
+    "Capped 50-result API response is labeled as returned results, retaining pagination",
+    "Single image-search result uses the singular returned-result label"
+  ],
+  "page_errors": [],
+  "scope": "Built frontend UI regression with controlled route state and mocked API replies; no retrieval quality or live backend assertion."
+}

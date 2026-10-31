@@ -1,10 +1,14 @@
-import os
+import argparse
+from pathlib import Path
+import tempfile
 import time
 
 import faiss
 import numpy as np
 
-EMBED_DIR = "./embeddings"
+ROOT = Path(__file__).resolve().parents[1]
+EMBED_DIR = ROOT / "embeddings"
+INDEX_DIR = EMBED_DIR / "index"
 
 
 def load_and_normalize(path):
@@ -71,13 +75,14 @@ def sanity_check_correctness(flat_index, ivf_index, vecs, n_queries=20, k=10):
     return float(np.mean(overlaps))
 
 
-def run(embedding_path):
+def run(embedding_path, output_dir=None):
     print(f"Đang tải: {embedding_path}")
     vecs = load_and_normalize(embedding_path)
     print(f"Shape: {vecs.shape}")
     
-    # Extract the base filename without the .npy extension
-    base_name = os.path.splitext(os.path.basename(embedding_path))[0]
+    base_name = Path(embedding_path).stem
+    output_dir = Path(output_dir) if output_dir is not None else INDEX_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     print("\n--- IndexFlatIP (brute-force, đúng 100%) ---")
     flat_index = build_flat_index(vecs)
@@ -86,8 +91,8 @@ def run(embedding_path):
           f"(k={flat_stats['k']}, {flat_stats['n_repeats']} lần)")
     
     # SAVE FLAT INDEX TO DISK
-    flat_index_path = os.path.join(EMBED_DIR, f"{base_name}_flat.index")
-    faiss.write_index(flat_index, flat_index_path)
+    flat_index_path = output_dir / f"{base_name}_flat.index"
+    faiss.write_index(flat_index, str(flat_index_path))
     print(f"[Đã lưu] Flat Index tại: {flat_index_path}")
 
     nlist = 100  # phải khớp với mặc định trong build_ivf_index()
@@ -105,8 +110,8 @@ def run(embedding_path):
     print(f"mean={ivf_stats['mean_ms']:.3f}ms  p95={ivf_stats['p95_ms']:.3f}ms")
     
     # SAVE IVF INDEX TO DISK
-    ivf_index_path = os.path.join(EMBED_DIR, f"{base_name}_ivf.index")
-    faiss.write_index(ivf_index, ivf_index_path)
+    ivf_index_path = output_dir / f"{base_name}_ivf.index"
+    faiss.write_index(ivf_index, str(ivf_index_path))
     print(f"[Đã lưu] IVF Index tại: {ivf_index_path}")
 
     overlap = sanity_check_correctness(flat_index, ivf_index, vecs)
@@ -114,17 +119,25 @@ def run(embedding_path):
     return {"flat": flat_stats, "ivf": ivf_stats, "overlap": overlap}
 
 
-if __name__ == "__main__":
-    import sys
-    # Đảm bảo thư mục lưu trữ tồn tại
-    os.makedirs(EMBED_DIR, exist_ok=True)
-    
-    if "--self_test" in sys.argv:
+def main():
+    parser = argparse.ArgumentParser(description="Build and benchmark Flat/IVF indexes for the four saved embedding files.")
+    parser.add_argument("--embeddings-dir", type=Path, default=EMBED_DIR,
+                        help="Folder containing the four .npy embeddings (default: repository embeddings/)")
+    parser.add_argument("--output-dir", type=Path,
+                        help="Index output folder (default: <embeddings-dir>/index)")
+    parser.add_argument("--self-test", "--self_test", dest="self_test", action="store_true",
+                        help="Check the pipeline using synthetic vectors and isolated temporary files")
+    args = parser.parse_args()
+
+    if args.self_test:
         print("[SELF-TEST] Tạo 2000 vector ngẫu nhiên 512 chiều (KHÔNG PHẢI embedding thật)...")
-        fake = np.random.randn(2000, 512).astype("float32")
-        np.save("/tmp/fake_embeddings.npy", fake)
-        result = run("/tmp/fake_embeddings.npy")
-        assert result["flat"]["mean_ms"] > 0
+        # A self-test must never write into the user's real artifact folders.
+        with tempfile.TemporaryDirectory(prefix="fashion-faiss-selftest-") as tmp:
+            fake_path = Path(tmp) / "fake_embeddings.npy"
+            fake = np.random.default_rng(0).standard_normal((2000, 512)).astype("float32")
+            np.save(fake_path, fake)
+            result = run(fake_path, output_dir=Path(tmp) / "index")
+            assert result["flat"]["mean_ms"] > 0
         print("\n[SELF-TEST PASSED] Toàn bộ pipeline load->normalize->index->search chạy đúng logic.")
     else:
         # Chạy tự động cho cả 4 file
@@ -134,9 +147,19 @@ if __name__ == "__main__":
             "fashionclip_image_embeddings.npy",
             "fashionclip_text_embeddings.npy"
         ]
+        embeddings_dir = args.embeddings_dir.resolve()
+        output_dir = args.output_dir.resolve() if args.output_dir else embeddings_dir / "index"
+        missing = [str(embeddings_dir / name) for name in files_to_test
+                   if not (embeddings_dir / name).is_file()]
+        if missing:
+            parser.error("Missing embedding files:\n" + "\n".join(missing))
         for fname in files_to_test:
             print(f"\n\n{'='*50}")
             print(f"BẮT ĐẦU ĐÁNH GIÁ: {fname}")
             print(f"{'='*50}")
             # This triggers the saving process for each file inside run()
-            run(f"{EMBED_DIR}/{fname}")
+            run(embeddings_dir / fname, output_dir=output_dir)
+
+
+if __name__ == "__main__":
+    main()

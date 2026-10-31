@@ -1,0 +1,16 @@
+{
+  "review_date": "2026-10-28",
+  "timestamp_utc": "2026-10-28T16:40:00.834177+00:00",
+  "base_commit": "e3013aff8ea5f047c782db4a56387070c4a3fc00",
+  "source_sha256": {
+    "scripts/clip_fashionclip_sanity_check.py": "c87e1ddbc61aeb46462e34f9727611343a991bba7eb7be4de7f60c0ecebf5920",
+    "scripts/faiss_index_and_latency.py": "eefe0d588e49176233ef03b059485a3617941b1f81b01eb43e12785f8b0ad80f",
+    "scripts/embed_dataset2.py": "116c564e85c18b9f8627ac794a2f986eaa638c378a4cd003381f1d96ff988e06",
+    "src/components/ProductCard.jsx": "b9bf2d6d4ca0d81963744f076e60397652e4877b49dbbd19293f8522d24403ff",
+    "src/pages/ResultsPage.jsx": "290c5b031e59de0df3b24061d9c15003d8f0a30cf99e8db3361524eb10b95a08"
+  },
+  "pytest": "157 passed in 10.20s",
+  "ui_checks": 6,
+  "scope": "UI checks use a built frontend with controlled route state and mocked API replies. Index checks use synthetic vectors and temporary directories. Embedding CLI/path checks passed; full embedding extraction/self-test was not completed because pandas native DLL loading was blocked by Windows Application Control. Temporary pandas installation was rolled back. No new model-quality evaluation, Docker verification or benchmark result is claimed.",
+  "runner_notes": "Archived UI runner uses the local cached Node executable and expects frontend-dist beside itself. It records the exact fixture check, not a portable clean-machine installer."
+}

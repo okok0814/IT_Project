@@ -24,6 +24,10 @@ See [the Docker installation/run guide](docs/DOCKER.md) for Windows paths, check
 preparation, troubleshooting, updates and verification. The Python/Node instructions
 below remain available for development without Docker.
 
+Reports, test logs and screenshots are indexed in [docs/EVIDENCE.md](docs/EVIDENCE.md).
+See [report corrections](docs/report_corrections.md) for the verified counts,
+normalization notes and replacement links for earlier submitted reports.
+
 ---
 
 ## Features
@@ -384,14 +388,34 @@ npm ci
 
 ## Required Search Files
 
-The image-search backend requires:
+The image-search backend expects this default artifact layout:
 
 ```text
-fashionclip_image_embeddings_flat.index
-product_ids.npy
+embeddings/
+  product_ids.npy
+  index/
+    fashionclip_image_embeddings_flat.index
 ```
 
 The FAISS index and product IDs must belong to the same embedding pipeline and contain the same number of entries.
+
+If these artifacts are missing, generate them from the extracted dataset after
+installing the Python requirements. The dataset argument is the folder containing
+`images/` and `styles.csv`:
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m scripts.embed_dataset2 --dataset-dir "D:/datasets/fashion-dataset" --output-dir ./embeddings
+.\.venv\Scripts\python.exe -X utf8 -m scripts.faiss_index_and_latency --embeddings-dir ./embeddings
+```
+
+The first command generates IDs and all four CLIP/FashionCLIP feature files; it can download
+model weights and takes considerably longer. Index generation writes Flat and IVF
+files beneath `embeddings/index/`; the application uses the FashionCLIP **Flat**
+image index. Raw feature files are normalized during index construction.
+Both generators support `--output-dir`; use matching artifact paths in your
+configuration if you choose another location. Offline embedding experiments and
+the serving model cache are separate preparation steps; the one-time
+`scripts.download_search_model` command above prepares the serving cache.
 
 The current image index contains:
 
