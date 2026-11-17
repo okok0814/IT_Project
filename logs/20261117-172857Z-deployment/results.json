@@ -1,0 +1,521 @@
+{
+  "base_url": "http://localhost:8081",
+  "checks": [
+    "Nginx proxies readiness and health; model is loaded before serving",
+    "Built frontend, nested-route refresh and static asset handling",
+    "Real filtered text inference, cache hit and legacy POST route",
+    "Filter-only and empty-result semantics",
+    "Real uploaded-image inference and catalog thumbnails through Nginx",
+    "Related products reuse source ID and complementary candidates",
+    "Validation and unknown API routes retain JSON errors through proxy",
+    "Flask and Nginx upload-size limits both return JSON 413",
+    "Chrome uses built frontend for text/image search and related results; desktop/mobile screenshots"
+  ],
+  "records": [
+    {
+      "method": "GET",
+      "path": "/ready",
+      "status": 200,
+      "elapsed_ms": 2065.56,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": {
+          "model_loaded": true,
+          "status": "ready"
+        },
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "status": 200,
+      "elapsed_ms": 5.91,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": {
+          "model_loaded": true,
+          "status": "ok"
+        },
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "status": 200,
+      "elapsed_ms": 3.89,
+      "content_type": "text/html",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/search/image",
+      "status": 200,
+      "elapsed_ms": 2.63,
+      "content_type": "text/html",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/search/text",
+      "status": 200,
+      "elapsed_ms": 2.17,
+      "content_type": "text/html",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/results",
+      "status": 200,
+      "elapsed_ms": 2.84,
+      "content_type": "text/html",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/assets/index-BR23MIHo.js",
+      "status": 200,
+      "elapsed_ms": 168.85,
+      "content_type": "application/javascript",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/assets/does-not-exist.js",
+      "status": 404,
+      "elapsed_ms": 3.42,
+      "content_type": "text/html",
+      "cache": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/text",
+      "status": 200,
+      "elapsed_ms": 682.94,
+      "content_type": "application/json",
+      "cache": "MISS",
+      "body": {
+        "data": [
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/12241.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Genesis Men Stripes White Shirts",
+            "product_id": "12241",
+            "similarity_score": 0.336514,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/14748.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Arrow Men Solid White Shirts",
+            "product_id": "14748",
+            "similarity_score": 0.334083,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/13762.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Belmonte Men Solid White Shirts",
+            "product_id": "13762",
+            "similarity_score": 0.332035,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/text",
+      "status": 200,
+      "elapsed_ms": 4.25,
+      "content_type": "application/json",
+      "cache": "HIT",
+      "body": {
+        "data": [
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/12241.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Genesis Men Stripes White Shirts",
+            "product_id": "12241",
+            "similarity_score": 0.336514,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/14748.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Arrow Men Solid White Shirts",
+            "product_id": "14748",
+            "similarity_score": 0.334083,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/13762.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Belmonte Men Solid White Shirts",
+            "product_id": "13762",
+            "similarity_score": 0.332035,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/search/text",
+      "status": 200,
+      "elapsed_ms": 4.6,
+      "content_type": "application/json",
+      "cache": "HIT",
+      "body": {
+        "data": [
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/12241.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Genesis Men Stripes White Shirts",
+            "product_id": "12241",
+            "similarity_score": 0.336514,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/14748.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Arrow Men Solid White Shirts",
+            "product_id": "14748",
+            "similarity_score": 0.334083,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/13762.jpg",
+            "master_category": "Apparel",
+            "match_type": "semantic",
+            "name": "Belmonte Men Solid White Shirts",
+            "product_id": "13762",
+            "similarity_score": 0.332035,
+            "sub_category": "Topwear",
+            "usage": "Formal"
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/text",
+      "status": 200,
+      "elapsed_ms": 6.54,
+      "content_type": "application/json",
+      "cache": "MISS",
+      "body": {
+        "data": [
+          {
+            "category": "Shirts",
+            "color": "Navy Blue",
+            "gender": "Men",
+            "image_url": "/dataset2/images/10051.jpg",
+            "master_category": "Apparel",
+            "match_type": "metadata",
+            "name": "Puma Men Motorsport Navy Blue Shirts",
+            "product_id": "10051",
+            "similarity_score": null,
+            "sub_category": "Topwear",
+            "usage": "Casual"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/10184.jpg",
+            "master_category": "Apparel",
+            "match_type": "metadata",
+            "name": "Indigo Nation Men White Stripe Shirt",
+            "product_id": "10184",
+            "similarity_score": null,
+            "sub_category": "Topwear",
+            "usage": "Casual"
+          },
+          {
+            "category": "Shirts",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/10185.jpg",
+            "master_category": "Apparel",
+            "match_type": "metadata",
+            "name": "Indigo Nation Men Price catch White Shirts",
+            "product_id": "10185",
+            "similarity_score": null,
+            "sub_category": "Topwear",
+            "usage": "Casual"
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/text",
+      "status": 200,
+      "elapsed_ms": 4.42,
+      "content_type": "application/json",
+      "cache": "MISS",
+      "body": {
+        "data": [],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/image",
+      "status": 200,
+      "elapsed_ms": 1821.45,
+      "content_type": "application/json",
+      "cache": "MISS",
+      "body": {
+        "data": [
+          {
+            "image_url": "/dataset2/images/10180.jpg",
+            "product_id": "10180",
+            "similarity_score": 0.889556
+          },
+          {
+            "image_url": "/dataset2/images/23827.jpg",
+            "product_id": "23827",
+            "similarity_score": 0.851875
+          },
+          {
+            "image_url": "/dataset2/images/39546.jpg",
+            "product_id": "39546",
+            "similarity_score": 0.8511
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/dataset2/images/10180.jpg",
+      "status": 200,
+      "elapsed_ms": 35.05,
+      "content_type": "image/jpeg",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/dataset2/images/23827.jpg",
+      "status": 200,
+      "elapsed_ms": 8.84,
+      "content_type": "image/jpeg",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/dataset2/images/39546.jpg",
+      "status": 200,
+      "elapsed_ms": 7.67,
+      "content_type": "image/jpeg",
+      "cache": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/products/12241/related?top_k=3",
+      "status": 200,
+      "elapsed_ms": 36.81,
+      "content_type": "application/json",
+      "cache": "MISS",
+      "body": {
+        "data": [
+          {
+            "category": "Flip Flops",
+            "color": "White",
+            "gender": "Men",
+            "image_url": "/dataset2/images/10804.jpg",
+            "master_category": "Footwear",
+            "match_type": "complementary",
+            "name": "Wrangler Men Rider Solid White Shirts",
+            "product_id": "10804",
+            "similarity_score": 0.82576,
+            "source_product_id": "12241",
+            "sub_category": "Flip Flops",
+            "usage": "Casual"
+          },
+          {
+            "category": "Trousers",
+            "color": "Grey",
+            "gender": "Men",
+            "image_url": "/dataset2/images/26139.jpg",
+            "master_category": "Apparel",
+            "match_type": "complementary",
+            "name": "John Miller Men Grey Trousers",
+            "product_id": "26139",
+            "similarity_score": 0.76509,
+            "source_product_id": "12241",
+            "sub_category": "Bottomwear",
+            "usage": "Formal"
+          },
+          {
+            "category": "Trousers",
+            "color": "Grey",
+            "gender": "Men",
+            "image_url": "/dataset2/images/15116.jpg",
+            "master_category": "Apparel",
+            "match_type": "complementary",
+            "name": "Arrow Men TR Finish Grey Trousers",
+            "product_id": "15116",
+            "similarity_score": 0.757164,
+            "source_product_id": "12241",
+            "sub_category": "Bottomwear",
+            "usage": "Formal"
+          }
+        ],
+        "error": null,
+        "success": true
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/text",
+      "status": 400,
+      "elapsed_ms": 3.98,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": null,
+        "error": "top_k must be an integer from 1 to 50.",
+        "success": false
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/image",
+      "status": 415,
+      "elapsed_ms": 6.81,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": null,
+        "error": "Unsupported format. Use JPG, PNG or WEBP.",
+        "success": false
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/image",
+      "status": 400,
+      "elapsed_ms": 324.19,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": null,
+        "error": "Cannot decode this image. It may be corrupt or truncated.",
+        "success": false
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/products/not-in-catalog/related",
+      "status": 404,
+      "elapsed_ms": 5.49,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": null,
+        "error": "Product not found in the search catalog.",
+        "success": false
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/missing",
+      "status": 404,
+      "elapsed_ms": 6.53,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": null,
+        "error": "The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.",
+        "success": false
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/image",
+      "status": 413,
+      "elapsed_ms": 328.43,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "data": null,
+        "error": "Upload is too large. Maximum image size is 10 MiB.",
+        "success": false
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/search/image",
+      "status": 413,
+      "elapsed_ms": 15.51,
+      "content_type": "application/json",
+      "cache": null,
+      "body": {
+        "success": false,
+        "data": null,
+        "error": "Upload is too large. Maximum image size is 10 MiB."
+      }
+    }
+  ]
+}

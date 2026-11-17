@@ -1,0 +1,111 @@
+{
+  "release_url": "https://github.com/okok0814/IT_Project/releases/tag/runtime-v1",
+  "target_commit": "699b909f1b12527b34bc69fe14e6f8f845415b71",
+  "assets": [
+    {
+      "name": "search-artifacts.tar",
+      "status": 200,
+      "size": 96194560,
+      "sha256": "275392a979e0ecb81936237a811dd6f343d03e3ddcdbc0f6fc7ec633cb7a83fb",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/search-artifacts.tar"
+    },
+    {
+      "name": "catalog-001.tar",
+      "status": 200,
+      "size": 1074810880,
+      "sha256": "b32fce7a1b20935bc2381cf9d87c50e2eff948159320c52629d617811957e89e",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-001.tar"
+    },
+    {
+      "name": "catalog-002.tar",
+      "status": 200,
+      "size": 1075896320,
+      "sha256": "4d05e9ca98fa82f21f2c48602bc880ca9f680abc4583bcacb96f7c2774f6370f",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-002.tar"
+    },
+    {
+      "name": "catalog-003.tar",
+      "status": 200,
+      "size": 1076142080,
+      "sha256": "e297fc89b851bf65eb2fcdbb116758e90c28ed98053497bbaa33d928de230877",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-003.tar"
+    },
+    {
+      "name": "catalog-004.tar",
+      "status": 200,
+      "size": 1075742720,
+      "sha256": "1d1bb2510cc6cf6cd4f64c3569f8b2cfb7ad1450b2351612c717cd3a47d078b9",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-004.tar"
+    },
+    {
+      "name": "catalog-005.tar",
+      "status": 200,
+      "size": 1076090880,
+      "sha256": "e910739b8d3cc268fea27187e93eff64c5b38d4d5d0cb61d9eb89584fd437ab9",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-005.tar"
+    },
+    {
+      "name": "catalog-006.tar",
+      "status": 200,
+      "size": 1075886080,
+      "sha256": "d49725bb9cf9cf40b0d3d35ef7b8bf7f7bd24a0f970a6fa6a73fda9248ae54e8",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-006.tar"
+    },
+    {
+      "name": "catalog-007.tar",
+      "status": 200,
+      "size": 1075988480,
+      "sha256": "5258dc32644b2277e768e20865783af563edcb48b01aa35e4dde2936307526bf",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-007.tar"
+    },
+    {
+      "name": "catalog-008.tar",
+      "status": 200,
+      "size": 1076111360,
+      "sha256": "db85ad90b94b6425ecdb83cd19e7f5dec6f91103f2b21c05e3c157250937eccf",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-008.tar"
+    },
+    {
+      "name": "catalog-009.tar",
+      "status": 200,
+      "size": 1075978240,
+      "sha256": "c15504196eed0a43dd33067357bf7debeafe96a44f0b315f97be06a23101d2d4",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-009.tar"
+    },
+    {
+      "name": "catalog-010.tar",
+      "status": 200,
+      "size": 1076070400,
+      "sha256": "7782d1b592766a35f8fe703ecdee1e55c352d6e1a4a6c99a4e2c93916d45e2ab",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-010.tar"
+    },
+    {
+      "name": "catalog-011.tar",
+      "status": 200,
+      "size": 1076049920,
+      "sha256": "30dc3cd479ffc9d261a3f008ee6137342dc25793d6b31364ade198579b3ced9d",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-011.tar"
+    },
+    {
+      "name": "catalog-012.tar",
+      "status": 200,
+      "size": 1075763200,
+      "sha256": "46243f62b60461f86f026aa883cd5f5c8c417d4497457fb681fca2d0b892ea34",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-012.tar"
+    },
+    {
+      "name": "catalog-013.tar",
+      "status": 200,
+      "size": 1075978240,
+      "sha256": "4a480284f9f02514481236f2ddacb08db790ffa2a73b7ff3597b57374218a663",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-013.tar"
+    },
+    {
+      "name": "catalog-014.tar",
+      "status": 200,
+      "size": 960163840,
+      "sha256": "a38c6bcd569aefd4144b8f0508321ede62491a6982f2c4d39ce9cdaf3f01772a",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-014.tar"
+    }
+  ]
+}

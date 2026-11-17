@@ -1,0 +1,24 @@
+Reusing search-artifacts.tar
+Reusing catalog-001.tar
+Reusing catalog-002.tar
+Reusing catalog-003.tar
+Reusing catalog-004.tar
+Reusing catalog-005.tar
+Reusing catalog-006.tar
+Reusing catalog-007.tar
+Reusing catalog-008.tar
+Reusing catalog-009.tar
+Reusing catalog-010.tar
+Reusing catalog-011.tar
+Reusing catalog-012.tar
+Reusing catalog-013.tar
+Reusing catalog-014.tar
+Reusing config.json
+Reusing preprocessor_config.json
+Reusing tokenizer_config.json
+Reusing special_tokens_map.json
+Reusing tokenizer.json
+Reusing vocab.json
+Reusing merges.txt
+Reusing model.safetensors
+Setup complete. Backend will validate the catalog/index and warm the model.

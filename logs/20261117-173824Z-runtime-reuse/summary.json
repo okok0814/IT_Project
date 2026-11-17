@@ -1,0 +1,28 @@
+{
+  "observed_at_utc": "2026-11-17 17:38:24 UTC",
+  "observed_local_date": "2026-11-18",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "project": "fashion-search-check",
+  "base_url": "http://localhost:8081",
+  "setup_exit_code": 0,
+  "backend_health": "healthy",
+  "frontend_health": "healthy",
+  "reused_archives": 15,
+  "reused_model_files": 8,
+  "backend_volume": "fashion-search-check_runtime-data",
+  "backend_data_read_only": true,
+  "deployment_results": "../20261117-172857Z-deployment/results.json",
+  "integration_check_groups_passed": 9,
+  "browser_page_errors": [],
+  "source_provenance_comparison": {
+    "files_compared": 20,
+    "mismatches": []
+  },
+  "commands": [
+    "docker compose -p fashion-search-check ps -a --format json",
+    "docker compose -p fashion-search-check logs --no-color --no-log-prefix setup",
+    "docker inspect fashion-search-check-backend-1 --format '{{json .Mounts}}'"
+  ],
+  "user_confirmation": "User confirmed that all instructed steps passed, including first setup in the separate test project and restarting with the volume preserved. Port 8080 belongs to their old system.",
+  "limits": "The saved deployment results establish functional verification on port 8081. These read-only observations establish successful reuse and a Docker-managed volume after restart. Initial download logs were not retained in this capture; first-run procedure is user-confirmed. No second-computer, clean GitHub clone, load or recommendation-quality test is claimed."
+}

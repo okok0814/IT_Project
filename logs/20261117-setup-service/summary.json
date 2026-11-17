@@ -1,0 +1,13 @@
+{
+  "products": 44419,
+  "archives": 15,
+  "release_bytes": 15042867200,
+  "total_download_bytes": 15651641852,
+  "archive_inventory_verified": true,
+  "index_byte_identical": true,
+  "product_id_order_preserved": true,
+  "pytest": "169 passed in 35.83s",
+  "container_checks": "Setup entrypoint and flock, activation symlink, offline rerun, uid 10001 read access, separate read-only container persistence passed with tiny fixtures",
+  "public_release": "runtime-v1 returned HTTP 404; no assets published",
+  "limits": "No full catalog/model Docker startup from public URLs until release publication"
+}

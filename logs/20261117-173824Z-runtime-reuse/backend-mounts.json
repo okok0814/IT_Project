@@ -1,0 +1,1 @@
+[{"Type":"volume","Name":"fashion-search-check_runtime-data","Source":"/var/lib/docker/volumes/fashion-search-check_runtime-data/_data","Destination":"/data","Driver":"local","Mode":"ro","RW":false,"Propagation":""}]

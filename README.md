@@ -6,23 +6,33 @@ The project supports image-based fashion search and provides a text-search inter
 
 ## Run with Docker Desktop
 
-Use Linux containers. Prepare the dataset, existing FAISS/product-ID files and local
-FashionCLIP cache, copy `.env.docker.example` to `.env.docker`, and set your host paths.
-Then run from the repository root:
+Use Docker Desktop with Linux containers. The default Compose configuration uses
+a setup service and Docker-managed storage; no host paths or `.env` are required.
+Run from the repository root:
 
 ```powershell
-docker compose --env-file .env.docker up --build -d --wait --wait-timeout 300
+docker compose up -d --build
 ```
 
-Open **http://localhost:8080** after both services are healthy. Nginx serves the built
-React app and proxies requests to Gunicorn. Catalog/model files are mounted read-only;
-they are not downloaded by Git or baked into the images. The Docker backend validates
-artifacts and warms both encoders before readiness. No separate Vite/backend terminal
-is needed. Stop with `docker compose --env-file .env.docker stop`.
+**Runtime assets published:** all 15 catalog/index archives are available in
+[runtime-v1](https://github.com/okok0814/IT_Project/releases/tag/runtime-v1).
+Their remote sizes/SHA256 hashes match `deploy/runtime-manifest.json`, and all
+public download URLs were verified. The full application passed all 9 deployment
+checks on port 8081 using Docker-managed data, and restart logs confirm reuse of
+all archives and model files. See [deployment results](logs/20261117-172857Z-deployment/results.json)
+and [restart evidence](logs/20261117-173824Z-runtime-reuse/summary.json).
+The setup source and manifest still need their separate commit/push for fresh
+clones. See [deployment status](docs/DOCKER.md).
 
-See [the Docker installation/run guide](docs/DOCKER.md) for Windows paths, checkpoint
-preparation, troubleshooting, updates and verification. The Python/Node instructions
-below remain available for development without Docker.
+The first setup downloads about 15.7 GB, verifies SHA256 hashes, and stores the
+catalog, index and pinned FashionCLIP model in a persistent volume. Subsequent starts
+reuse completed files. Setup must succeed before the backend starts; the frontend
+waits for backend readiness. Check `docker compose ps -a` and open
+**http://localhost:8080** when backend and frontend are healthy (`setup` should be
+`Exited (0)`). Stop with `docker compose stop`.
+
+See [the automatic Docker setup guide](docs/DOCKER.md). The Python/Node instructions below
+remain available for development without Docker.
 
 Reports, test logs and screenshots are indexed in [docs/EVIDENCE.md](docs/EVIDENCE.md).
 See [report corrections](docs/report_corrections.md) for the verified counts,

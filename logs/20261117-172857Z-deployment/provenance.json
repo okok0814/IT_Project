@@ -1,0 +1,27 @@
+{
+  "timestamp_utc": "2026-11-17T17:29:19.082048+00:00",
+  "source_sha256": {
+    "compose.yaml": "da3336a86135164b44bed214a9e99787ebf5522f941d74eb4a00bc2752e8d15b",
+    ".dockerignore": "201b07b089a4b313e0d2dd5f58f4f064ca8830329cc2cddb973118afbb7d30ca",
+    "deploy/backend.Dockerfile": "45bb43cb5b46163e2d09e0fcfb5ad95153d849215e694bf5afb5e2eeaf26f2bd",
+    "deploy/constraints.txt": "be1ff7e9ec7986eaf123e540b8473624549bdf804fe611f2731b4f730a1f4966",
+    "deploy/frontend.Dockerfile": "e05e0c872791605f16e96a06f165ecf13b7af5351ad4127931b54d976ede5e3e",
+    "deploy/gunicorn.conf.py": "74a00c9de3778391a7e309d2c4e49651e9b7c6768024bed495e989f821a5c2b4",
+    "deploy/nginx.conf": "883e5f4e3dc37800f6d2a39032c00bf13498b943ccae9c01556c36edadad6d98",
+    "deploy/runtime-manifest.json": "ccb64000aea2f063739deca68dd84efe515c4b902bc46e76f4c69cc1528ca1fe",
+    "deploy/runtime_requirements.py": "ccf90bb25e094dd7154b8aec40112e2ab8b0c21e3a2b5388a2f870ebda0b801e",
+    "deploy/setup.Dockerfile": "5dd094aa0af19aabf03284ba308ef8cf2a6b2d1c240137b92ad7e19b179de752",
+    "deploy/setup_runtime.py": "1864813cda40d48a674720ea97ef84a6c4ab5a0e51306d6bb84e1e05a1ddb6d0",
+    "src/backend/app.py": "71086d26c0129cc5e89e4faaa3966476aa66ea58c97643ee1f6e7b948c5ad1b0",
+    "src/backend/cache.py": "bdd5eb8512ff3e203daccb42ef203e9a9df5d2ed79800c7a96d88e3c12fd785f",
+    "src/backend/metadata.py": "71decdc29114cc36793d4ebe739d19c8f026dcec97224fabed5863bc2b0996b4",
+    "src/backend/related.py": "14e809250469410a2ce9d31dc5b8a866e07e8132fcd261f03934b119537eb1b6",
+    "src/backend/search.py": "0d499bfc706cffeae4dceb76edaf4eb746b44dd6e715ce2a4edadd9b97c7f72c",
+    "src/backend/wsgi.py": "0a82f6219775d27a4b57a33c89fb28a025137733ed1df349cac50317102cc33f",
+    "scripts/verify_deployment.py": "f4e9e684b97afba39540c1a59ac35e76f3b91ffc407443e9224544e4558ad4a4",
+    "requirements.txt": "2ee6674e8d84fca3468e9357b68a71898d23d61c6c53297e40a0945c1de370c8",
+    "package-lock.json": "e824f9fbb8a3a92db22fc48ef2dc56b25c23f33f706a30c8f6c41e66ba96d670"
+  },
+  "sample_sha256": "49d5939adb56f333be18d5461727c0ccaeeb6b43e47eb65ee689309ce6362ab6",
+  "note": "Smoke/integration verification of the running deployment; timings are not a load benchmark."
+}

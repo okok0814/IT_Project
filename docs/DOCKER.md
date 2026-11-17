@@ -1,197 +1,169 @@
-# Cài đặt và chạy bằng Docker Desktop
+# Docker setup with managed storage
 
-Ứng dụng chạy tại **http://localhost:8080**. Docker Compose tạo hai container:
+## Release status
 
-- `frontend`: build React/Vite bằng `npm ci`, phục vụ bằng Nginx và proxy API.
-- `backend`: Flask chạy bằng Gunicorn, một worker và bốn thread dùng chung FashionCLIP, FAISS và cache kết quả. Bản đóng gói này dùng CPU.
+All **15 catalog/index archives (15,042,867,200 bytes)** are published in
+[runtime-v1](https://github.com/okok0814/IT_Project/releases/tag/runtime-v1).
+GitHub's reported sizes and SHA256 hashes match the setup manifest; every public
+download URL returned HTTP 200. Evidence: [asset metadata](../logs/20261117-runtime-release/assets.json)
+and [public URL verification](../logs/20261117-runtime-release/verified.json).
 
-Ảnh catalog, metadata, FAISS và model nằm ngoài image, được mount **read-only**. Không cần bật Vite hoặc Flask development server khi dùng Docker. Backend không mở cổng ra host; trình duyệt dùng cùng origin cho trang web, API và ảnh.
+Publication did not commit or push the local setup code or manifest. Those changes
+must also reach the repository before a fresh clone includes automatic setup.
+On **18 November 2026 (Vietnam time)**, the full application passed **9/9 deployment
+check groups** at `http://localhost:8081`, including real model inference and
+Chrome desktop/mobile flows. The separate Compose project `fashion-search-check`
+uses `fashion-search-check_runtime-data`, mounted read-only by the backend.
+After restart, setup exited with code 0, backend/frontend were healthy, and logs
+showed reuse of all 15 archives and 8 model files. Evidence:
+[deployment checks](../logs/20261117-172857Z-deployment/results.json),
+[browser results](../logs/20261117-172857Z-deployment/browser.json), and
+[restart verification](../logs/20261117-173824Z-runtime-reuse/summary.json).
 
-## 1. Chuẩn bị
+The operator confirmed completing the initial setup in the separate test project;
+the saved setup log covers the subsequent reuse run. The old installation on
+port 8080 is separate. A fresh GitHub clone on a second computer has not been tested.
 
-Mở Docker Desktop và dùng **Linux containers**. Từ PowerShell tại thư mục repository:
+## Starting with the setup-enabled source
 
-```powershell
-docker version
-docker compose version
-```
-
-`docker version` phải có cả Client và Server. Cần Docker Compose có hỗ trợ `up --wait` và long-syntax bind mount. Lần đầu build cần Internet để tải image/dependencies; lúc phục vụ, FashionCLIP chỉ dùng checkpoint local.
-
-Chuẩn bị các artifact cùng một lần tạo embedding:
-
-```text
-<DATASET_DIR>/
-  styles.csv
-  images/
-    10180.jpg
-    ... ảnh của mọi ID trong index ...
-
-<EMBEDDINGS_DIR>/
-  product_ids.npy
-  index/
-    fashionclip_image_embeddings_flat.index
-
-<MODEL_CACHE_DIR>/
-  models--patrickjohncyh--fashion-clip/
-    refs/main
-    snapshots/<revision>/...
-    blobs/...  (nếu snapshot dùng symlink)
-```
-
-Index phải là FashionCLIP `IndexFlatIP`, vector 512 chiều chuẩn hóa L2; IDs, ảnh và metadata phải khớp. Backend kiểm tra các điều kiện này khi khởi động. Không đổi tên một index IVF thành Flat để vượt kiểm tra. Dữ liệu thực nghiệm hiện tại có 44.419 sản phẩm; code kiểm tra tính nhất quán chứ không cố định số lượng đó.
-
-Git clone **không** tự tải dataset, embeddings hoặc checkpoint vì các file lớn này không nằm trong Git. Lấy artifact từ thành viên nhóm hoặc tạo lại theo [hướng dẫn dự án](../README.md), [pipeline embedding](../scripts/embed_dataset2.py) và [script index](../scripts/faiss_index_and_latency.py). Chỉ dùng các file `product_ids.npy` đáng tin cậy do nhóm tạo; định dạng hiện tại được nạp với `allow_pickle=True`.
-
-## 2. Khai báo đường dẫn trên máy
-
-Trên máy hiện tại, file `.env.docker` đã được tạo với dataset:
-
-```text
-D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset
-```
-
-Đó là thư mục **chứa** `images` và `styles.csv`, không phải chính thư mục ảnh.
-
-Trên máy khác, không cần Python local để cấu hình. Sao chép mẫu rồi sửa:
+Install Docker Desktop with Linux containers, clone the repository, and run:
 
 ```powershell
-Copy-Item .env.docker.example .env.docker
-notepad .env.docker
+docker compose up -d --build
 ```
 
-Ví dụ:
+No Python installation, manual dataset download or host path configuration is
+needed. `.env` is optional for `APP_PORT`, `SEARCH_CACHE_SIZE` and
+`SEARCH_CACHE_TTL_SECONDS`. Default Compose does not use host data paths.
 
-```dotenv
-DATASET_DIR='D:/datasets/fashion-dataset'
-EMBEDDINGS_DIR='./embeddings'
-MODEL_CACHE_DIR='./.cache/huggingface'
-APP_PORT=8080
-SEARCH_CACHE_SIZE=256
-SEARCH_CACHE_TTL_SECONDS=300
-```
-
-Dùng dấu `/` trên Windows. Đường dẫn có khoảng trắng được hỗ trợ. Trên Linux/macOS, thay bằng đường dẫn local tương ứng. Các đường dẫn tương đối được giải từ thư mục chứa `compose.yaml`. `.env.docker` bị Git bỏ qua vì chứa cấu hình riêng của máy; luôn truyền `--env-file .env.docker` trong các lệnh Compose.
-
-Nếu có môi trường Python dự án, helper sau kiểm tra sự tồn tại của artifact và tạo env file mới:
+Setup downloads release archives and FashionCLIP files pinned to a Hugging Face
+revision. It verifies download sizes/SHA256, archive paths, required files and
+image count. Backend startup validates the index/IDs/metadata/images and warms
+both encoders. Frontend starts once the backend is healthy.
 
 ```powershell
-.\.venv\Scripts\python.exe -X utf8 -m scripts.configure_docker --dataset-dir "D:/code/dataset/Fashion Product Images Dataset/archive/fashion-dataset"
+docker compose logs -f setup
+docker compose ps -a
 ```
 
-Helper không ghi đè file có sẵn. Nếu file đã tồn tại, sửa nó trực tiếp; không cần chạy helper mỗi lần mở ứng dụng. Có thể thêm `--embeddings-dir`, `--model-cache-dir`, `--port` hoặc `--output`.
+`setup` should finish with `Exited (0)`. When backend and frontend are healthy,
+open **http://localhost:8080**. The default command does not wait for frontend's
+health check. First downloads can take much longer than five minutes; do not
+apply the old 300-second wait timeout to first setup.
 
-### Khi chưa có checkpoint
+## Storage and retries
 
-Nếu đang dùng môi trường Python của dự án:
+The `runtime-data` named volume contains catalog, index, model and completion
+receipts. Setup writes; backend mounts it read-only and serves offline. A manifest
+identifies a version directory. `current` switches only after all parts complete;
+a failed new version leaves the previous version available.
+
+First download is about 15.7 GB including original full-size images. Allow at
+least 25 GB free Docker storage for one version, temporary downloads and images;
+additional versions require more space. Images are not resized and embeddings
+are not recomputed. Packaged IDs are converted from the legacy object array to a
+plain string array with the same ordering.
+
+Completed parts are reused after checking installed paths and sizes. SHA256 is
+checked on downloads, not on every image at every startup. Missing/truncated files
+trigger download of that part again. An interrupted part restarts from the
+beginning; completed parts remain. Same-size manual corruption requires repair
+of that part/volume. The volume is not intended for manual editing.
 
 ```powershell
-.\.venv\Scripts\python.exe -m scripts.download_search_model
+docker compose stop
+docker compose up -d --build
+docker compose down
 ```
 
-Hoặc dùng Docker sau khi đã tạo `.env.docker` và build backend:
+`stop` and `down` keep the volume. **`docker compose down -v` deletes downloaded
+runtime data** and forces a new download. Existing host dataset/model folders
+are separate from this volume.
+
+## Testing alongside an existing installation
+
+If port 8080 already serves an old installation, use a separate project and port:
 
 ```powershell
-docker compose --env-file .env.docker build backend
-New-Item -ItemType Directory -Force .cache/huggingface | Out-Null
-$fashionCache = (Resolve-Path .cache/huggingface).Path
-docker run --rm --user 0 -e HF_HUB_OFFLINE=0 -e TRANSFORMERS_OFFLINE=0 --mount "type=bind,source=$fashionCache,target=/models/cache" fashion-search-backend python -c "from huggingface_hub import snapshot_download; print(snapshot_download('patrickjohncyh/fashion-clip', cache_dir='/models/cache', allow_patterns=['*.json','*.txt','*.safetensors','pytorch_model.bin']))"
+$env:APP_PORT = "8081"
+docker compose -p fashion-search-check up -d --build
+docker compose -p fashion-search-check logs -f setup
+docker compose -p fashion-search-check ps -a
 ```
 
-Lệnh này tải vào cache của repository. Nếu dùng `MODEL_CACHE_DIR` khác, thay đường dẫn `$fashionCache` tương ứng. Mount ghi chỉ dành cho bước tải một lần; Compose phục vụ ứng dụng mount cache read-only. Khi chuyển cache giữa máy, sao chép đầy đủ `refs`, `snapshots` và `blobs`, giữ các liên kết hợp lệ.
+Open `http://localhost:8081`. Keep `APP_PORT=8081` in the terminal when running
+later `up` commands for this project. The project name creates a separate runtime
+volume and containers. `Ctrl+C` exits log following without stopping services.
 
-## 3. Build và chạy
+For maintainers with the local Python test environment and Chrome installed:
 
 ```powershell
-docker compose --env-file .env.docker config --quiet
-docker compose --env-file .env.docker up --build -d --wait --wait-timeout 300
-docker compose --env-file .env.docker ps
+.\.venv\Scripts\python.exe -X utf8 -m scripts.verify_deployment --base-url http://localhost:8081 --with-ui
 ```
 
-Chờ cả hai service báo `healthy`, rồi mở:
+The verifier writes results, browser screenshots and source hashes to a new
+`logs/<UTC timestamp>-deployment/` directory. This test environment is optional;
+end users only need Docker to run the application.
 
-```text
-http://localhost:8080
-```
-
-`/search/image`, `/search/text` và `/results` tải được trực tiếp hoặc sau refresh. `/api/v1/...` được Nginx chuyển tới backend. Các alias POST `/search/image` và `/search/text` vẫn dùng được; GET cùng đường dẫn mở trang React. Thử truy vấn `white office shirt`, chọn bộ lọc hoặc upload `data/d1/sample_images/10180.jpg`.
-
-Backend khởi động theo trình tự: đọc artifact → kiểm tra index/IDs/ảnh → nạp FashionCLIP → nạp metadata → chạy thử text và image encoder → đánh dấu ready. Đây có thể là bước tốn thời gian nhất, nhất là khi đọc nhiều file qua Windows bind mount.
+To verify persistence, use the same project and port:
 
 ```powershell
-Invoke-RestMethod http://localhost:8080/ready
-Invoke-RestMethod http://localhost:8080/health
+docker compose -p fashion-search-check down
+docker compose -p fashion-search-check up -d --build
+docker compose -p fashion-search-check logs setup
 ```
 
-`/health` là liveness; `/ready` chỉ trả 200 sau khi startup checks hoàn tất trong entrypoint Gunicorn. Chạy bằng `python -m src.backend.app` vẫn là chế độ phát triển với lazy load; `/ready` trong chế độ đó trả 503 vì không chạy startup warmup.
+Expect `Reusing ...` messages and successful setup. Omit `-v` to keep downloaded data.
 
-## 4. Dừng, mở lại và cập nhật
+## Maintainer release preparation
+
+This is a publishing task for the maintainer, not for end users. Prepared files:
+
+- `.cache/runtime-release-v1/search-artifacts.tar`: metadata, exact Flat index and IDs.
+- `.cache/runtime-release-v1/catalog-001.tar` through `catalog-014.tar`: original indexed images.
+- `deploy/runtime-manifest.json`: committed download URLs, sizes, hashes and model revision.
+
+The **runtime-v1** release in **okok0814/IT_Project** now contains the
+**15 tar files**, unchanged (about 15.04 GB total). Keep these archives out of
+normal Git commits. Each part is under the 2 GiB release-asset limit. The model
+downloads from its original source and does not need uploading. Include the
+Fashion Product Images Dataset attribution and applicable license with the
+release. This upload was completed with the repository owner's authorization.
+
+To package a future version from matching local artifacts:
 
 ```powershell
-# Xem log; Ctrl+C chỉ dừng theo dõi log
-docker compose --env-file .env.docker logs -f --tail 100
-
-# Dừng container nhưng giữ cấu hình/container
-docker compose --env-file .env.docker stop
-
-# Mở lại, chờ kiểm tra sẵn sàng
-docker compose --env-file .env.docker up -d --wait --wait-timeout 300
-
-# Sau khi pull code hoặc sửa dependency
-docker compose --env-file .env.docker up --build -d --wait --wait-timeout 300
-
-# Khi muốn gỡ các container và network của project
-docker compose --env-file .env.docker down
+.\.venv\Scripts\python.exe -X utf8 -m scripts.package_runtime --dataset-dir "D:/datasets/fashion-dataset" --output-dir .cache/runtime-release-v2 --base-url https://github.com/okok0814/IT_Project/releases/download/runtime-v2
 ```
 
-Các lệnh này không xóa dataset/model/artifact trên host. Khi thay file dữ liệu, model hoặc quy tắc, restart/recreate backend để nạp lại snapshot; TTL cache không tự reload artifact:
+The output directory must not exist. The script validates index/IDs, metadata
+and image coverage before packaging. It records the local model cache revision;
+the maintainer must ensure the index was generated with that revision. Hashes
+cannot establish the original embedding-generation process.
+
+Upload the generated tar files, copy the generated `runtime-manifest.json` into
+`deploy/`, and commit it with the code. Verify public URLs and a full startup
+from a fresh volume before announcing readiness. Update the release-status
+notice after publication and verification.
+
+## Checks and troubleshooting
 
 ```powershell
-docker compose --env-file .env.docker up -d --force-recreate --no-deps --wait --wait-timeout 300 backend
+docker compose config --quiet
+docker compose logs --tail 100 setup backend frontend
+python -m pytest -q tests/test_setup_runtime.py
 ```
 
-Nginx dùng Docker DNS với chu kỳ refresh 10 giây để tìm lại backend sau khi IP container đổi. Nếu đổi `APP_PORT` trong `.env.docker`, chạy `up -d --wait` rồi dùng cổng mới. Compose mặc định chỉ bind `127.0.0.1`, phù hợp demo trên máy này. Đây chưa phải public hosting, chưa cấu hình domain/TLS.
+- 404: publish the exact filenames in the manifest to a public release.
+- Network error: restore access and retry startup. Each download has three attempts.
+- SHA256/size mismatch: check the release asset; incomplete versions are not activated.
+- Backend unhealthy: inspect backend logs for artifact consistency or memory errors.
+- Port conflict: set `APP_PORT=8081` in an optional root `.env` and restart.
 
-## 5. Kiểm thử và lưu bằng chứng
+Fixture tests cover integrity, recovery, reuse, unsafe archives, version isolation
+and missing images. They do not prove public release availability or replace a
+full-model deployment test.
 
-Khi các container đang healthy, dùng môi trường test trên host:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -X utf8 -m pytest -q
-.\.venv\Scripts\python.exe -X utf8 -m scripts.verify_deployment --base-url http://localhost:8080 --with-ui
-```
-
-Browser test dùng Google Chrome local. Bỏ `--with-ui` nếu chỉ kiểm chứng HTTP. Runner tạo `logs/<UTC timestamp>-deployment/`, lưu log sống, request/response, hash mã nguồn và ảnh desktop/mobile. Nó không tự dừng stack đang chạy. Các probe kiểm tra ready/health, build assets, SPA refresh, text có lọc/cache, filter-only, image upload thật, thumbnail, related và lỗi 400/404/413/415 qua proxy. Đây là smoke/integration test, không thay benchmark tải tuần trước.
-
-Để ghi build log sạch vào báo cáo, có thể chạy `docker compose --env-file .env.docker --progress plain build` và lưu stdout/stderr. `docker compose logs --no-color` ghi nhận startup/warmup; `docker compose exec -T backend pip freeze` ghi phiên bản Python trong container. Kết quả xác nhận của phiên đóng gói nằm trong [báo cáo triển khai](deployment_report.md).
-
-## 6. Lỗi thường gặp
-
-| Hiện tượng | Cách kiểm tra / xử lý |
-| --- | --- |
-| Không kết nối Docker engine | Mở Docker Desktop, chờ engine hoạt động; kiểm tra Linux containers và `docker version` |
-| Compose yêu cầu DATASET_DIR | Tạo/sửa `.env.docker`; truyền đúng `--env-file` |
-| Bind source path does not exist | Sửa path thực của dataset/index/cache. Compose không tự tạo thư mục rỗng thay cho dữ liệu bị thiếu |
-| Backend unhealthy hoặc liên tục restart | Xem `logs backend`; kiểm tra checkpoint, index Flat 512 chiều, IDs và ảnh/metadata; không chỉ tăng timeout để bỏ qua lỗi artifact |
-| Không tìm thấy checkpoint khi offline | Tải model một lần hoặc sao chép đủ cache; kiểm tra `refs/main` trỏ đúng snapshot |
-| Gunicorn bị kill/OOM | Kiểm tra RAM được Docker Desktop cấp và các ứng dụng khác đang dùng RAM; giữ một worker để tránh nhân bản model; gói này không dùng GPU |
-| Port 8080 đang bận | Đổi APP_PORT trong `.env.docker`, rồi chạy lại `up -d --wait` |
-| Ảnh trả lỗi 404 | Kiểm tra IMAGE_DIR trong container qua log và file ảnh tương ứng dưới DATASET_DIR/images |
-| SPA trang sâu hoặc API sai URL | Dùng port Nginx, không dùng port Vite/8000. VITE_API_BASE_URL trong bản build Docker là chuỗi rỗng để gọi cùng origin |
-| Browser cũ còn hiển thị lỗi sau rebuild | Hard-refresh; index.html không cache lâu, còn asset có tên hash được cache dài hạn |
-
-## 7. Tính tái lập và phạm vi
-
-Danh sách dependency Python hiện được gộp vào một file [requirements.txt](../requirements.txt).
-Docker dùng [runtime_requirements.py](../deploy/runtime_requirements.py) để trích phần
-giữa `# BEGIN RUNTIME` và `# END RUNTIME` thành file tạm trong lúc build, rồi áp dụng
-constraints. Vì vậy, cài toàn bộ môi trường trên host chỉ cần `pip install -r requirements.txt`,
-còn image backend không chứa dependency notebook/test. Ba file requirements phụ đã được
-loại bỏ; khi thêm package backend, đặt nó trong phần runtime và cập nhật constraints nếu cần.
-
-Base image được pin theo digest; npm dùng package-lock.json; Python deployment dùng [constraints.txt](../deploy/constraints.txt). Torch CPU trong container được pin riêng, không ép môi trường notebook/Windows đổi phiên bản. File apt trong base Debian vẫn được lấy từ repository khi build; artifact dataset/model được cung cấp ngoài image. Để chuyển nguyên build đã kiểm thử sang máy khác, có thể dùng `docker image save`/`docker image load` và cung cấp cùng artifact/config; không chỉ chuyển container filesystem rồi kỳ vọng dataset đi kèm.
-
-Frontend vẫn có cảnh báo bundle lớn do catalog import; packaging không xử lý lại nội dung đó. Cần đánh giá tài nguyên và latency trên môi trường hosting thật trước khi công bố năng lực chịu tải. Khi triển khai public, bổ sung reverse proxy/TLS, cấu hình bind phù hợp và kiểm tra lại quyền truy cập dữ liệu. Hướng dẫn này hoàn tất phương án Docker Desktop demo local.
-
-Tham khảo kỹ thuật: [Docker Compose services](https://docs.docker.com/reference/compose-file/services/), [startup order](https://docs.docker.com/compose/how-tos/startup-order/), [Flask với Gunicorn](https://flask.palletsprojects.com/en/stable/deploying/gunicorn/), [Nginx proxy module](https://nginx.org/en/docs/http/ngx_http_proxy_module.html).
+References: [Compose dependencies](https://docs.docker.com/compose/how-tos/startup-order/),
+[Docker volumes](https://docs.docker.com/engine/storage/volumes/),
+[GitHub release assets](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).

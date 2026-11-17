@@ -1,0 +1,9 @@
+2026-11-17T17:28:59.201300+00:00 PASS: Nginx proxies readiness and health; model is loaded before serving
+2026-11-17T17:28:59.393890+00:00 PASS: Built frontend, nested-route refresh and static asset handling
+2026-11-17T17:29:00.090285+00:00 PASS: Real filtered text inference, cache hit and legacy POST route
+2026-11-17T17:29:00.104892+00:00 PASS: Filter-only and empty-result semantics
+2026-11-17T17:29:01.986610+00:00 PASS: Real uploaded-image inference and catalog thumbnails through Nginx
+2026-11-17T17:29:02.027647+00:00 PASS: Related products reuse source ID and complementary candidates
+2026-11-17T17:29:02.383611+00:00 PASS: Validation and unknown API routes retain JSON errors through proxy
+2026-11-17T17:29:02.745624+00:00 PASS: Flask and Nginx upload-size limits both return JSON 413
+2026-11-17T17:29:19.074548+00:00 PASS: Chrome uses built frontend for text/image search and related results; desktop/mobile screenshots

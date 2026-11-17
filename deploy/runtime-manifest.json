@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "product_count": 44419,
+  "model": "patrickjohncyh/fashion-clip",
+  "model_revision": "7e3ba62ce16b379a1ab479346b66f192e76f51b7",
+  "required_files": [
+    "catalog/styles.csv",
+    "embeddings/product_ids.npy",
+    "embeddings/index/fashionclip_image_embeddings_flat.index",
+    "model/config.json",
+    "model/preprocessor_config.json",
+    "model/tokenizer_config.json",
+    "model/special_tokens_map.json",
+    "model/tokenizer.json",
+    "model/vocab.json",
+    "model/merges.txt",
+    "model/model.safetensors"
+  ],
+  "assets": [
+    {
+      "name": "search-artifacts.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/search-artifacts.tar",
+      "size": 96194560,
+      "sha256": "275392a979e0ecb81936237a811dd6f343d03e3ddcdbc0f6fc7ec633cb7a83fb"
+    },
+    {
+      "name": "catalog-001.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-001.tar",
+      "size": 1074810880,
+      "sha256": "b32fce7a1b20935bc2381cf9d87c50e2eff948159320c52629d617811957e89e"
+    },
+    {
+      "name": "catalog-002.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-002.tar",
+      "size": 1075896320,
+      "sha256": "4d05e9ca98fa82f21f2c48602bc880ca9f680abc4583bcacb96f7c2774f6370f"
+    },
+    {
+      "name": "catalog-003.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-003.tar",
+      "size": 1076142080,
+      "sha256": "e297fc89b851bf65eb2fcdbb116758e90c28ed98053497bbaa33d928de230877"
+    },
+    {
+      "name": "catalog-004.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-004.tar",
+      "size": 1075742720,
+      "sha256": "1d1bb2510cc6cf6cd4f64c3569f8b2cfb7ad1450b2351612c717cd3a47d078b9"
+    },
+    {
+      "name": "catalog-005.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-005.tar",
+      "size": 1076090880,
+      "sha256": "e910739b8d3cc268fea27187e93eff64c5b38d4d5d0cb61d9eb89584fd437ab9"
+    },
+    {
+      "name": "catalog-006.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-006.tar",
+      "size": 1075886080,
+      "sha256": "d49725bb9cf9cf40b0d3d35ef7b8bf7f7bd24a0f970a6fa6a73fda9248ae54e8"
+    },
+    {
+      "name": "catalog-007.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-007.tar",
+      "size": 1075988480,
+      "sha256": "5258dc32644b2277e768e20865783af563edcb48b01aa35e4dde2936307526bf"
+    },
+    {
+      "name": "catalog-008.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-008.tar",
+      "size": 1076111360,
+      "sha256": "db85ad90b94b6425ecdb83cd19e7f5dec6f91103f2b21c05e3c157250937eccf"
+    },
+    {
+      "name": "catalog-009.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-009.tar",
+      "size": 1075978240,
+      "sha256": "c15504196eed0a43dd33067357bf7debeafe96a44f0b315f97be06a23101d2d4"
+    },
+    {
+      "name": "catalog-010.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-010.tar",
+      "size": 1076070400,
+      "sha256": "7782d1b592766a35f8fe703ecdee1e55c352d6e1a4a6c99a4e2c93916d45e2ab"
+    },
+    {
+      "name": "catalog-011.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-011.tar",
+      "size": 1076049920,
+      "sha256": "30dc3cd479ffc9d261a3f008ee6137342dc25793d6b31364ade198579b3ced9d"
+    },
+    {
+      "name": "catalog-012.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-012.tar",
+      "size": 1075763200,
+      "sha256": "46243f62b60461f86f026aa883cd5f5c8c417d4497457fb681fca2d0b892ea34"
+    },
+    {
+      "name": "catalog-013.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-013.tar",
+      "size": 1075978240,
+      "sha256": "4a480284f9f02514481236f2ddacb08db790ffa2a73b7ff3597b57374218a663"
+    },
+    {
+      "name": "catalog-014.tar",
+      "kind": "tar",
+      "url": "https://github.com/okok0814/IT_Project/releases/download/runtime-v1/catalog-014.tar",
+      "size": 960163840,
+      "sha256": "a38c6bcd569aefd4144b8f0508321ede62491a6982f2c4d39ce9cdaf3f01772a"
+    },
+    {
+      "name": "config.json",
+      "kind": "file",
+      "target": "model/config.json",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/config.json",
+      "size": 4463,
+      "sha256": "79595b5c6be8867e3ba42c34b1e6b9a0f957e549c1e7f43b5c6945f4f6f59471"
+    },
+    {
+      "name": "preprocessor_config.json",
+      "kind": "file",
+      "target": "model/preprocessor_config.json",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/preprocessor_config.json",
+      "size": 316,
+      "sha256": "910e70b3956ac9879ebc90b22fb3bc8a75b6a0677814500101a4c072bd7857bd"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "kind": "file",
+      "target": "model/tokenizer_config.json",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/tokenizer_config.json",
+      "size": 568,
+      "sha256": "cbcdcf14cede6b5c3a6841f37961364357d82bef3079beb115e95f27252526a0"
+    },
+    {
+      "name": "special_tokens_map.json",
+      "kind": "file",
+      "target": "model/special_tokens_map.json",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/special_tokens_map.json",
+      "size": 389,
+      "sha256": "f8c0d6c39aee3f8431078ef6646567b0aba7f2246e9c54b8b99d55c22b707cbf"
+    },
+    {
+      "name": "tokenizer.json",
+      "kind": "file",
+      "target": "model/tokenizer.json",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/tokenizer.json",
+      "size": 2224041,
+      "sha256": "b556ac8c99757ffb677208af34bc8c6721572114111a6e0aaf5fa69ff0b8d842"
+    },
+    {
+      "name": "vocab.json",
+      "kind": "file",
+      "target": "model/vocab.json",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/vocab.json",
+      "size": 862328,
+      "sha256": "5047b556ce86ccaf6aa22b3ffccfc52d391ea4accdab9c2f2407da5b742d4363"
+    },
+    {
+      "name": "merges.txt",
+      "kind": "file",
+      "target": "model/merges.txt",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/merges.txt",
+      "size": 524657,
+      "sha256": "f526393189112391ce6f9795d4695f704121ce452c3aad1f5335cc41337eba85"
+    },
+    {
+      "name": "model.safetensors",
+      "kind": "file",
+      "target": "model/model.safetensors",
+      "url": "https://huggingface.co/patrickjohncyh/fashion-clip/resolve/7e3ba62ce16b379a1ab479346b66f192e76f51b7/model.safetensors",
+      "size": 605157890,
+      "sha256": "4977e3a54929eccf065ce449aeaf296f0e5cb6b28e8798c3c97d67cb2f6dafc9"
+    }
+  ]
+}
